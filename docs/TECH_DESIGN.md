@@ -1183,22 +1183,25 @@ Context Builder 只消费 Go 已授权的 `AgentRequest.context` 和短期 Memor
 Trace 记录 context/model/tool/validate 步骤、耗时、Usage、状态和错误码。
 工具参数只记录 SHA-256，普通日志不记录 Prompt、API Key、完整上下文或私密正文。
 
-#### 7.4.2 Task 9 安全加固候选
+#### 7.4.2 Task 9/11 安全基线
 
-- 输出 Schema Registry 使用 `task_type + schema key + version`，失败返回安全
+- DQ-18 正式 Registry 以 `packages/contracts` 为唯一源，按
+  `task_type + schema key + version` 绑定 Active Schema；失败返回安全
   `validation_errors`。
-- 内部请求可启用 HMAC-SHA256、timestamp、nonce、重放缓存和双密钥轮换窗口；
-  正式 mTLS/签名协议仍为 DQ-19。
+- DQ-19 内部安全 profile 使用 mTLS + `mv-hmac-sha256-v1`，包含 Key ID、
+  timestamp、共享 nonce、双密钥轮换、KMS 抽象和 fail-closed 故障策略。
+- 内部授权使用 Service Identity + operation/resource/tenant scope；认证成功
+  不自动授予操作权限。
+- 安全审计记录身份、Request ID、Key ID、认证/授权结果和 scope，不记录密钥、
+  token 或业务正文。
 - D3/D4 上下文默认不发送模型；SecretPayload 正式数据政策仍为 DQ-15/DQ-22。
 - MCP/外部网络工具当前默认拒绝，高风险工具要求确认，工具结果按不可信数据限长。
 - Run 元数据和 checkpoint 引用有进程内原型，正式持久化与恢复为 DQ-21。
 
-GATE-AI 逐项状态见 `docs/architecture/gate-ai-checklist.md`，不得把本文候选设计
-当作批准或门禁通过证据。
-
-Task 11 批准状态复核仍显示 DQ-18/DQ-19 为 Proposed。正式 Registry、
-mTLS/KMS、共享 nonce 和 ACL 未实施，阻塞与解除条件见
-`docs/architecture/task-11-approval-blockers.md`。
+GATE-AI 逐项状态见 `docs/architecture/gate-ai-checklist.md`。DQ-18/DQ-19
+测试级实现已通过，但真实 CA、KMS、Redis 多实例和生产部署仍为 `NOT VERIFIED`；
+外部 MCP、Run/Checkpoint 和真实 Provider 仍分别由 DQ-20/DQ-21/DQ-22 阻塞。
+Registry 规则见 `docs/architecture/contracts-registry.md`。
 
 ### 7.5 Structured Output
 

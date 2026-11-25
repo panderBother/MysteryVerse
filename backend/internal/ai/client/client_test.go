@@ -26,8 +26,16 @@ func TestClientSignsInternalRequests(t *testing.T) {
 			r.Header.Get("X-Request-Nonce") != fixedNonce {
 			t.Fatalf("unexpected signing headers: %#v", r.Header)
 		}
+		if r.Header.Get("X-Request-Signature-Version") != "mv-hmac-sha256-v1" ||
+			r.Header.Get("X-Service-Key-Id") != "go-core-v1" {
+			t.Fatalf("unexpected signature identity headers: %#v", r.Header)
+		}
+		if r.Header.Get("X-Service-Scope") != "ai:agent:run,run:01J9Z3K4M7Q2R8T5V6W1XE0000" {
+			t.Fatalf("unexpected service scope: %q", r.Header.Get("X-Service-Scope"))
+		}
 		expected := signRequest(
-			[]byte("signing-key"),
+			[]byte("signing-key-material-32-bytes-long"),
+			"go-core-v1",
 			"1700000000",
 			fixedNonce,
 			"go-core",
@@ -45,7 +53,8 @@ func TestClientSignsInternalRequests(t *testing.T) {
 		BaseURL:      server.URL,
 		ServiceID:    "go-core",
 		ServiceToken: "service-token",
-		SigningKey:   []byte("signing-key"),
+		SigningKey:   []byte("signing-key-material-32-bytes-long"),
+		SigningKeyID: "go-core-v1",
 		Clock:        func() time.Time { return fixedTime },
 		NonceFunc:    func() string { return fixedNonce },
 	})
@@ -69,6 +78,7 @@ func TestClientAgainstPythonAgentRuntime(t *testing.T) {
 		ServiceID:    "go-core",
 		ServiceToken: serviceToken,
 		SigningKey:   []byte(signingKey),
+		SigningKeyID: "go-core-v1",
 		Timeout:      5 * time.Second,
 	})
 	if err != nil {

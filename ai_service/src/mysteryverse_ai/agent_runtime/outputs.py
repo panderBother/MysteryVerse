@@ -1,19 +1,20 @@
 from __future__ import annotations
 
+from contextlib import suppress
 from dataclasses import dataclass
-from typing import Literal
+from typing import ClassVar, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, ValidationError, model_validator
 
-from mysteryverse_ai.schemas.generated.models import AgentOutputValidationIssue, AgentTaskType
-
-
-class DemoAgentOutput(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-
-    answer: str = Field(min_length=1)
-    confidence: float = Field(ge=0, le=1)
-    used_tool: bool
+from mysteryverse_ai.schemas.generated.active_output_schemas import (
+    ACTIVE_OUTPUT_SCHEMAS,
+)
+from mysteryverse_ai.schemas.generated.models import (
+    AgentOutputValidationIssue,
+    AgentTaskType,
+    DemoAgentOutput,
+)
+from mysteryverse_ai.schemas.registry import ContractsSchemaRegistry, SchemaRegistryError
 
 
 class ModelAction(BaseModel):
@@ -39,6 +40,8 @@ class OutputSchemaRegistration:
     key: str
     version: int
     schema: type[BaseModel]
+    schema_definition: str
+    schema_status: Literal["active", "experimental"]
 
     @property
     def display_name(self) -> str:
@@ -53,14 +56,33 @@ class OutputSchemaSelectionError(Exception):
 
 
 class OutputSchemaRegistry:
-    def __init__(self) -> None:
+    _GENERATED_MODELS: ClassVar[dict[str, type[BaseModel]]] = {
+        "DemoAgentOutput": DemoAgentOutput,
+    }
+
+    def __init__(
+        self,
+        *,
+        contracts_registry: ContractsSchemaRegistry | None = None,
+        allow_unregistered: bool = False,
+    ) -> None:
         self._registrations: dict[AgentTaskType, list[OutputSchemaRegistration]] = {}
-        self.register(
-            task_type=AgentTaskType.demo,
-            key="demo_result",
-            version=1,
-            schema=DemoAgentOutput,
-        )
+        self._contracts_registry = contracts_registry or ContractsSchemaRegistry.load_default()
+        self._allow_unregistered = allow_unregistered
+        for binding in ACTIVE_OUTPUT_SCHEMAS:
+            schema = self._GENERATED_MODELS.get(binding.definition)
+            if schema is None:
+                raise SchemaRegistryError(
+                    code="SCHEMA_MODEL_NOT_GENERATED",
+                    message="An active output schema has no generated model.",
+                )
+            self.register(
+                task_type=AgentTaskType(binding.task_type),
+                key=binding.schema_key,
+                version=binding.schema_version,
+                schema=schema,
+                schema_definition=binding.definition,
+            )
 
     def register(
         self,
@@ -69,9 +91,18 @@ class OutputSchemaRegistry:
         key: str,
         version: int,
         schema: type[BaseModel],
+        schema_definition: str,
+        schema_status: Literal["active", "experimental"] = "active",
     ) -> None:
         if not key or version < 1:
             raise ValueError("output schema key and positive version are required")
+        if not schema_definition:
+            raise ValueError("output schema definition is required")
+        if schema_status == "active" and not self._allow_unregistered:
+            self._contracts_registry.active(schema_definition)
+        elif schema_status == "active" and self._allow_unregistered:
+            with suppress(SchemaRegistryError):
+                self._contracts_registry.active(schema_definition)
         registrations = self._registrations.setdefault(task_type, [])
         if any(item.key == key and item.version == version for item in registrations):
             raise ValueError(f"output schema already registered: {key}@{version}")
@@ -81,6 +112,8 @@ class OutputSchemaRegistry:
                 key=key,
                 version=version,
                 schema=schema,
+                schema_definition=schema_definition,
+                schema_status=schema_status,
             )
         )
         registrations.sort(key=lambda item: item.version, reverse=True)
@@ -113,6 +146,12 @@ class OutputSchemaRegistry:
                     code="OUTPUT_SCHEMA_VERSION_UNSUPPORTED",
                     message="the requested output schema version is not supported",
                 )
+        candidates = [item for item in candidates if item.schema_status == "active"]
+        if not candidates:
+            raise OutputSchemaSelectionError(
+                code="OUTPUT_SCHEMA_NOT_ACTIVE",
+                message="the requested output schema is not active",
+            )
         return candidates[0]
 
 

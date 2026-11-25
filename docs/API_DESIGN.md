@@ -253,13 +253,16 @@ Task 8 增加内部端点：
 POST /internal/v1/ai/agent-runs
 ```
 
-该端点不暴露给浏览器。请求与响应使用 Contracts 中的 Proposed
-`AgentRequest` / `AgentResponse` 扩展。请求头必须包含 `X-Service-Id`、
-`X-Service-Token`、`X-Request-Id`、`X-Trace-Id` 和 `Idempotency-Key`。
+该端点不暴露给浏览器。请求与响应使用 Contracts `AgentRequest` /
+`AgentResponse`。请求头必须包含 `X-Service-Id`、`X-Service-Token`、
+`X-Service-Scope`、`X-Request-Id`、`X-Trace-Id` 和 `Idempotency-Key`。
 
-配置签名密钥后还必须携带 `X-Request-Timestamp`、`X-Request-Nonce` 和
-`X-Request-Signature`。Task 9 的 HMAC、nonce 和双密钥轮换只是候选原型；
-mTLS、正式签名覆盖范围和多实例 nonce 仍等待 DQ-19。
+生产安全 profile 要求 mTLS + `mv-hmac-sha256-v1`。配置签名密钥后还必须携带
+`X-Request-Signature-Version`、`X-Service-Key-Id`、`X-Request-Timestamp`、
+`X-Request-Nonce` 和 `X-Request-Signature`。HMAC 覆盖 signature version、
+Key ID、timestamp、nonce、Service ID、method、path、query 和 body hash。
+Key ID 支持 Active/Previous 轮换和撤销；生产 nonce 使用 Redis 原子消费，
+Store/KMS 故障 fail-closed。
 
 响应状态为 `succeeded|failed|timeout|cancelled`。`structured_output` 只能是
 Python 已注册任务 Schema 的校验结果；Python 不返回 Go 状态补丁、事件或胜负。
@@ -267,10 +270,9 @@ Python 已注册任务 Schema 的校验结果；Python 不返回 Go 状态补丁
 响应包含 Schema key/version 和不含原始输入的结构化 `validation_errors`。
 详细的内部网络、超时、取消、幂等和防循环约束见 `docs/api/ai-internal-api.md`。
 
-上述签名、Schema Registry 和 Tool trust 仍是 Task 10 审查中的 Proposed 原型。
-正式协议、版本保留和认证错误码冻结必须等待 DQ-18/DQ-19/DQ-20 批准。
-Task 11 已再次核对仓库批准状态：DQ-18/DQ-19 仍为 Proposed，因此本轮没有新增
-正式 API 协议或认证策略；阻塞审计见 `docs/architecture/task-11-approval-blockers.md`。
+DQ-18/DQ-19 已批准并落地 Schema Registry 与内部安全基础；Tool trust/外部 MCP
+仍由 DQ-20 阻塞。生产 CA、KMS 和 Redis 多实例部署仍为 `NOT VERIFIED`。
+批准与实施边界见 `docs/architecture/task-11-approval-blockers.md`。
 
 ### 2.4 限流建议
 

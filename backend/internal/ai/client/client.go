@@ -6,12 +6,16 @@ import (
 	"crypto/hmac"
 	"crypto/rand"
 	"crypto/sha256"
+	"crypto/tls"
+	"crypto/x509"
 	"encoding/hex"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
 	"net/http"
+	"os"
+	"sort"
 	"strconv"
 	"strings"
 	"time"
@@ -29,8 +33,16 @@ type Config struct {
 	HTTPClient    *http.Client
 	RequestIDFunc func() string
 	SigningKey    []byte
+	SigningKeyID  string
+	ServiceScopes []string
+	TenantID      string
 	Clock         func() time.Time
 	NonceFunc     func() string
+	TLSConfig     *tls.Config
+	TLSCAFile     string
+	TLSCertFile   string
+	TLSKeyFile    string
+	TLSServerName string
 }
 
 type Client struct {
@@ -42,6 +54,9 @@ type Client struct {
 	httpClient    *http.Client
 	requestIDFunc func() string
 	signingKey    []byte
+	signingKeyID  string
+	serviceScopes []string
+	tenantID      string
 	clock         func() time.Time
 	nonceFunc     func() string
 }
@@ -67,13 +82,29 @@ func New(cfg Config) (*Client, error) {
 	if strings.TrimSpace(cfg.ServiceToken) == "" {
 		return nil, errors.New("AI client service token is required")
 	}
+	if len(cfg.SigningKey) > 0 && strings.TrimSpace(cfg.SigningKeyID) == "" {
+		return nil, errors.New("AI client signing key ID is required")
+	}
 	timeout := cfg.Timeout
 	if timeout <= 0 {
 		timeout = 15 * time.Second
 	}
+	tlsConfig, err := buildTLSConfig(cfg)
+	if err != nil {
+		return nil, err
+	}
 	httpClient := cfg.HTTPClient
 	if httpClient == nil {
-		httpClient = &http.Client{Timeout: timeout}
+		transport := http.DefaultTransport.(*http.Transport).Clone()
+		if tlsConfig != nil {
+			transport.TLSClientConfig = tlsConfig
+		}
+		httpClient = &http.Client{
+			Timeout:   timeout,
+			Transport: transport,
+		}
+	} else if tlsConfig != nil {
+		return nil, errors.New("AI client TLS config cannot be combined with HTTPClient")
 	}
 	requestIDFunc := cfg.RequestIDFunc
 	if requestIDFunc == nil {
@@ -87,6 +118,10 @@ func New(cfg Config) (*Client, error) {
 	if nonceFunc == nil {
 		nonceFunc = randomNonce
 	}
+	serviceScopes := append([]string(nil), cfg.ServiceScopes...)
+	if len(serviceScopes) == 0 {
+		serviceScopes = []string{"ai:agent:run"}
+	}
 	return &Client{
 		baseURL:       strings.TrimRight(cfg.BaseURL, "/"),
 		serviceID:     cfg.ServiceID,
@@ -96,6 +131,9 @@ func New(cfg Config) (*Client, error) {
 		httpClient:    httpClient,
 		requestIDFunc: requestIDFunc,
 		signingKey:    append([]byte(nil), cfg.SigningKey...),
+		signingKeyID:  strings.TrimSpace(cfg.SigningKeyID),
+		serviceScopes: serviceScopes,
+		tenantID:      strings.TrimSpace(cfg.TenantID),
 		clock:         clock,
 		nonceFunc:     nonceFunc,
 	}, nil
@@ -160,6 +198,10 @@ func (c *Client) doRun(
 	httpRequest.Header.Set("Content-Type", "application/json")
 	httpRequest.Header.Set("X-Service-Id", c.serviceID)
 	httpRequest.Header.Set("X-Service-Token", c.serviceToken)
+	httpRequest.Header.Set("X-Service-Scope", c.requestScopes(string(request.RunID)))
+	if c.tenantID != "" {
+		httpRequest.Header.Set("X-Service-Tenant", c.tenantID)
+	}
 	httpRequest.Header.Set("X-Request-Id", request.RequestID)
 	httpRequest.Header.Set("Idempotency-Key", idempotencyKey)
 	if request.TraceID != nil {
@@ -170,11 +212,21 @@ func (c *Client) doRun(
 	if len(c.signingKey) > 0 {
 		timestamp := strconv.FormatInt(c.clock().UTC().Unix(), 10)
 		nonce := c.nonceFunc()
+		httpRequest.Header.Set("X-Request-Signature-Version", "mv-hmac-sha256-v1")
+		httpRequest.Header.Set("X-Service-Key-Id", c.signingKeyID)
 		httpRequest.Header.Set("X-Request-Timestamp", timestamp)
 		httpRequest.Header.Set("X-Request-Nonce", nonce)
 		httpRequest.Header.Set(
 			"X-Request-Signature",
-			signRequest(c.signingKey, timestamp, nonce, c.serviceID, httpRequest, body),
+			signRequest(
+				c.signingKey,
+				c.signingKeyID,
+				timestamp,
+				nonce,
+				c.serviceID,
+				httpRequest,
+				body,
+			),
 		)
 	}
 
@@ -288,6 +340,7 @@ func dependencyError(message string, retryable bool) Error {
 
 func signRequest(
 	key []byte,
+	keyID string,
 	timestamp string,
 	nonce string,
 	serviceID string,
@@ -297,6 +350,8 @@ func signRequest(
 	bodyHash := sha256.Sum256(body)
 	canonical := strings.Join(
 		[]string{
+			"mv-hmac-sha256-v1",
+			keyID,
 			timestamp,
 			nonce,
 			serviceID,
@@ -310,6 +365,61 @@ func signRequest(
 	mac := hmac.New(sha256.New, key)
 	_, _ = mac.Write([]byte(canonical))
 	return hex.EncodeToString(mac.Sum(nil))
+}
+
+func (c *Client) requestScopes(runID string) string {
+	scopes := append([]string(nil), c.serviceScopes...)
+	scopes = append(scopes, "run:"+runID)
+	if c.tenantID != "" {
+		scopes = append(scopes, "tenant:"+c.tenantID)
+	}
+	sort.Strings(scopes)
+	unique := scopes[:0]
+	for _, scope := range scopes {
+		if len(unique) == 0 || unique[len(unique)-1] != scope {
+			unique = append(unique, scope)
+		}
+	}
+	return strings.Join(unique, ",")
+}
+
+func buildTLSConfig(cfg Config) (*tls.Config, error) {
+	if cfg.TLSConfig != nil {
+		clone := cfg.TLSConfig.Clone()
+		if clone.MinVersion < tls.VersionTLS12 {
+			clone.MinVersion = tls.VersionTLS12
+		}
+		return clone, nil
+	}
+	if cfg.TLSCAFile == "" && cfg.TLSCertFile == "" && cfg.TLSKeyFile == "" {
+		return nil, nil
+	}
+	if (cfg.TLSCertFile == "") != (cfg.TLSKeyFile == "") {
+		return nil, errors.New("AI client TLS certificate and key must be configured together")
+	}
+	tlsConfig := &tls.Config{
+		MinVersion: tls.VersionTLS12,
+		ServerName: strings.TrimSpace(cfg.TLSServerName),
+	}
+	if cfg.TLSCAFile != "" {
+		caPEM, err := os.ReadFile(cfg.TLSCAFile)
+		if err != nil {
+			return nil, fmt.Errorf("read AI client TLS CA: %w", err)
+		}
+		roots := x509.NewCertPool()
+		if !roots.AppendCertsFromPEM(caPEM) {
+			return nil, errors.New("AI client TLS CA contains no certificates")
+		}
+		tlsConfig.RootCAs = roots
+	}
+	if cfg.TLSCertFile != "" {
+		certificate, err := tls.LoadX509KeyPair(cfg.TLSCertFile, cfg.TLSKeyFile)
+		if err != nil {
+			return nil, fmt.Errorf("load AI client TLS key pair: %w", err)
+		}
+		tlsConfig.Certificates = []tls.Certificate{certificate}
+	}
+	return tlsConfig, nil
 }
 
 func randomNonce() string {

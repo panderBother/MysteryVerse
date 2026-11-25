@@ -19,3 +19,32 @@ def test_settings_defaults() -> None:
 def test_openai_provider_requires_api_key() -> None:
     with pytest.raises(ValidationError):
         Settings.model_validate({"model_provider": "openai_compatible"})
+
+
+def test_signing_key_requires_key_id_and_minimum_length() -> None:
+    with pytest.raises(ValidationError):
+        Settings.model_validate(
+            {
+                "internal_signing_key_id": "",
+                "internal_request_signing_key": "a" * 32,
+            }
+        )
+    with pytest.raises(ValidationError):
+        Settings.model_validate(
+            {
+                "internal_signing_key_id": "go-core-v1",
+                "internal_request_signing_key": "short",
+            }
+        )
+
+
+def test_production_internal_security_is_fail_closed() -> None:
+    with pytest.raises(ValidationError):
+        Settings.model_validate(
+            {
+                "environment": "production",
+                "internal_service_token": "token",
+                "internal_signing_key_id": "go-core-v1",
+                "internal_request_signing_key": "a" * 32,
+            }
+        )

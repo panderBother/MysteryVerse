@@ -1,6 +1,6 @@
 # GATE-AI 准入检查清单
 
-> 日期：2026-11-23
+> 日期：2026-11-25
 > 总体状态：未通过
 > 原则：只有代码、测试和可复现证据才算 PASS；文档方案不算证据。
 
@@ -19,10 +19,13 @@
 | --- | --- | --- |
 | Service ID + Token 基础身份 | PASS | FastAPI 依赖和 Go Client 测试 |
 | HMAC 请求签名原型 | PASS | body/path/query 绑定、tamper/replay 测试；Go Client → FastAPI 跨进程签名通过 |
-| mTLS | BLOCKED | DQ-19 未批准，部署环境无证书链 |
-| 时间戳与 nonce 重放防护 | PASS | 单实例原型和测试；多实例存储 BLOCKED |
-| 双密钥轮换窗口 | PASS | primary/previous 原型测试 |
-| 正式服务 ACL scope | BLOCKED | DQ-19 未定义操作级 scope |
+| mTLS 基础实现 | PASS（Test） | Go 双向证书握手、缺失/过期客户端证书测试；真实 CA 部署 NOT VERIFIED |
+| Key ID / 签名版本 | PASS | `mv-hmac-sha256-v1`、Active/Previous、未知/撤销 Key 拒绝测试 |
+| KMS/Key Provider 抽象 | PASS（Test） | Environment Provider 接口与故障边界；真实 KMS NOT VERIFIED |
+| 时间戳与 nonce 重放防护 | PASS | 内存与 Redis Store 原子消费、跨 App 重放、Store 故障 fail-closed 测试 |
+| 双密钥轮换窗口 | PASS | primary/previous 轮换和撤销测试 |
+| 正式服务 ACL scope | PASS | operation/resource/tenant scope、拒绝和跨租户测试 |
+| 安全审计 | PASS | 身份、Request ID、Key ID、认证/授权结果和 scope；无密钥/正文 |
 | 本地 Tool 白名单/权限/actor 校验 | PASS | Tool Registry 测试 |
 | MCP Server 信任策略 | BLOCKED | DQ-20；外部工具当前全部拒绝 |
 | SSRF/外部网络访问限制 | PASS | 当前任何 external_network 工具拒绝 |
@@ -51,13 +54,13 @@
 
 | 检查项 | 状态 | 证据/阻断原因 |
 | --- | --- | --- |
-| 版本化任务级 Schema Registry | PASS | key/version 注册与解析测试 |
+| 版本化任务级 Schema Registry | PASS | 142 定义 Registry、兼容基线和 Active 绑定测试 |
 | 模型不能选择 Schema | PASS | Go 请求指定，模型只生成 output |
 | 必填/枚举/范围/嵌套校验 | PASS | 通用 Pydantic Schema 原型 |
 | 未知字段拒绝 | PASS | `extra=forbid` 测试 |
 | 校验失败不得成功返回 | PASS | Runtime 返回 failed + validation_errors |
 | 非法输出错误可追踪 | PASS | 响应 validation_errors 和 trace |
-| AI DM/NPC/生成正式业务 Schema | BLOCKED | DQ-18 未批准 |
+| AI DM/NPC/生成正式业务 Schema | BLOCKED | DQ-18 治理已批准，但具体业务 Schema 仍需逐项批准 |
 
 ## Provider
 
@@ -76,7 +79,7 @@
 
 | 检查项 | 状态 | 证据 |
 | --- | --- | --- |
-| Python 单元测试 | PASS | 35 tests |
+| Python 单元测试 | PASS | 48 tests；Runtime、Contract Registry 与安全测试通过 |
 | FastAPI 集成测试 | PASS | health、agent、认证、签名、幂等 |
 | Go/Python 契约测试 | PASS | 141 definitions、三端 examples |
 | 真实跨进程协议测试 | PASS | Go Client → FastAPI Mock Provider，Token 与 HMAC 模式均通过 |
@@ -84,10 +87,11 @@
 | 认证篡改/重放测试 | PASS | signed HTTP tests |
 | 超时/取消/失败测试 | PASS | Runtime tests |
 | 持久化/Checkpoint 故障注入 | NOT_IMPLEMENTED | DQ-21 |
-| mTLS/多实例 nonce 测试 | BLOCKED | DQ-19 |
+| mTLS/多实例 nonce 测试 | PASS（Test） | Go mTLS 握手、共享 Store 协议与 Redis Store 原子消费；真实部署 NOT VERIFIED |
 | SSRF/真实 MCP 安全测试 | BLOCKED | DQ-20 |
 
 ## 结论
 
-GATE-AI 当前不能通过。已具备可执行的安全基线原型，但正式认证、业务输出 Schema、
-外部 MCP、持久恢复、生产 Provider 政策和长期 Trace 仍需负责人批准及实现。
+GATE-AI 当前不能通过。DQ-18/DQ-19 已提供可执行且测试验证的 Registry 与安全
+基础，但真实 CA/KMS/Redis 部署、业务输出 Schema、外部 MCP、持久恢复、生产
+Provider 政策和长期 Trace 仍需要批准、部署或实现。

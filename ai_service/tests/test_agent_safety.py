@@ -26,18 +26,20 @@ class _NestedOutput(BaseModel):
 
 
 def test_versioned_output_schema_registry() -> None:
-    registry = OutputSchemaRegistry()
+    registry = OutputSchemaRegistry(allow_unregistered=True)
     registry.register(
         task_type=AgentTaskType.demo,
         key="demo_nested",
         version=1,
         schema=_NestedOutput,
+        schema_definition="TestNestedOutput",
     )
     registry.register(
         task_type=AgentTaskType.demo,
         key="demo_nested",
         version=2,
         schema=_NestedOutput,
+        schema_definition="TestNestedOutput",
     )
     selected = registry.resolve(
         AgentTaskType.demo,

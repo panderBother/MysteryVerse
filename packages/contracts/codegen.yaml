@@ -2,6 +2,11 @@ contractVersion: 1.0.0
 schema:
   source: json-schema/mysteryverse.schema.json
   language: json-schema-2020-12
+registry:
+  governance: registry/schema-governance.json
+  manifest: registry/schema-registry.json
+  runtimeManifest: ../../ai_service/src/mysteryverse_ai/schemas/generated/schema-registry.json
+  activeOutputBindings: ../../ai_service/src/mysteryverse_ai/schemas/generated/active_output_schemas.py
 generators:
   typescript:
     tool: json-schema-to-typescript
@@ -22,4 +27,5 @@ generators:
     modelType: pydantic_v2.BaseModel
 verification:
   schemaFingerprint: compatibility/schema-fingerprint.json
+  schemaBaseline: compatibility/schema-baseline-v1.json
   examplesManifest: examples/manifest.json

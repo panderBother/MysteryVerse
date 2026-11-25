@@ -7,6 +7,20 @@ import (
 	"testing"
 )
 
+type schemaRegistryFixture struct {
+	DefinitionsCount int `json:"definitions_count"`
+	Schemas          []struct {
+		Name   string `json:"name"`
+		Status string `json:"status"`
+		Active bool   `json:"active"`
+	} `json:"schemas"`
+	RuntimeBindings map[string]struct {
+		Definition    string `json:"definition"`
+		SchemaVersion int    `json:"schema_version"`
+		Status        string `json:"status"`
+	} `json:"runtime_bindings"`
+}
+
 func readExample(t *testing.T, name string) []byte {
 	t.Helper()
 
@@ -159,5 +173,42 @@ func TestNamedIDTypes(t *testing.T) {
 
 	if string(userID) == string(roomID) {
 		t.Fatal("fixture IDs unexpectedly match")
+	}
+}
+
+func TestSchemaRegistryFixtureAndActiveDemoBinding(t *testing.T) {
+	path := filepath.Join(
+		"..",
+		"..",
+		"..",
+		"packages",
+		"contracts",
+		"registry",
+		"schema-registry.json",
+	)
+	content, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatalf("read schema registry: %v", err)
+	}
+	var registry schemaRegistryFixture
+	if err := json.Unmarshal(content, &registry); err != nil {
+		t.Fatalf("unmarshal schema registry: %v", err)
+	}
+	if registry.DefinitionsCount != len(registry.Schemas) {
+		t.Fatalf(
+			"definitions_count = %d, schemas = %d",
+			registry.DefinitionsCount,
+			len(registry.Schemas),
+		)
+	}
+	binding, ok := registry.RuntimeBindings["demo_result"]
+	if !ok || binding.Definition != "DemoAgentOutput" ||
+		binding.SchemaVersion != 1 || binding.Status != "active" {
+		t.Fatalf("demo_result binding = %#v", binding)
+	}
+	for _, record := range registry.Schemas {
+		if record.Name == "DemoAgentOutput" && (!record.Active || record.Status != "active") {
+			t.Fatalf("DemoAgentOutput registry record = %#v", record)
+		}
 	}
 }

@@ -5,11 +5,11 @@ from mysteryverse_ai.api.dependencies import (
     get_agent_runtime,
     require_internal_service,
 )
-from mysteryverse_ai.api.request_integrity import InMemoryNonceCache
+from mysteryverse_ai.security.nonce import InMemoryNonceStore
 
 __all__ = [
     "InMemoryIdempotencyCache",
-    "InMemoryNonceCache",
+    "InMemoryNonceStore",
     "get_agent_runtime",
     "require_internal_service",
 ]

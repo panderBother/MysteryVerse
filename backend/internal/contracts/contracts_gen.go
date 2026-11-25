@@ -480,10 +480,12 @@ const BusinessErrorCodeMESSAGETOOLONG BusinessErrorCode = "MESSAGE_TOO_LONG"
 const BusinessErrorCodeMODERATIONREQUIRED BusinessErrorCode = "MODERATION_REQUIRED"
 const BusinessErrorCodeMUTED BusinessErrorCode = "MUTED"
 const BusinessErrorCodeNICKNAMECONFLICT BusinessErrorCode = "NICKNAME_CONFLICT"
+const BusinessErrorCodeNONCESTOREUNAVAILABLE BusinessErrorCode = "NONCE_STORE_UNAVAILABLE"
 const BusinessErrorCodeNOTGAMEPLAYER BusinessErrorCode = "NOT_GAME_PLAYER"
 const BusinessErrorCodeNOTROOMMEMBER BusinessErrorCode = "NOT_ROOM_MEMBER"
 const BusinessErrorCodeOBJECTNOTFOUND BusinessErrorCode = "OBJECT_NOT_FOUND"
 const BusinessErrorCodeOBJECTTYPEMISMATCH BusinessErrorCode = "OBJECT_TYPE_MISMATCH"
+const BusinessErrorCodeOUTPUTSCHEMANOTACTIVE BusinessErrorCode = "OUTPUT_SCHEMA_NOT_ACTIVE"
 const BusinessErrorCodeOUTPUTSCHEMANOTFOUND BusinessErrorCode = "OUTPUT_SCHEMA_NOT_FOUND"
 const BusinessErrorCodeOUTPUTSCHEMAVERSIONUNSUPPORTED BusinessErrorCode = "OUTPUT_SCHEMA_VERSION_UNSUPPORTED"
 const BusinessErrorCodePASSWORDINVALID BusinessErrorCode = "PASSWORD_INVALID"
@@ -496,6 +498,7 @@ const BusinessErrorCodePUBLISHBLOCKED BusinessErrorCode = "PUBLISH_BLOCKED"
 const BusinessErrorCodeRATELIMITED BusinessErrorCode = "RATE_LIMITED"
 const BusinessErrorCodeREQUESTREPLAYED BusinessErrorCode = "REQUEST_REPLAYED"
 const BusinessErrorCodeREQUESTSIGNATUREINVALID BusinessErrorCode = "REQUEST_SIGNATURE_INVALID"
+const BusinessErrorCodeREQUESTSIGNATUREVERSIONUNSUPPORTED BusinessErrorCode = "REQUEST_SIGNATURE_VERSION_UNSUPPORTED"
 const BusinessErrorCodeREQUESTTIMESTAMPINVALID BusinessErrorCode = "REQUEST_TIMESTAMP_INVALID"
 const BusinessErrorCodeROOMCLOSED BusinessErrorCode = "ROOM_CLOSED"
 const BusinessErrorCodeROOMFULL BusinessErrorCode = "ROOM_FULL"
@@ -505,6 +508,13 @@ const BusinessErrorCodeRUNNOTFOUND BusinessErrorCode = "RUN_NOT_FOUND"
 const BusinessErrorCodeSCRIPTNOTFOUND BusinessErrorCode = "SCRIPT_NOT_FOUND"
 const BusinessErrorCodeSEARCHQUOTAEXHAUSTED BusinessErrorCode = "SEARCH_QUOTA_EXHAUSTED"
 const BusinessErrorCodeSENSITIVECONTEXTBLOCKED BusinessErrorCode = "SENSITIVE_CONTEXT_BLOCKED"
+const BusinessErrorCodeSERVICEKEYINVALID BusinessErrorCode = "SERVICE_KEY_INVALID"
+const BusinessErrorCodeSERVICEKEYUNAVAILABLE BusinessErrorCode = "SERVICE_KEY_UNAVAILABLE"
+const BusinessErrorCodeSERVICERESOURCEDENIED BusinessErrorCode = "SERVICE_RESOURCE_DENIED"
+const BusinessErrorCodeSERVICESCOPEDENIED BusinessErrorCode = "SERVICE_SCOPE_DENIED"
+const BusinessErrorCodeSERVICESCOPEINVALID BusinessErrorCode = "SERVICE_SCOPE_INVALID"
+const BusinessErrorCodeSERVICETENANTDENIED BusinessErrorCode = "SERVICE_TENANT_DENIED"
+const BusinessErrorCodeSERVICETENANTINVALID BusinessErrorCode = "SERVICE_TENANT_INVALID"
 const BusinessErrorCodeSERVICEUNAVAILABLE BusinessErrorCode = "SERVICE_UNAVAILABLE"
 const BusinessErrorCodeSESSIONREVOKED BusinessErrorCode = "SESSION_REVOKED"
 const BusinessErrorCodeSTATEVERSIONCONFLICT BusinessErrorCode = "STATE_VERSION_CONFLICT"
@@ -784,6 +794,18 @@ type DeleteScriptRequest struct {
 
 	// RowVersion corresponds to the JSON schema field "row_version".
 	RowVersion int `json:"row_version"`
+}
+
+// Strict output contract for the generic Agent Runtime demo task.
+type DemoAgentOutput struct {
+	// Answer corresponds to the JSON schema field "answer".
+	Answer string `json:"answer"`
+
+	// Confidence corresponds to the JSON schema field "confidence".
+	Confidence float64 `json:"confidence"`
+
+	// UsedTool corresponds to the JSON schema field "used_tool".
+	UsedTool bool `json:"used_tool"`
 }
 
 type Ending struct {

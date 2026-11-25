@@ -1,16 +1,17 @@
 # AI Runtime Schema Inventory
 
 > 日期：2026-11-23
-> 状态：Audit
+> 状态：APPROVED / IMPLEMENTED / VERIFIED（DQ-18）
 > 正式 Schema 源：`packages/contracts/json-schema/mysteryverse.schema.json`
+> Registry：`packages/contracts/registry/schema-registry.json`
 
 ## 1. 分类清单
 
 | 类别 | 当前 Schema / 类型 | 当前位置 | 状态 | 正式 Contracts 建议 |
 | --- | --- | --- | --- | --- |
-| Agent 同步请求/响应 | `AgentRequest`、`AgentResponse` | `packages/contracts` | Proposed | 纳入 |
+| Agent 同步请求/响应 | `AgentRequest`、`AgentResponse` | `packages/contracts` | Mixed / 部分受 ADR 阻塞 | 纳入 Registry；字段能力按 ADR 状态使用 |
 | Agent Context | `AgentExecutionContext`、`AgentContextMessage`、`PlayerContext` | `packages/contracts` | Proposed | 纳入，受 ADR-008 门禁 |
-| Agent 输出身份/校验 | `output_schema_key/version`、`AgentOutputValidationIssue` | `packages/contracts` | Proposed | 纳入 |
+| Agent 输出身份/校验 | `output_schema_key/version`、`AgentOutputValidationIssue`、`DemoAgentOutput` | `packages/contracts` | DQ-18 Approved | 纳入；Demo 绑定 Active |
 | Agent Trace / Tool Call 摘要 | `AgentTraceStep`、`AgentToolCall`、`AgentExecutionStatus` | `packages/contracts` | Proposed | 纳入对外 Run 摘要 |
 | API/错误/分页 | `ApiSuccessResponse`、`ApiErrorResponse`、`BusinessErrorCode` | `packages/contracts` | Mixed | 纳入 |
 | Game/Room/AI 事件 | `GameEventType` 及事件 payload | `packages/contracts` | Proposed | 纳入，受 ADR-004 门禁 |
@@ -27,8 +28,8 @@
 | Checkpoint 引用 | `CheckpointReference` | `ai_service/agent_runtime/run_store.py` | Candidate Internal | 引用元数据可纳入；LangGraph State 不纳入 |
 | LangGraph 内部 State | `AgentGraphState` | `ai_service/agent_runtime/state.py` | Private Implementation | 不纳入 |
 | Agent 模型 action | `ModelAction` | `ai_service/agent_runtime/outputs.py` | Private Implementation | 不纳入 |
-| 输出 Schema Registry | `OutputSchemaRegistration` | `ai_service/agent_runtime/outputs.py` | Candidate Internal | 正式业务 Schema 定义进入 Contracts，注册代码内部 |
-| 内部认证 header/canonical | HMAC header 与签名规范 | `docs/api/ai-internal-api.md`；原型代码 | Candidate Protocol | 批准后作为内部 API versioned security profile |
+| 输出 Schema Registry | `SchemaRecord`、`RuntimeSchemaBinding`、`OutputSchemaRegistration` | Contracts Registry + Python Runtime | Approved / Implemented / Verified | Registry 为治理权威，Runtime 只绑定 Active schema |
+| 内部认证 header/canonical | HMAC header 与签名规范 | `docs/api/ai-internal-api.md`；security modules | DQ-19 Approved / Test-Verified | `mv-hmac-sha256-v1` internal security profile |
 | 持久化 DDL | `mv_ai.agent_*` 设计 | `DATABASE_DESIGN.md` | Designed/Not Migrated | DQ-21 批准后迁移 |
 
 ## 2. Contracts 纳入规则
@@ -54,7 +55,7 @@
 - Checkpoint 元数据：引用和摘要可进入；内容格式不进入。
 - 工具审计：共享字段进入 Contracts，Server 原始 payload 留在受限存储。
 
-## 3. Versioning Policy 候选
+## 3. Versioning Policy
 
 1. 跨服务 Schema 使用显式 `schema_version` 或 `SemVer`。
 2. 任务级输出使用 `schema_key + schema_version`，模型不能自选。
@@ -65,7 +66,7 @@
 7. 多版本并行运行只允许显式注册的兼容窗口，不允许无版本 fallback。
 8. 生成物漂移、三语言测试和 fixture 是合并门禁。
 
-## 4. Compatibility Policy 候选
+## 4. Compatibility Policy
 
 - 新增可选字段：兼容。
 - 删除/重命名、改变必填、语义或枚举含义：不兼容。
@@ -73,17 +74,20 @@
 - `additionalProperties=false` 用于安全 DTO；扩展走正式字段。
 - 旧 Run 无法解析时不自动降级到“忽略失败”，必须标记 `CHECKPOINT_UNAVAILABLE`。
 
-## 5. Active / Deprecation / Rollback 候选
+## 5. Active / Deprecation / Rollback
 
 - Active：每个 task_type 可有一个默认 key/version，但请求可显式选择 allowlist 版本。
 - Deprecation：保留兼容窗口并记录替代版本；新 Run 不再默认进入 deprecated。
 - Rollback：回滚只切换默认 active 指针，不删除旧 Schema/Run 引用。
 - Retired：只在无活跃 Run 且保留期结束后禁用新执行；历史审计按保留策略处理。
 
-## 6. Open Questions
+## 6. Resolved Questions
 
-- 业务 Schema 是否全部由 `packages/contracts` 生成 Python Registry。
-- 每个 Schema 的保留周期和跨版本重放窗口。
-- Go 是否允许省略 Schema 版本并使用 active 默认值。
-- Run/Checkpoint 引用 DTO 的正式 Contracts 字段。
-- MCP Tool Schema 是否需要统一 JSON Schema envelope。
+- 业务 Schema 全部由 `packages/contracts` 生成 Registry。
+- 被历史 Event/Run 引用的 Schema 在其引用生命周期内保留；Retired 仍只读。
+- 请求可显式选择 allowlist 版本；默认 Active 只能来自服务端 Registry。
+- Run/Checkpoint DTO 仍由 DQ-21 阻塞，不能由本 Registry 代批。
+- MCP Tool Schema 仍由 DQ-20 阻塞。
+
+完整兼容性、Replay 和生命周期规则见
+`docs/architecture/contracts-registry.md`。

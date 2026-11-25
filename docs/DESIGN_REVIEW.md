@@ -1493,17 +1493,19 @@ Runtime 不直接访问 Go 数据库、不返回权威状态补丁、不决定�
 
 | 编号 | 问题 | 当前处理 | 影响 |
 | --- | --- | --- | --- |
-| DQ-18 | AI DM、NPC、规则解释、剧本生成的任务级输出 Schema 与字段 ACL 尚未批准 | 已有 key/version Registry 与校验问题原型；正式业务 Schema 未注册 | 后续业务 Agent 不能在没有 Go 校验契约时接入 |
-| DQ-19 | 内部 AI 生产传输要求 mTLS/body hash/nonce | 已有 Token + 可选 HMAC/timestamp/nonce/轮换原型；mTLS 和正式 nonce 存储未实现 | 生产门禁未通过 |
+| DQ-18 | AI DM、NPC、规则解释、剧本生成的具体业务 Schema 与字段 ACL 尚未批准 | Registry/兼容性/Active Demo 绑定已批准并验证；业务 Schema 仍逐项待批 | 业务 Agent 不能在没有 Go 校验契约时接入 |
+| DQ-19 | 真实 CA、KMS、Redis 多实例和生产 mTLS 部署 | HMAC/Key ID/nonce/ACL/审计/TLS 基础已批准并通过测试级验证；生产基础设施未部署 | 生产门禁仍未通过，测试通过不等于生产验证 |
 | DQ-20 | MCP Server 信任模型、工具发现、权限映射和审计尚未批准 | 仅保留 `ToolSpec.mcp_server` 与 `ToolSource` 扩展边界 | 不接真实 MCP Server，不支持任意远程工具发现 |
 | DQ-21 | LangGraph Checkpoint/恢复与 `mv_ai` Run/Step 持久化尚未批准或实现 | 有进程内 Run/CheckpointReference 元数据原型；无正式持久化 | Pod 重启后无法恢复执行，也没有长期 AI 审计 |
 | DQ-22 | 真实供应商模型与数据使用政策未配置 | D3/D4 默认阻断；Provider 已实现 MockTransport 测试；未声称远程调用通过 | 上线前需要供应商合同、密钥、配额、数据驻留与内容策略 |
 
 ### 13.3 建议
 
-1. 负责人先确认 AgentRequest/Response Proposed 扩展、任务级输出 Schema 和工具权限矩阵。
+1. 负责人继续确认 AgentRequest/Response 中受 ADR-008 约束的字段、具体业务输出
+   Schema 和 DQ-20 工具权限矩阵。
 2. 在 AI DM/NPC 接入前，Go 必须提供已裁剪 `AgentRequest.context`，并对结构化输出做第二道权限和规则检查。
-3. 生产接入前完成 mTLS/请求签名、`mv_ai` trace 持久化、LangGraph checkpoint、熔断和预算。
+3. 生产接入前部署真实 CA/KMS/Redis 多实例并完成 `mv_ai` trace 持久化、
+   LangGraph checkpoint、熔断和预算验证。
 4. MCP 只在工具来源、权限、结果 Schema 和审计冻结后接入。
 
 ### 13.4 Task 9 安全加固进展
@@ -1522,25 +1524,31 @@ Task 9 在不批准 DQ/ADR 的前提下补充了可验证原型：
 
 ---
 
-## 14. Task 11 批准状态复核
+## 14. Task 11 批准与实施记录
 
-Task 11 要求 DQ-18/DQ-19 批准后实施正式 Contracts Registry 与 mTLS/HMAC
-安全体系。仓库实际决策记录仍为 `PROPOSED`，因此正式协议冻结与不可逆安全实现
-保持 `BLOCKED`。
+负责人于 2026-11-25 在明确要求 DQ-18/DQ-19 批准后回复“开始执行吧”。本次授权
+仅覆盖 DQ-18/DQ-19 候选推荐范围，不包含 DQ-20 至 DQ-22 或 Proposed ADR。
 
-已确认可继续的安全基线：
+DQ-18 已落地：
 
-- 版本化 Demo Schema Registry 和非法输出拒绝。
-- 可选 HMAC/timestamp/nonce、防重放和双密钥轮换。
-- D3/D4 Context 默认阻断。
-- 本地 Tool trust、确认和结果上限。
-- 进程内 Run 元数据原型。
+- `packages/contracts` 唯一权威源和 142 定义 Registry。
+- SemVer、Active Version、追加式版本历史、兼容性基线和漂移检查。
+- `DemoAgentOutput@1` 正式 Active 绑定；业务 Agent Schema 仍需逐项批准。
+- Replay、Deprecation、Retirement 与保留策略。
 
-仍需负责人批准的能力：
+DQ-19 已落地：
 
-- Schema Contract 纳入、版本保留、active 和 replay 政策。
-- mTLS、证书、KMS、Key ID、共享 nonce、ACL 和正式 canonical 协议。
-- 外部 MCP、持久 Checkpoint、真实 Provider 数据政策。
+- mTLS + HMAC `mv-hmac-sha256-v1` 内部安全 profile。
+- Key ID、Active/Previous、撤销、Key Provider/KMS 抽象。
+- 内存/Redis Nonce Store、原子消费和 Store 故障 fail-closed。
+- operation/resource/tenant scope ACL 和安全审计。
+- FastAPI TLS 配置和 Go 客户端双向证书握手测试。
+
+生产未验证项：
+
+- 真实 CA 签发/吊销、真实 KMS 和 Redis 多实例部署。
+- 生产 mTLS 端到端、证书过期告警和密钥自动轮换。
+- 外部 MCP、持久 Checkpoint、真实 Provider 数据政策和正式业务 Schema。
 
 阻塞审计见
 [`task-11-approval-blockers.md`](./architecture/task-11-approval-blockers.md)。

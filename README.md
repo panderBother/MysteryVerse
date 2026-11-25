@@ -7,8 +7,10 @@
 > AI 叙事、推理与内容工作流，浏览器只消费服务端投影。
 
 当前仓库已包含 Monorepo 工程、用户认证、等待房 REST、Go 游戏核心引擎、剧本
-内容管理、跨语言 Contracts 和 Python Agent Runtime 安全基线。AI DM、
-NPC 完整玩法、外部 MCP 与生产级 Run/Checkpoint 仍在决策门禁后。
+内容管理、版本化跨语言 Contracts Registry 和 Python Agent Runtime 安全基础。
+DQ-18/DQ-19 的 Registry、HMAC、Key ID、ACL、审计和 TLS 客户端已落地并通过
+测试级验证；真实 CA/KMS/Redis 多实例仍待部署。AI DM、NPC 完整玩法、外部
+MCP 与生产级 Run/Checkpoint 仍在决策门禁后。
 
 ## 技术栈
 

@@ -261,10 +261,20 @@ export type BusinessErrorCode =
   | "INTERNAL_ERROR"
   | "SERVICE_UNAVAILABLE"
   | "OUTPUT_SCHEMA_NOT_FOUND"
+  | "OUTPUT_SCHEMA_NOT_ACTIVE"
   | "OUTPUT_SCHEMA_VERSION_UNSUPPORTED"
+  | "REQUEST_SIGNATURE_VERSION_UNSUPPORTED"
   | "REQUEST_SIGNATURE_INVALID"
   | "REQUEST_TIMESTAMP_INVALID"
   | "REQUEST_REPLAYED"
+  | "SERVICE_KEY_INVALID"
+  | "SERVICE_KEY_UNAVAILABLE"
+  | "NONCE_STORE_UNAVAILABLE"
+  | "SERVICE_SCOPE_INVALID"
+  | "SERVICE_SCOPE_DENIED"
+  | "SERVICE_RESOURCE_DENIED"
+  | "SERVICE_TENANT_INVALID"
+  | "SERVICE_TENANT_DENIED"
   | "TOOL_TRUST_BLOCKED"
   | "TOOL_CONFIRMATION_REQUIRED"
   | "SENSITIVE_CONTEXT_BLOCKED"
@@ -725,6 +735,17 @@ export interface AgentOutput {
   intent?: Metadata | null;
   referenced_event_ids: EventID[];
   visibility: VisibilityScope;
+}
+/**
+ * Strict output contract for the generic Agent Runtime demo task.
+ *
+ * This interface was referenced by `MysteryVerseContracts`'s JSON-Schema
+ * via the `definition` "DemoAgentOutput".
+ */
+export interface DemoAgentOutput {
+  answer: string;
+  confidence: number;
+  used_tool: boolean;
 }
 /**
  * This interface was referenced by `MysteryVerseContracts`'s JSON-Schema

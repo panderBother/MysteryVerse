@@ -103,8 +103,8 @@
 
 | 决策 | 当前记录状态 | 可继续执行 | 不得执行 |
 | --- | --- | --- | --- |
-| DQ-18 | PROPOSED；Schema Registry 原型 IMPLEMENTED/VERIFIED | Demo Schema、兼容性工具、安全校验 | 冻结 AI DM/NPC 正式业务 Schema |
-| DQ-19 | PROPOSED；HMAC 原型 IMPLEMENTED/VERIFIED；mTLS BLOCKED | 开发/测试签名、篡改和重放测试 | 生产认证协议、多实例 nonce 正式实现 |
+| DQ-18 | APPROVED；正式 Registry IMPLEMENTED/VERIFIED | Contracts Registry、兼容/Replay 策略、Active Demo Schema | 未经逐项批准冻结 AI DM/NPC 业务 Schema |
+| DQ-19 | APPROVED；安全基础 IMPLEMENTED/TEST-VERIFIED；生产基础设施 NOT VERIFIED | HMAC、Key ID、nonce、ACL、审计、TLS 客户端测试 | 真实 CA/KMS/Redis 多实例生产验证 |
 | DQ-20 | PROPOSED；本地工具 trust 原型 IMPLEMENTED；外部 MCP BLOCKED | 本地白名单工具和拒绝策略 | 接入真实 MCP、开放 egress |
 | DQ-21 | PROPOSED；内存 Run 原型 IMPLEMENTED/VERIFIED；持久化 BLOCKED | 生命周期测试和文档设计 | 创建正式 `mv_ai` 迁移、声称可恢复 |
 | DQ-22 | PROPOSED；Mock/兼容 HTTP Provider IMPLEMENTED；真实供应商 BLOCKED | Mock、低敏测试、配置校验 | 真实数据外发、自动 fallback、生产 SLA 声明 |
@@ -114,12 +114,21 @@ GATE-AI 逐项状态见 `docs/architecture/gate-ai-checklist.md`。
 
 ### 1.3 Task 11 批准后实施门禁
 
-- **状态**：`BLOCKED`
-- **阻塞项**：DQ-18、DQ-19 在仓库中仍为 `PROPOSED`，没有负责人批准记录。
-- **允许**：审计、独立安全测试、已有 HMAC/Schema/Tool 原型验证、文档记录。
-- **禁止**：正式 Schema 冻结、mTLS/KMS/共享 nonce/ACL 实施、数据库迁移、外部 MCP、真实 Provider。
-- **证据**：`docs/architecture/task-11-approval-blockers.md`
-- **解除条件**：负责人明确批准 DQ-18/DQ-19，并更新 Decision Baseline、相应 DQ 记录和验收范围。
+- **状态**：`DONE`
+- **批准证据**：负责人于 2026-11-25 在要求批准后回复“开始执行吧”；仅批准
+  DQ-18/DQ-19 候选推荐范围。
+- **实际变更**：正式 Contracts Registry、兼容性基线、Active Demo Schema；
+  HMAC `mv-hmac-sha256-v1`、Key ID、Key Provider、共享 Nonce Store、scope ACL、
+  安全审计、FastAPI TLS 配置和 Go mTLS Client。
+- **测试命令**：`./scripts/mv.ps1 check`、`./scripts/contracts.ps1 check`。
+- **测试结果**：`./scripts/mv.ps1 check` 全量通过；Contracts 142 定义、
+  TypeScript 契约测试 27 项、Web 测试 29 项、Python 测试 48 项，Go/Lint/
+  mypy/构建通过。详见 `docs/architecture/task-11-report.md`。
+- **验收证据**：`packages/contracts/registry/schema-registry.json`、
+  `docs/architecture/contracts-registry.md`、
+  `docs/architecture/gate-ai-checklist.md`。
+- **剩余风险**：真实 CA、KMS、Redis 多实例和生产 mTLS 部署为 `NOT VERIFIED`；
+  DQ-20 至 DQ-22、ADR-001/004/005/008 仍为 Proposed。
 
 可以先行：
 
@@ -832,6 +841,7 @@ GATE-AI 逐项状态见 `docs/architecture/gate-ai-checklist.md`。
 - **并行执行条件**：可与 P1-PY-003 并行。
 - **当前进展（2026-11-23 Task 8）**：Demo Agent 输出经过 Pydantic 严格校验，非法模型 action 和非法结构化结果会转为稳定失败响应；尚未实现全局 Schema Registry、自动修复 Prompt 和工作流级锁定字段。
 - **当前进展（2026-11-23 Task 9）**：已实现 `task_type + schema key + version` Registry 原型，Go 显式指定 Schema，模型不能选择；未知字段/枚举/范围/嵌套错误会返回 failed 和 `validation_errors`。正式业务 Schema 仍待 DQ-18。
+- **当前进展（2026-11-25 Task 11）**：DQ-18 已批准，正式 Registry 覆盖 142 个定义，并生成兼容性基线、Active Demo 绑定和 Python Runtime Registry；其他业务 Schema 仍须逐项批准。
 
 ### P1-PY-003：实现 Prompt 版本注册、加载与回归绑定
 
@@ -1393,6 +1403,7 @@ GATE-AI 逐项状态见 `docs/architecture/gate-ai-checklist.md`。
 - **并行执行条件**：必须在 Python 接口和 Schema 稳定后。
 - **当前进展（2026-11-23 Task 8）**：已实现最小 Go InternalAIClient，透传 Service ID/Token、request/trace/idempotency，支持 deadline、有限重试、严格 JSON 解码和 Agent 响应状态校验；已通过真实 Python 进程端到端测试。mTLS、body hash/nonce、熔断和 SSE 转发仍未完成。
 - **当前进展（2026-11-23 Task 9）**：Go Client 新增可选 HMAC body/path/query 签名、timestamp/nonce 和客户端单测；Python 侧完成篡改、过期、重放和双密钥轮换原型测试，并完成签名模式真实跨进程调用。mTLS、多实例 nonce 和服务 ACL 仍待 DQ-19。
+- **当前进展（2026-11-25 Task 11）**：DQ-19 已批准，Go Client 使用 `mv-hmac-sha256-v1`、Key ID、Service/Resource/Tenant scope，并完成真实 TLS 双向证书握手测试；Python 服务提供 Key Provider、Shared Nonce Store、ACL、审计和 TLS 配置。真实 CA/KMS/Redis 部署仍为 `NOT VERIFIED`。
 
 ### P2-GO-003：实现任务查询与 SSE 进度订阅
 

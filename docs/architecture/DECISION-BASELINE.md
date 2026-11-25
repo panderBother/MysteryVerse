@@ -1,7 +1,7 @@
 # MysteryVerse 技术决策基线
 
 > 状态：Conditional Baseline
-> 复核日期：2026-11-21
+> 复核日期：2026-11-25
 > 任务：Task 1 设计审查问题收敛与开发基线冻结
 > 批准规则：只有 `Accepted` 决策可作为强制实现依据；`Proposed` 必须等待负责人确认。
 
@@ -127,10 +127,13 @@ schema_version, game_id?, timestamp, payload
 
 AI Runtime 新未决项：
 
+批准证据：负责人于 2026-11-25 在明确要求 DQ-18/DQ-19 批准后回复“开始执行吧”。
+该授权只覆盖 Registry 与内部服务安全基础，不延伸到 DQ-20 至 DQ-22。
+
 | 编号 | 未决决策 | 当前状态 | 影响 |
 | --- | --- | --- | --- |
-| DQ-18 | 任务级输出 Schema 与正式版本治理 | Proposed | AI DM/NPC/业务 Agent 输出 |
-| DQ-19 | mTLS、请求签名、nonce 存储和密钥轮换 | Proposed | Go/Python 生产认证 |
+| DQ-18 | 任务级输出 Schema 与正式版本治理 | Approved / Implemented / Verified | 正式 Registry、兼容性、Active 与 Runtime 输出绑定已落地 |
+| DQ-19 | mTLS、请求签名、nonce 存储和密钥轮换 | Approved / Implemented / Test-Verified；生产基础设施 Not Verified | Go/Python 内部通信基础已落地；真实 CA/KMS/Redis 多实例待部署验证 |
 | DQ-20 | MCP Server 信任、工具发现和审计 | Proposed | 外部工具接入 |
 | DQ-21 | Run/Checkpoint 存储、恢复与保留 | Proposed | 长任务恢复和生产可靠性 |
 | DQ-22 | 真实供应商、数据边界、预算和降级政策 | Proposed | 真实模型上线 |
@@ -141,6 +144,8 @@ AI Runtime 新未决项：
 - `docs/architecture/ai-runtime-schema-inventory.md`
 - `docs/architecture/gate-ai-checklist.md`
 - `docs/architecture/task-11-approval-blockers.md`
+- `docs/architecture/contracts-registry.md`
+- `docs/architecture/task-11-report.md`
 
 ## 6. 当前可执行与不可执行范围
 
@@ -148,7 +153,8 @@ AI Runtime 新未决项：
 
 - `P0-INF-001` Monorepo 与工程目录。
 - 26 字符 ULID、PRD 路径和 P1 异步增强相关基础设施约束。
-- 非实时、非版本语义的 Schema 生成流水线骨架。
+- DQ-18 正式 Schema Registry、兼容性检查、Active 绑定和生成流水线。
+- DQ-19 已实现的 HMAC、Key ID、nonce 抽象、ACL scope、审计与 TLS 客户端配置。
 - Go/Python/Frontend 基础平台的接口抽象，但不得冻结 Proposed 契约。
 
 必须等待负责人确认：
@@ -160,6 +166,7 @@ AI Runtime 新未决项：
 - 运营后台公开 MVP 范围。
 - PlayerContext 临时重建方案。
 - Memory 权威写入细节。
+- DQ-20 至 DQ-22 对应外部 MCP、Run/Checkpoint 和真实 Provider 能力。
 
 ## 7. 批准后的文档动作
 
@@ -173,7 +180,8 @@ AI Runtime 新未决项：
 
 ## 8. 结论
 
-Task 1 已形成条件开发基线：3 项 Accepted、7 项 Proposed、0 项 Deferred。
+Task 11 后形成新的条件开发基线：ADR 仍为 3 项 Accepted、7 项 Proposed；
+DQ-18/DQ-19 已批准并完成测试级实现验证，DQ-20 至 DQ-22 仍为 Proposed。
 核心闭环的实现方向已清晰，但在 7 项 Proposed 获得负责人确认前，不得将当前候选
 方案当作正式冻结契约，也不得开始依赖这些契约的跨服务或实时联调。
 

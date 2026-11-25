@@ -336,10 +336,20 @@
         "INTERNAL_ERROR",
         "SERVICE_UNAVAILABLE",
         "OUTPUT_SCHEMA_NOT_FOUND",
+        "OUTPUT_SCHEMA_NOT_ACTIVE",
         "OUTPUT_SCHEMA_VERSION_UNSUPPORTED",
+        "REQUEST_SIGNATURE_VERSION_UNSUPPORTED",
         "REQUEST_SIGNATURE_INVALID",
         "REQUEST_TIMESTAMP_INVALID",
         "REQUEST_REPLAYED",
+        "SERVICE_KEY_INVALID",
+        "SERVICE_KEY_UNAVAILABLE",
+        "NONCE_STORE_UNAVAILABLE",
+        "SERVICE_SCOPE_INVALID",
+        "SERVICE_SCOPE_DENIED",
+        "SERVICE_RESOURCE_DENIED",
+        "SERVICE_TENANT_INVALID",
+        "SERVICE_TENANT_DENIED",
         "TOOL_TRUST_BLOCKED",
         "TOOL_CONFIRMATION_REQUIRED",
         "SENSITIVE_CONTEXT_BLOCKED",
@@ -1577,6 +1587,34 @@
         "speech",
         "referenced_event_ids",
         "visibility"
+      ]
+    },
+    "DemoAgentOutput": {
+      "title": "DemoAgentOutput",
+      "description": "Strict output contract for the generic Agent Runtime demo task.",
+      "type": "object",
+      "additionalProperties": false,
+      "x-contract-status": "accepted",
+      "x-decision": "DQ-18",
+      "x-schema-owner": "ai-runtime",
+      "properties": {
+        "answer": {
+          "type": "string",
+          "minLength": 1
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "used_tool": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "answer",
+        "confidence",
+        "used_tool"
       ]
     },
     "AgentResponse": {

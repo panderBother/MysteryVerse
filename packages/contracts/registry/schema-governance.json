@@ -1,0 +1,78 @@
+{
+  "registry_version": "1.0.0",
+  "generated_at": "2026-11-25T00:00:00Z",
+  "source": "json-schema/mysteryverse.schema.json",
+  "version_policy": {
+    "format": "semver",
+    "initial_version": "1.0.0",
+    "breaking_change": "major",
+    "additive_compatible_change": "minor",
+    "governance_only_change": "patch",
+    "history": "append-only"
+  },
+  "active_policy": {
+    "max_active_versions_per_schema": 1,
+    "selection": "server_explicit_or_registered_default",
+    "client_or_model_default_forbidden": true,
+    "rollback": "switch_default_pointer_without_deleting_history",
+    "environment_override": "forbidden_until_separately_approved"
+  },
+  "lifecycle_policy": {
+    "states": [
+      "draft",
+      "experimental",
+      "active",
+      "deprecated",
+      "retired"
+    ],
+    "delete_policy": "never_delete_while_referenced",
+    "event_retention": "retain_for_lifetime_of_referencing_events",
+    "run_retention": "retain_for_lifetime_of_run_audit_retention",
+    "retired_read_access": "allowed_for_historical_replay_and_audit"
+  },
+  "replay_policy": {
+    "version_source": "explicit_registry_key_and_version",
+    "missing_version": "fail_closed",
+    "unknown_version": "fail_closed",
+    "migration": "explicit_reader_migration_only",
+    "game_event_freeze": "blocked_by_ADR-004",
+    "memory_freeze": "blocked_by_ADR-001",
+    "websocket_freeze": "blocked_by_ADR-002"
+  },
+  "default_compatibility": "backward",
+  "experimental_compatibility": "none",
+  "classification_rules": [
+    {
+      "schema_type": "runtime",
+      "patterns": [
+        "Agent*",
+        "AIError",
+        "DemoAgentOutput",
+        "RunID",
+        "StepType",
+        "Status"
+      ]
+    },
+    {
+      "schema_type": "internal",
+      "patterns": [
+        "MemoryCandidate",
+        "PlayerContext",
+        "ScriptGeneration*",
+        "WebSocketEnvelope"
+      ]
+    },
+    {
+      "schema_type": "persistence",
+      "patterns": []
+    }
+  ],
+  "runtime_bindings": {
+    "demo_result": {
+      "task_type": "demo",
+      "definition": "DemoAgentOutput",
+      "schema_version": 1,
+      "status": "active"
+    }
+  }
+}

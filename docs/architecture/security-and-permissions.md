@@ -1,6 +1,7 @@
 # 安全与权限
 
-> 状态：Candidate Baseline，依赖 Proposed ADR
+> 状态：DQ-19 安全基础 APPROVED / IMPLEMENTED / TEST-VERIFIED；生产基础设施
+> NOT VERIFIED。其他权限细节仍依赖 Proposed ADR。
 > 依据：ADR-001、ADR-002、ADR-004、ADR-006、ADR-007、ADR-008
 
 ## 1. 数据分级
@@ -100,22 +101,25 @@ Session
 - 旧 Session/ticket 失效。
 - 后台敏感访问和审计。
 
-## 10. Agent Runtime 服务身份候选
+## 10. Agent Runtime 服务身份与请求安全
 
-Task 9/10 已实现但未批准的安全原型：
+Task 11 后正式内部安全基础：
 
 - Service ID + 短期 Service Token 作为开发基础认证。
-- 可选 HMAC-SHA256 请求签名，覆盖 timestamp、nonce、service ID、method、
-  path、query 和 body hash。
-- 时间窗口、nonce 防重放和 primary/previous 密钥轮换。
+- HMAC-SHA256 `mv-hmac-sha256-v1`，覆盖 signature version、Key ID、timestamp、
+  nonce、Service ID、method、path、query 和 body hash。
+- Key ID、Active/Previous 轮换、撤销、Key Provider/KMS 抽象。
+- nonce 通过可替换 Store 原子消费；生产配置要求 Redis，Store 故障 fail-closed。
+- operation/resource/tenant scope ACL，按认证后的 Service Identity 授权。
+- 结构化安全审计，不记录 token、签名密钥或业务正文。
+- mTLS 服务端配置和 Go 客户端证书链校验；本地/测试允许显式关闭。
 - D3/D4 Context 默认不发送模型。
 - 外部 MCP 和 external network 工具默认拒绝。
 
-生产候选为 mTLS + HMAC，但证书、KMS、nonce 共享存储、key ID、
-service ACL 和跨租户隔离仍待 DQ-19 批准。详细威胁模型与 ACL 影响见
-`docs/architecture/dq-18-22-ai-runtime-design.md`。
+DQ-19 已批准生产目标为 mTLS + HMAC。真实 CA/KMS/Redis 多实例尚未部署，生产
+能力仍标记 `NOT VERIFIED`。详细威胁模型见
+`docs/architecture/dq-18-22-ai-runtime-design.md`，内部协议见
+`docs/api/ai-internal-api.md`。
 
-Task 11 再次确认 DQ-19 仍为 `PROPOSED`，因此没有实施正式 mTLS、KMS、
-共享 nonce 或 ACL 策略。阻塞与批准所需输入见
-`docs/architecture/task-11-approval-blockers.md`。
+批准证据和实施边界见 `docs/architecture/task-11-approval-blockers.md`。
 

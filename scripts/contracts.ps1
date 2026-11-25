@@ -11,7 +11,11 @@ $GeneratedPaths = @(
     "apps/web/src/generated/contracts.ts",
     "backend/internal/contracts/contracts_gen.go",
     "ai_service/src/mysteryverse_ai/schemas/generated/models.py",
-    "packages/contracts/compatibility/schema-fingerprint.json"
+    "ai_service/src/mysteryverse_ai/schemas/generated/active_output_schemas.py",
+    "ai_service/src/mysteryverse_ai/schemas/generated/schema-registry.json",
+    "packages/contracts/compatibility/schema-fingerprint.json",
+    "packages/contracts/compatibility/schema-baseline-v1.json",
+    "packages/contracts/registry/schema-registry.json"
 )
 
 function Invoke-Generate {
@@ -55,7 +59,7 @@ function Invoke-ContractTests {
 
     Push-Location $Root
     try {
-        & uv run --project ai_service pytest ai_service/tests/test_contracts.py
+        & uv run --project ai_service pytest packages/contracts/tests ai_service/tests/test_contracts.py
         if ($LASTEXITCODE -ne 0) {
             throw "Python contract tests failed"
         }

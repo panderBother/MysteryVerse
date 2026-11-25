@@ -2,20 +2,23 @@
 
 > 状态：Candidate Design
 > 日期：2026-11-23
-> 批准状态：全部未批准。本文件不是 Accepted ADR，也不是 GATE-AI 通过证明。
-> Task 11 复核（2026-11-25）：DQ-18/DQ-19 仍为 Proposed，正式实施继续 BLOCKED。
+> 批准状态：DQ-18/DQ-19 已批准并实施；DQ-20 至 DQ-22 仍未批准。
+> 本文件不是 GATE-AI 通过证明。
+> Task 11 更新（2026-11-25）：负责人授权“开始执行”后，DQ-18/DQ-19 按候选推荐
+> 范围进入 APPROVED / IMPLEMENTED；生产基础设施按实际证据标记 NOT VERIFIED。
 
 ## 决策记录摘要
 
 | ID | 状态 | 安全影响 | 兼容性 | 实施成本 | 依赖 | 验收标准 |
 | --- | --- | --- | --- | --- | --- | --- |
-| DQ-18 | PROPOSED；prototype IMPLEMENTED/VERIFIED；未 APPROVED | 防止任意 JSON 成为可信结果，字段 ACL 尚未冻结 | 新增 key/version 为兼容扩展；正式业务 Schema 未冻结 | 中：Contracts 生成、Registry、回归 fixture | DQ-08～DQ-12、ADR-004、ADR-008、DQ-22 | 三端生成、版本选择、非法输出拒绝、历史兼容测试 |
-| DQ-19 | PROPOSED；HMAC prototype IMPLEMENTED/VERIFIED；mTLS BLOCKED | 防伪造、篡改、重放和跨服务越权；生产信任链未建立 | Internal API header profile 需版本化，当前 Token-only 仍兼容 | 高：证书、KMS、nonce 存储、ACL、轮换 | ADR-007 权限、DQ-21 共享存储、DQ-22 部署区域 | mTLS+HMAC 失败、重放、轮换、多实例、ACL 测试 |
+| DQ-18 | APPROVED / IMPLEMENTED / VERIFIED | 防止任意 JSON 成为可信结果；业务 Schema 仍需逐项批准 | 正式 Registry、兼容基线和 Active 输出绑定已落地 | 中：Contracts 生成、Registry、回归 fixture | DQ-08～DQ-12、ADR-004、ADR-008、DQ-22 | 三端生成、版本选择、非法输出拒绝、历史兼容测试 |
+| DQ-19 | APPROVED / IMPLEMENTED / TEST-VERIFIED；生产基础设施 NOT VERIFIED | 防伪造、篡改、重放和跨服务越权 | Internal API 安全 profile v1 已版本化 | 高：真实证书、KMS、Redis、ACL、轮换 | DQ-21 共享存储、DQ-22 部署区域 | mTLS+HMAC 失败、重放、轮换、ACL 测试 |
 | DQ-20 | PROPOSED；本地 trust 原型 IMPLEMENTED；外部 MCP BLOCKED | 阻断 SSRF、恶意工具、注入结果和高风险副作用 | MCP 未启用，不影响现有 API；未来需新 Tool Schema | 高：MCP client、egress、身份、审计、人工确认 | DQ-19、DQ-22、ADR-001/008 | 信任等级、白名单、SSRF、注入、确认、审计测试 |
 | DQ-21 | PROPOSED；in-memory Run prototype IMPLEMENTED/VERIFIED；持久化 BLOCKED | 防重复执行、泄露、丢失更新和故障恢复失控 | Checkpoint 内部格式不进入公共协议；引用 DTO 待定 | 高：mv_ai、Redis/对象存储、lease、清理、恢复 | ADR-001/008、DQ-19、DQ-22 | 崩溃恢复、损坏、重复副作用、owner fencing、TTL 测试 |
 | DQ-22 | PROPOSED；Mock/兼容 HTTP adapter IMPLEMENTED；真实供应商 BLOCKED | 控制 D3/D4 外发、密钥、成本、区域和降级安全 | Provider 内部不变；正式模型政策影响 Prompt/Schema 兼容 | 中高：准入评审、预算、熔断、评测、合同 | DQ-15、DQ-18、DQ-19、DQ-20、DQ-21 | 白名单、区域、预算、D3/D4、降级、真实合同验证 |
 
-所有状态中的 `IMPLEMENTED`/`VERIFIED` 只描述安全机制原型，不代表决策 `APPROVED`。
+`VERIFIED` 只覆盖测试环境中的代码路径。真实 CA、KMS、Redis 多实例和生产部署
+仍必须标记 `NOT VERIFIED`。
 
 ## DQ-18：任务级输出 Schema
 
@@ -48,8 +51,9 @@ task_type 需要可追踪的 Schema 身份、版本、嵌套约束和拒绝证�
 
 ### 推荐
 
-采用方案 2 作为正式方向：`packages/contracts` 是唯一权威源，Python 生成注册表只
-绑定已批准 Schema key/version。本次保留代码注册原型验证机制，不冻结业务 Schema。
+方案 2 已获批准：`packages/contracts` 是唯一权威源，Registry 和 Python 运行时
+绑定由生成器产出。`DemoAgentOutput@1` 是当前唯一正式 Active 输出 Schema，
+AI DM/NPC 等业务 Schema 仍需逐项批准。
 
 ### 取舍
 
@@ -69,11 +73,15 @@ Demo 和安全机制验证。
 - 模型返回任意 JSON、未知 Schema 和非法版本。
 - Go/Python 对同一 Schema 版本一致。
 
-### 待确认
+### 已确认
 
 1. 是否将业务 Schema 全部纳入 `packages/contracts`。
 2. Schema 兼容规则是否要求旧版本永久保留。
 3. Go 请求是否必须显式指定版本，还是允许默认 active 版本。
+
+结论：业务 Schema 必须纳入唯一 Contracts 源；被历史事件/Run 引用的版本按保留
+策略长期保留；客户端可显式选择 allowlist 版本，默认值只能来自服务端 Registry，
+模型和客户端不能自造默认版本。
 
 ## DQ-19：服务间认证和请求完整性
 
@@ -113,15 +121,19 @@ Demo 和安全机制验证。
 
 ### 推荐
 
-生产候选为 mTLS + HMAC 请求签名同时使用。mTLS 证明服务实例身份，HMAC 绑定
+生产方案已批准为 mTLS + HMAC 请求签名同时使用。mTLS 证明服务实例身份，HMAC 绑定
 具体操作、body、时间和 nonce，防止已认证连接内的重放或日志外请求复用。
 
-### 待确认
+### 已确认
 
 1. 是否生产强制 mTLS + HMAC。
 2. 证书与签名密钥由何种 KMS/密钥系统管理。
 3. 是否还需 body hash header 或服务 ACL scope。
 4. previous key 的允许重叠时长。
+
+结论：生产强制 mTLS + HMAC；证书和密钥由外部 KMS/Secret Manager 管理；HMAC
+canonical 已包含 body hash；服务 ACL 使用 operation/resource/tenant scope；
+Previous Key 只用于轮换窗口，正式时长由密钥系统策略配置。
 
 ### 影响
 
@@ -308,7 +320,7 @@ flowchart LR
 ### Blocking Dependencies
 
 - DQ-15/ADR-008 未批准：不能冻结私密 Context/Checkpoint 数据边界。
-- DQ-19 未批准：不能接入生产 mTLS、ACL 或多实例 nonce。
+- DQ-19 基础已批准并实现；真实 CA/KMS/Redis 多实例尚未部署验证。
 - DQ-21 未批准：不能迁移 `mv_ai` Run/Checkpoint 正式结构。
 - DQ-22 未批准：不能接真实供应商或自动 fallback。
 - DQ-20 未批准：不能开放外部 MCP。
@@ -317,8 +329,8 @@ flowchart LR
 ### Non-blocking Dependencies
 
 - 本地 Mock Provider 和本地 Tool 可继续用于测试。
-- Token-only 开发认证可与 HMAC 原型并存，但生产不得视为完成。
-- 版本化 Demo Schema Registry 可独立演进为未来业务 Registry。
+- Token-only 开发认证可与正式 HMAC profile 并存，但生产不得视为完成。
+- 正式 Contracts Registry 已落地；新增业务 Schema 仍需逐项批准。
 - 进程内 Run 元数据原型可验证状态机与清理语义，但不承诺恢复。
 
 ### Recommended Decision Order

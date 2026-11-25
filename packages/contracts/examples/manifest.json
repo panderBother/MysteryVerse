@@ -53,6 +53,10 @@
       "definition": "AgentResponse"
     },
     {
+      "file": "demo-agent-output.json",
+      "definition": "DemoAgentOutput"
+    },
+    {
       "file": "script-generation-request.json",
       "definition": "ScriptGenerationRequest"
     },

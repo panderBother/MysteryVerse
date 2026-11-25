@@ -105,10 +105,12 @@
 - 推荐：Run 摘要长期保留，完整上下文短期加密保存，Checkpoint 按任务生命周期清理。
 - 阻塞：生产级异步工作流和长任务恢复。
 
-## OQ-015：内部请求签名最终规范
+## OQ-015：内部请求签名最终规范（已解决）
 
 - 问题：是否生产强制 mTLS + HMAC，签名 canonical 字段、nonce 存储、时钟偏差和密钥轮换周期如何冻结。
 - 影响：Go Client、Python 中间件、multitenancy nonce 存储、证书和 KMS。
-- 推荐：mTLS 证明服务实例身份，HMAC 绑定 method/path/query/body/timestamp/nonce；nonce 存共享 Redis/DB。
-- 阻塞：DQ-19 正式认证协议和生产部署。
+- 结论：DQ-19 已批准。生产目标为 mTLS + `mv-hmac-sha256-v1`；canonical 绑定
+  signature version、Key ID、timestamp、nonce、Service ID、method、path、query
+  和 body hash；生产 nonce 使用 Redis 原子消费。
+- 剩余：真实 CA、KMS、Redis 多实例和生产证书轮换仍为 `NOT VERIFIED`。
 

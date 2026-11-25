@@ -290,10 +290,20 @@ class BusinessErrorCode(StrEnum):
     internal_error = "INTERNAL_ERROR"
     service_unavailable = "SERVICE_UNAVAILABLE"
     output_schema_not_found = "OUTPUT_SCHEMA_NOT_FOUND"
+    output_schema_not_active = "OUTPUT_SCHEMA_NOT_ACTIVE"
     output_schema_version_unsupported = "OUTPUT_SCHEMA_VERSION_UNSUPPORTED"
+    request_signature_version_unsupported = "REQUEST_SIGNATURE_VERSION_UNSUPPORTED"
     request_signature_invalid = "REQUEST_SIGNATURE_INVALID"
     request_timestamp_invalid = "REQUEST_TIMESTAMP_INVALID"
     request_replayed = "REQUEST_REPLAYED"
+    service_key_invalid = "SERVICE_KEY_INVALID"
+    service_key_unavailable = "SERVICE_KEY_UNAVAILABLE"
+    nonce_store_unavailable = "NONCE_STORE_UNAVAILABLE"
+    service_scope_invalid = "SERVICE_SCOPE_INVALID"
+    service_scope_denied = "SERVICE_SCOPE_DENIED"
+    service_resource_denied = "SERVICE_RESOURCE_DENIED"
+    service_tenant_invalid = "SERVICE_TENANT_INVALID"
+    service_tenant_denied = "SERVICE_TENANT_DENIED"
     tool_trust_blocked = "TOOL_TRUST_BLOCKED"
     tool_confirmation_required = "TOOL_CONFIRMATION_REQUIRED"
     sensitive_context_blocked = "SENSITIVE_CONTEXT_BLOCKED"
@@ -702,6 +712,15 @@ class AgentOutput(BaseModel):
     intent: Metadata | None = None
     referenced_event_ids: list[EventID]
     visibility: VisibilityScope
+
+
+class DemoAgentOutput(BaseModel):
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    answer: Annotated[str, Field(min_length=1)]
+    confidence: Annotated[float, Field(ge=0.0, le=1.0)]
+    used_tool: bool
 
 
 class AgentOutputValidationIssue(BaseModel):

@@ -1,21 +1,63 @@
 # 内部 AI API
 
-> 状态：Candidate Baseline
+> 状态：DQ-19 内部安全基础 APPROVED / IMPLEMENTED / TEST-VERIFIED
 > 网络：不暴露公网
 > 依据：ADR-001、ADR-004、ADR-007、ADR-008、ADR-009
 
 ## 1. 认证与通用字段
 
-所有内部请求必须使用 mTLS 或短期服务 Token，并携带：
+生产内部请求必须同时使用 mTLS 与 HMAC-SHA256。开发/测试可使用显式配置的
+短期 Service Token，但不得把它当作完整生产认证。请求必须携带：
 
 - `X-Service-Id`
+- `X-Service-Token`
+- `X-Service-Scope`
+- `X-Service-Tenant`（有租户上下文时）
 - `X-Request-Id`
 - `X-Trace-Id`
 - `Idempotency-Key`
 - `run_id` 或 `job_id`
 - `schema_version`
 
-签名至少包含 body hash、timestamp 和 nonce，防止重放。请求体有大小限制。
+配置签名后还必须携带：
+
+```text
+X-Request-Signature-Version: mv-hmac-sha256-v1
+X-Service-Key-Id: <key-id>
+X-Request-Timestamp: <unix-seconds>
+X-Request-Nonce: <8-128 URL-safe characters>
+X-Request-Signature: <lowercase hex HMAC-SHA256>
+```
+
+Canonical 字符串按 UTF-8 和以下顺序以 `\n` 连接：
+
+```text
+signature_version
+key_id
+timestamp
+nonce
+service_id
+HTTP_METHOD
+request_path
+raw_query
+hex(sha256(request_body))
+```
+
+签名使用 Key ID 对应的密钥，并采用恒定时间比较。Timestamp 默认窗口 300 秒；
+Nonce 在至少双倍窗口内原子消费一次。Key ID 未知、撤销、KMS 不可用或 Nonce
+Store 不可用时均 fail-closed。
+
+Scope 格式为逗号分隔的 allowlist：
+
+```text
+ai:agent:run
+run:<run_id>
+tenant:<tenant_id>
+```
+
+认证成功不等于授权成功。服务必须同时匹配 operation scope、目标 resource scope
+以及适用的 tenant scope。客户端提交的 Tenant ID 只有在可信 Service Identity
+已经被认证、且 scope 中包含对应 `tenant:<id>` 时才生效。
 
 ## 2. 同步 AI 回合
 
@@ -68,22 +110,23 @@ POST /internal/v1/ai/agent-runs
   `max_output_tokens`。
 - `trace_id`。
 
-请求头必须包含 `X-Service-Id`、`X-Service-Token`、`X-Request-Id`、
-`X-Trace-Id` 和 `Idempotency-Key`。当前 MVP 使用短期服务 Token；mTLS、
-body hash/nonce 签名属于后续生产强化项。
+请求头必须包含 `X-Service-Id`、`X-Service-Token`、`X-Service-Scope`、
+`X-Request-Id`、`X-Trace-Id` 和 `Idempotency-Key`。当前 endpoint 要求
+`ai:agent:run` 与 `run:<run_id>`。
 
-Task 9 原型在配置签名密钥后额外要求：
+Task 11 正式安全 profile 在配置签名密钥后额外要求：
 
 ```text
+X-Request-Signature-Version
+X-Service-Key-Id
 X-Request-Timestamp
 X-Request-Nonce
 X-Request-Signature
 ```
 
-签名算法候选为 HMAC-SHA256，覆盖 timestamp、nonce、service_id、method、
-path、query 和 body SHA-256。默认时间窗口 300 秒，nonce 在窗口两倍时间内不可
-复用，并支持 primary/previous 密钥轮换。该协议尚未批准，静态服务 Token 不是
-完整生产身份认证。
+签名算法固定为 `mv-hmac-sha256-v1`。Key ID 支持 Active/Previous 轮换和撤销；
+开发环境使用环境变量 Key Provider，生产配置要求外部 KMS。多实例生产配置要求
+Redis nonce backend，Store 故障返回 `NONCE_STORE_UNAVAILABLE`，不会放行。
 
 响应返回 Contracts `AgentResponse`：
 
@@ -202,6 +245,13 @@ POST /internal/v1/ai/intents/submit
 | `PROVIDER_UNAVAILABLE` | 503 | 有界 |
 | `WORKFLOW_FAILED` | 502 | 有限 |
 | `DEPENDENCY_ERROR` | 503 | 有界 |
+| `REQUEST_REPLAYED` | 401 | 否 |
+| `SERVICE_KEY_INVALID` | 401 | 否 |
+| `SERVICE_KEY_UNAVAILABLE` | 503 | 有界 |
+| `NONCE_STORE_UNAVAILABLE` | 503 | 有界 |
+| `SERVICE_SCOPE_DENIED` | 403 | 否 |
+| `SERVICE_RESOURCE_DENIED` | 403 | 否 |
+| `SERVICE_TENANT_DENIED` | 403 | 否 |
 
 ## 8. 防环与预算
 
@@ -216,8 +266,14 @@ POST /internal/v1/ai/intents/submit
 - 内部 API 不出公网。
 - 服务 Token 受众/操作绑定。
 - 重放、body hash 和 nonce。
+- Key ID 撤销、双密钥轮换、KMS 和 Nonce Store 故障。
+- operation/resource/tenant scope、跨租户拒绝和审计脱敏。
+- mTLS 有效证书、缺失客户端证书和证书链错误。
 - 同步回合防环。
 - MemoryCandidate 权限和幂等。
 - Artifact 重复注册。
 - 错误映射和有限重试。
+
+真实 CA、KMS 和 Redis 多实例部署当前为 `NOT VERIFIED`。测试通过不能替代生产
+基础设施验证。
 

@@ -20,6 +20,15 @@ interface ContractManifest {
   examples: ManifestEntry[];
 }
 
+interface SchemaRegistry {
+  definitions_count: number;
+  schemas: Array<{ name: string; status: string; active: boolean }>;
+  runtime_bindings: Record<
+    string,
+    { task_type: string; definition: string; schema_version: number; status: string }
+  >;
+}
+
 const root = `${resolve(process.cwd(), "../..")}/`;
 const schema = JSON.parse(
   readFileSync(`${root}packages/contracts/json-schema/mysteryverse.schema.json`, "utf8"),
@@ -30,6 +39,9 @@ const schema = JSON.parse(
 const manifest = JSON.parse(
   readFileSync(`${root}packages/contracts/examples/manifest.json`, "utf8"),
 ) as ContractManifest;
+const schemaRegistry = JSON.parse(
+  readFileSync(`${root}packages/contracts/registry/schema-registry.json`, "utf8"),
+) as SchemaRegistry;
 
 describe("generated contracts", () => {
   it.each(manifest.examples)("validates $definition example $file", ({ definition, file }) => {
@@ -91,5 +103,19 @@ describe("generated contracts", () => {
 
     expect(roundTrip.deadline_at).toBeNull();
     expect(roundTrip.available_actions).toEqual(["search", "chat"]);
+  });
+
+  it("keeps the generated registry inventory and demo binding aligned", () => {
+    expect(schemaRegistry.definitions_count).toBe(schemaRegistry.schemas.length);
+    expect(schemaRegistry.runtime_bindings["demo_result"]).toEqual({
+      task_type: "demo",
+      definition: "DemoAgentOutput",
+      schema_version: 1,
+      status: "active",
+    });
+    expect(schemaRegistry.schemas.find((item) => item.name === "DemoAgentOutput")).toMatchObject({
+      active: true,
+      status: "active",
+    });
   });
 });

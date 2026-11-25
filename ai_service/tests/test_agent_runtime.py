@@ -130,12 +130,13 @@ def test_explicit_output_schema_key_and_version() -> None:
             )
 
     async def scenario() -> None:
-        registry = OutputSchemaRegistry()
+        registry = OutputSchemaRegistry(allow_unregistered=True)
         registry.register(
             task_type=AgentTaskType.demo,
             key="demo_versioned",
             version=3,
             schema=VersionedOutput,
+            schema_definition="TestVersionedOutput",
         )
         runtime = _runtime(CustomProvider(), registry)
         response = await runtime.run(

@@ -1,0 +1,3604 @@
+{
+  "registry_version": "1.0.0",
+  "generated_at": "2026-11-25T00:00:00Z",
+  "source": "json-schema/mysteryverse.schema.json",
+  "source_contract_version": "1.0.0",
+  "version_policy": {
+    "format": "semver",
+    "initial_version": "1.0.0",
+    "breaking_change": "major",
+    "additive_compatible_change": "minor",
+    "governance_only_change": "patch",
+    "history": "append-only"
+  },
+  "active_policy": {
+    "max_active_versions_per_schema": 1,
+    "selection": "server_explicit_or_registered_default",
+    "client_or_model_default_forbidden": true,
+    "rollback": "switch_default_pointer_without_deleting_history",
+    "environment_override": "forbidden_until_separately_approved"
+  },
+  "lifecycle_policy": {
+    "states": [
+      "draft",
+      "experimental",
+      "active",
+      "deprecated",
+      "retired"
+    ],
+    "delete_policy": "never_delete_while_referenced",
+    "event_retention": "retain_for_lifetime_of_referencing_events",
+    "run_retention": "retain_for_lifetime_of_run_audit_retention",
+    "retired_read_access": "allowed_for_historical_replay_and_audit"
+  },
+  "replay_policy": {
+    "version_source": "explicit_registry_key_and_version",
+    "missing_version": "fail_closed",
+    "unknown_version": "fail_closed",
+    "migration": "explicit_reader_migration_only",
+    "game_event_freeze": "blocked_by_ADR-004",
+    "memory_freeze": "blocked_by_ADR-001",
+    "websocket_freeze": "blocked_by_ADR-002"
+  },
+  "definitions_count": 142,
+  "schemas": [
+    {
+      "schema_id": "mv.runtime.a-i-error",
+      "name": "AIError",
+      "definition": "#/$defs/AIError",
+      "version": "1.0.0",
+      "schema_type": "runtime",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "ai-runtime",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "561ea74aa79e981c7ecc8815fc736c0cab7b10b33c4af8bc0c57501ac95acdf3",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.actor-type",
+      "name": "ActorType",
+      "definition": "#/$defs/ActorType",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "b63497fd301e3cec05f824aa495945f9ff77174d235dd99f2da439fe4e018c37",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.runtime.agent-context-message",
+      "name": "AgentContextMessage",
+      "definition": "#/$defs/AgentContextMessage",
+      "version": "1.0.0",
+      "schema_type": "runtime",
+      "status": "experimental",
+      "decision_status": "pending",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "ai-runtime",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "79c838b8200ca7308cb498f84a22584e339a937a9c089c98e40d70271686c52e",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.runtime.agent-execution-context",
+      "name": "AgentExecutionContext",
+      "definition": "#/$defs/AgentExecutionContext",
+      "version": "1.0.0",
+      "schema_type": "runtime",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "ai-runtime",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "5eeda7032b3412229271fb111d937f72c94c664df9701e53084691128202dc69",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.runtime.agent-execution-limits",
+      "name": "AgentExecutionLimits",
+      "definition": "#/$defs/AgentExecutionLimits",
+      "version": "1.0.0",
+      "schema_type": "runtime",
+      "status": "experimental",
+      "decision_status": "pending",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "ai-runtime",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "6801285e6187f4f21a5cc51cce1ed9aad706daa25b2910563077ac0e553fd35c",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.runtime.agent-execution-status",
+      "name": "AgentExecutionStatus",
+      "definition": "#/$defs/AgentExecutionStatus",
+      "version": "1.0.0",
+      "schema_type": "runtime",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "ai-runtime",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "b99aebce2ca5d70ef90423b6b71e0fcf9fc9d46dec40fbcc59d46463a17e7935",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.runtime.agent-output",
+      "name": "AgentOutput",
+      "definition": "#/$defs/AgentOutput",
+      "version": "1.0.0",
+      "schema_type": "runtime",
+      "status": "experimental",
+      "decision_status": "pending",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "ai-runtime",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "a661fba93cc5098775a4748693bc0a3c61f85a3dd7439cda0c4638a87b2c6b71",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.runtime.agent-output-validation-issue",
+      "name": "AgentOutputValidationIssue",
+      "definition": "#/$defs/AgentOutputValidationIssue",
+      "version": "1.0.0",
+      "schema_type": "runtime",
+      "status": "experimental",
+      "decision_status": "pending",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "ai-runtime",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "7cb291beeac969e67003dc6e370e4f2243daf6efbb5103202ddc47388cfb9c8d",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.runtime.agent-request",
+      "name": "AgentRequest",
+      "definition": "#/$defs/AgentRequest",
+      "version": "1.0.0",
+      "schema_type": "runtime",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "ai-runtime",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "fe357703cbbc53398c388b793d34659f9387ac3a30fb870becfbfa4a71afa6f9",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.runtime.agent-response",
+      "name": "AgentResponse",
+      "definition": "#/$defs/AgentResponse",
+      "version": "1.0.0",
+      "schema_type": "runtime",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "ai-runtime",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "01c92c59e2887e005bae8086aa63880f68f7b1437d90a891d70cf2ec3be61513",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.runtime.agent-task-type",
+      "name": "AgentTaskType",
+      "definition": "#/$defs/AgentTaskType",
+      "version": "1.0.0",
+      "schema_type": "runtime",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "ai-runtime",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "6f95556fba83bf6db5781bb058210c653b5e1be3ef92e4d345f35d1e9c6b9f66",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.runtime.agent-tool-call",
+      "name": "AgentToolCall",
+      "definition": "#/$defs/AgentToolCall",
+      "version": "1.0.0",
+      "schema_type": "runtime",
+      "status": "experimental",
+      "decision_status": "pending",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "ai-runtime",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "517b8245c58390d64d2a50d76d80b82bcdd10a7567e4c75bce67a703a9ebc07a",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.runtime.agent-trace-step",
+      "name": "AgentTraceStep",
+      "definition": "#/$defs/AgentTraceStep",
+      "version": "1.0.0",
+      "schema_type": "runtime",
+      "status": "experimental",
+      "decision_status": "pending",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "ai-runtime",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "40911c49ab16467cc325050c6bab53fcaa60489e2f247e8ff3c825f277377999",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.runtime.agent-usage",
+      "name": "AgentUsage",
+      "definition": "#/$defs/AgentUsage",
+      "version": "1.0.0",
+      "schema_type": "runtime",
+      "status": "experimental",
+      "decision_status": "pending",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "ai-runtime",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "523c507d2451eaa813fb688dbf832ad623de494a9c2c60af8fa499431762fcd6",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.api-error",
+      "name": "ApiError",
+      "definition": "#/$defs/ApiError",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "pending",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "907da9873a3cbaeaf18e689b1b6d7b06b18183df42a7f779c42fc936e2379f90",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.api-error-response",
+      "name": "ApiErrorResponse",
+      "definition": "#/$defs/ApiErrorResponse",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "pending",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "169c4f3b17f54d120d92c6a9506547f49e289224a5bec710eabbc2d1a2ad5b5e",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.api-meta",
+      "name": "ApiMeta",
+      "definition": "#/$defs/ApiMeta",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "pending",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "ac66f63158ffada7a444cf6bfa9495d3becef589558768e2f3f3891f3ed3b616",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.api-success-response",
+      "name": "ApiSuccessResponse",
+      "definition": "#/$defs/ApiSuccessResponse",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "pending",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "5de1f1341c3e13612829df10c370909a62e7791c0a3ddad9d7acb31115939c1b",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.artifact-i-d",
+      "name": "ArtifactID",
+      "definition": "#/$defs/ArtifactID",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "dbb481e60277de3b764f1e05e175b1b225c0427585d1240264fc66b24d59c9dd",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.public.auth-login-request",
+      "name": "AuthLoginRequest",
+      "definition": "#/$defs/AuthLoginRequest",
+      "version": "1.0.0",
+      "schema_type": "public",
+      "status": "active",
+      "decision_status": "accepted",
+      "compatibility": "backward",
+      "active": true,
+      "active_version": "1.0.0",
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "c3b49248dfb9451eb761cff7609b4095d894bc4c4ebefe0c13ab7ae7ba68f0e8",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "active",
+          "compatibility": "backward",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.auth-provider",
+      "name": "AuthProvider",
+      "definition": "#/$defs/AuthProvider",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "pending",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "d4b7f6a313f4481d46ac161875c9634d39f77447af867c265af64657bfaebe23",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.public.auth-register-request",
+      "name": "AuthRegisterRequest",
+      "definition": "#/$defs/AuthRegisterRequest",
+      "version": "1.0.0",
+      "schema_type": "public",
+      "status": "active",
+      "decision_status": "accepted",
+      "compatibility": "backward",
+      "active": true,
+      "active_version": "1.0.0",
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "16a26ac9177ceb80babff1b2e66a53cef488f3c08ec6e89670c93268c604f8ed",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "active",
+          "compatibility": "backward",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.public.auth-session-response",
+      "name": "AuthSessionResponse",
+      "definition": "#/$defs/AuthSessionResponse",
+      "version": "1.0.0",
+      "schema_type": "public",
+      "status": "active",
+      "decision_status": "accepted",
+      "compatibility": "backward",
+      "active": true,
+      "active_version": "1.0.0",
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "6f2abd2e827081a26c72ff5ea238c4102ecebe336f9d0bfc46b2e595b80adca5",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "active",
+          "compatibility": "backward",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.authority-class",
+      "name": "AuthorityClass",
+      "definition": "#/$defs/AuthorityClass",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "7af970ed0c53130741fc1a4aa375e5495ee95a75b165a9d71989cb9039fee784",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.business-error-code",
+      "name": "BusinessErrorCode",
+      "definition": "#/$defs/BusinessErrorCode",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "pending",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "66909bb4f500877dc6ad330a89cc555aa71a586b8df97aefa0e3e0ad2b6170c9",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.candidate-i-d",
+      "name": "CandidateID",
+      "definition": "#/$defs/CandidateID",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "eb31c3c16c314d09395aee9536394da9e46fa8e1a7557de7bf18cd4a7bf4e6cf",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.chapter",
+      "name": "Chapter",
+      "definition": "#/$defs/Chapter",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "go-content",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "1ac596a556bf636e9c94b9dffc54f3156575c960aa1596e9d0cefd870b13bc09",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.chapter-i-d",
+      "name": "ChapterID",
+      "definition": "#/$defs/ChapterID",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "45a2de874a6842960e14916e230ce3a0ebd6447374c33cbad30e2e32274ed626",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.character",
+      "name": "Character",
+      "definition": "#/$defs/Character",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "go-content",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "f66484ce9f5aa212ebd8f60803b813de232d70355f91f97e3745e92ea4bca920",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.character-i-d",
+      "name": "CharacterID",
+      "definition": "#/$defs/CharacterID",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "57ea97ec8f38816c3029783f1c280cf4e02deae860f882ae6fe4b35953a37b3b",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.character-role-class",
+      "name": "CharacterRoleClass",
+      "definition": "#/$defs/CharacterRoleClass",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "98789ce02d81fb7a71f986d8f78ec610e3e2be540a05e9255dc7eea1e29f5494",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.clue",
+      "name": "Clue",
+      "definition": "#/$defs/Clue",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "go-content",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "5459858cead5b9eab1d13e755ad51c045261d16a1c2683c60f44e5913de5d105",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.clue-discovered",
+      "name": "ClueDiscovered",
+      "definition": "#/$defs/ClueDiscovered",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "go-game",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "6ada680aca70acc095fc097c1e2883a4c1fb1d1f428809da5e8bebad9447fedd",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.clue-i-d",
+      "name": "ClueID",
+      "definition": "#/$defs/ClueID",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "720b9fadbb0fedd447a048b9dd1f6ad95ab5cfea2e3d5f36a005d01b5d124ebc",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.clue-type",
+      "name": "ClueType",
+      "definition": "#/$defs/ClueType",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "a01c55f4c94cfe47d1decc1b8f67b0bc1682374a6d4fe96473b56f0026c339ea",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.create-script-draft-request",
+      "name": "CreateScriptDraftRequest",
+      "definition": "#/$defs/CreateScriptDraftRequest",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "pending",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "go-content",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "5ceed46c094aed857b678bb369d21b0e0cf193471244e17a32d110cc398649be",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.create-script-request",
+      "name": "CreateScriptRequest",
+      "definition": "#/$defs/CreateScriptRequest",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "go-content",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "303e4a19763d3ec01e02b290c00d146af1e34ebfd479593f6af4a3f6ca663543",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.public.current-user-response",
+      "name": "CurrentUserResponse",
+      "definition": "#/$defs/CurrentUserResponse",
+      "version": "1.0.0",
+      "schema_type": "public",
+      "status": "active",
+      "decision_status": "accepted",
+      "compatibility": "backward",
+      "active": true,
+      "active_version": "1.0.0",
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "b609e4cb92ae1f0b6e241e8cd2b3be135ff7beb7225e97c7a50fee322ef64266",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "active",
+          "compatibility": "backward",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.cursor-page",
+      "name": "CursorPage",
+      "definition": "#/$defs/CursorPage",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "pending",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "35297ecbc345337efd4fbd5787d0f78deeedb4d5d9d9c90e51f59651de93c813",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.delete-script-object-request",
+      "name": "DeleteScriptObjectRequest",
+      "definition": "#/$defs/DeleteScriptObjectRequest",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "pending",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "go-content",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "83075e66e2def92cd539d0bbb20e0288cf0d372f4308ceba362639e423a2023e",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.delete-script-request",
+      "name": "DeleteScriptRequest",
+      "definition": "#/$defs/DeleteScriptRequest",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "pending",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "go-content",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "69fd860c53480f8744d0290b5353614b2d25a035b5ac93c4470c2ef7d8d77be9",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.runtime.demo-agent-output",
+      "name": "DemoAgentOutput",
+      "definition": "#/$defs/DemoAgentOutput",
+      "version": "1.0.0",
+      "schema_type": "runtime",
+      "status": "active",
+      "decision_status": "accepted",
+      "compatibility": "backward",
+      "active": true,
+      "active_version": "1.0.0",
+      "owner": "ai-runtime",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "03c1260de1c575c081175f9137f8e8580eeae0abaee1bb949124ebc1c3ec2ca8",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "active",
+          "compatibility": "backward",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.ending",
+      "name": "Ending",
+      "definition": "#/$defs/Ending",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "go-content",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "2658c05e0143c5a2360bd2f47af6e8674a747e0777b10d1e25c7f0dadf47aa01",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.ending-i-d",
+      "name": "EndingID",
+      "definition": "#/$defs/EndingID",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "c4aa8ea58949e285d1f4c415d793f1a0330d897d54343c3ce57fa2f9df060a1d",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.event-class",
+      "name": "EventClass",
+      "definition": "#/$defs/EventClass",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "pending",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "go-game",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "01882e7c8b8d4e33a88c279aa8eb4e99dba4b836d312bb4eb8a590ccc165ca81",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.public.event-i-d",
+      "name": "EventID",
+      "definition": "#/$defs/EventID",
+      "version": "1.0.0",
+      "schema_type": "public",
+      "status": "active",
+      "decision_status": "accepted",
+      "compatibility": "backward",
+      "active": true,
+      "active_version": "1.0.0",
+      "owner": "go-game",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "bc988d082292d421ac1cc9812ecf8a77784e67a8648e5f4eaf6e74462c3238be",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "active",
+          "compatibility": "backward",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.fact-i-d",
+      "name": "FactID",
+      "definition": "#/$defs/FactID",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "e0d915a3730d979e26bcc1ebfdf016e404f99a08184fe941b6669564855732fe",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.game-created",
+      "name": "GameCreated",
+      "definition": "#/$defs/GameCreated",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "go-game",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "79c38fc2da1e66b8e355c8bd3bd2a9995e46cb0075876879691a892b58ded372",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.game-ended",
+      "name": "GameEnded",
+      "definition": "#/$defs/GameEnded",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "go-game",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "307c83eac883b2da26a89111fe76c1c768432c72d8ac297c51eddc94b162b89e",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.game-event",
+      "name": "GameEvent",
+      "definition": "#/$defs/GameEvent",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "go-game",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "083b7aaf0c90da6d9bb9d0a47c38cde81b4acb859a54d1fbf3080d90a3b28623",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.game-event-type",
+      "name": "GameEventType",
+      "definition": "#/$defs/GameEventType",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "pending",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "go-game",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "ac1b9f0e4258b42b8ddaf14acacd70416e4a8548d7efc62badb24f9f908f7ddc",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.public.game-i-d",
+      "name": "GameID",
+      "definition": "#/$defs/GameID",
+      "version": "1.0.0",
+      "schema_type": "public",
+      "status": "active",
+      "decision_status": "accepted",
+      "compatibility": "backward",
+      "active": true,
+      "active_version": "1.0.0",
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "7efa0a254a93be360262de87e3f2c6e2f3eafb735d156139a7f760f9781db203",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "active",
+          "compatibility": "backward",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.game-paused",
+      "name": "GamePaused",
+      "definition": "#/$defs/GamePaused",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "go-game",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "fcab3449e990cede7712bcd91303e8b173238e5e525ae6ffc2278de028d84a7d",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.game-resumed",
+      "name": "GameResumed",
+      "definition": "#/$defs/GameResumed",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "go-game",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "ff8105afcad906e251ca3fc3f9b6e349df39f673be90e09fce79198f0be8155f",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.game-started",
+      "name": "GameStarted",
+      "definition": "#/$defs/GameStarted",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "go-game",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "3506b4d37b7a5e36d3a1c53af5b161344307bc22753d90efc89459e4ba2882a2",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.game-type",
+      "name": "GameType",
+      "definition": "#/$defs/GameType",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "pending",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "e2fd971a6df8d48ea11f5298c36c296802be819a82dd91985542159cf2e33e3f",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.intent-i-d",
+      "name": "IntentID",
+      "definition": "#/$defs/IntentID",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "2f22cb9101ee3fd886762bd3b67af58f4d16cd6e2297786d7bda857928328091",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.job-i-d",
+      "name": "JobID",
+      "definition": "#/$defs/JobID",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "2074eef63564d1c1c14cedb6171a840ed015a109312c529ea9666d93c5a2966d",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.internal.memory-candidate",
+      "name": "MemoryCandidate",
+      "definition": "#/$defs/MemoryCandidate",
+      "version": "1.0.0",
+      "schema_type": "internal",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "go-core",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "d1255396b505788bacda1308648b6387e4d16caea8a184b1e4f42d7d3c0fc0dc",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.memory-i-d",
+      "name": "MemoryID",
+      "definition": "#/$defs/MemoryID",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "go-core",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "407e338270416c9a1651f0409a6f40cebd8a2c1a396b7ab8a1c39845a4d9d18f",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.memory-type",
+      "name": "MemoryType",
+      "definition": "#/$defs/MemoryType",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "353a4e413aaabdcb11cc909a85fc81f7f54f473d369208083242d6798b2ee77b",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.message-created",
+      "name": "MessageCreated",
+      "definition": "#/$defs/MessageCreated",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "go-game",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "77d0a21444e2c871ce792058ccfc93f9f1d23955131f796710c4d3c66c2255d6",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.message-i-d",
+      "name": "MessageID",
+      "definition": "#/$defs/MessageID",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "6e5709b87be6e38047bc514e2884ee75babc186713cfa5c69f99fe91c6afb76f",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.metadata",
+      "name": "Metadata",
+      "definition": "#/$defs/Metadata",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "pending",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "412e160c5698a7c220175dee6a7ebc5cbf4ce5632b80b1347405bdb907173cf4",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.npc-i-d",
+      "name": "NpcID",
+      "definition": "#/$defs/NpcID",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "50f5b677a906957f75a3568dddca991021c18b03ef9dddf83ca990ee268393cc",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.parameter-validation-error",
+      "name": "ParameterValidationError",
+      "definition": "#/$defs/ParameterValidationError",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "pending",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "c59201730a4e37fb2de54860288e3ba08c5275035533a5e5e077bd22740530f8",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.phase-changed",
+      "name": "PhaseChanged",
+      "definition": "#/$defs/PhaseChanged",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "go-game",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "3322779b1e920d0e2118799328675c7233657935a47e15d8a774203920b57c83",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.internal.player-context",
+      "name": "PlayerContext",
+      "definition": "#/$defs/PlayerContext",
+      "version": "1.0.0",
+      "schema_type": "internal",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "6b4e536a0bde2e0e9c6aa01815efa099e44b25b6ebfb057b683b986410973e80",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.public.player-i-d",
+      "name": "PlayerID",
+      "definition": "#/$defs/PlayerID",
+      "version": "1.0.0",
+      "schema_type": "public",
+      "status": "active",
+      "decision_status": "accepted",
+      "compatibility": "backward",
+      "active": true,
+      "active_version": "1.0.0",
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "2113df04b4663ca15791c56d40aac0541663c43cae0244f0e7dd5be161af8d74",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "active",
+          "compatibility": "backward",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.player-joined",
+      "name": "PlayerJoined",
+      "definition": "#/$defs/PlayerJoined",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "go-game",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "8af5a78c7f79272af46987e3249432a550e4d421686fd1eeb1126d13ec2b5ebb",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.player-left",
+      "name": "PlayerLeft",
+      "definition": "#/$defs/PlayerLeft",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "go-game",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "2b05a01ab34909081b13e7c5fefa9e358c5db92de19929c400ba8572594ffa73",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.privacy-patch",
+      "name": "PrivacyPatch",
+      "definition": "#/$defs/PrivacyPatch",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "pending",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "ed28cc4b16b6a1864fe17e89338f5bd66c26dca61c65572c231f0432c3b6fa4e",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.public.privacy-settings",
+      "name": "PrivacySettings",
+      "definition": "#/$defs/PrivacySettings",
+      "version": "1.0.0",
+      "schema_type": "public",
+      "status": "active",
+      "decision_status": "accepted",
+      "compatibility": "backward",
+      "active": true,
+      "active_version": "1.0.0",
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "24f02917fcccac69d30cc2c35cb7b6e085a14a2511d22239df731c1a8d900f3c",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "active",
+          "compatibility": "backward",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.public.profile-update-request",
+      "name": "ProfileUpdateRequest",
+      "definition": "#/$defs/ProfileUpdateRequest",
+      "version": "1.0.0",
+      "schema_type": "public",
+      "status": "active",
+      "decision_status": "accepted",
+      "compatibility": "backward",
+      "active": true,
+      "active_version": "1.0.0",
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "e4e87c8b43ac638138553cc3e3f431f9b4bfc958f17da332a60098bc6f11030c",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "active",
+          "compatibility": "backward",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.publish-script-version-request",
+      "name": "PublishScriptVersionRequest",
+      "definition": "#/$defs/PublishScriptVersionRequest",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "pending",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "go-content",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "495ca6324e2f6815abc3ef3141b851db807e6be553c5ee71258e48c977a50242",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.relationship",
+      "name": "Relationship",
+      "definition": "#/$defs/Relationship",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "go-content",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "01e72940a9e89ec54205ef977dbc0a42787b176cd07fd8f0e3922a5c7b2a0e5c",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.relationship-i-d",
+      "name": "RelationshipID",
+      "definition": "#/$defs/RelationshipID",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "0f0572d1f8735b027c47fcc6c461ab821f145bfd51913fa267323ba5ae1701dd",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.result-i-d",
+      "name": "ResultID",
+      "definition": "#/$defs/ResultID",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "b72685b578bab744f11ddd2b05446c086d51732acdb269718d4abee5316b24ff",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.role-i-d",
+      "name": "RoleID",
+      "definition": "#/$defs/RoleID",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "f007f3fbd018602cf087a4633e39c4ef4c08248dcdbd3845c497668c28f4a921",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.public.room",
+      "name": "Room",
+      "definition": "#/$defs/Room",
+      "version": "1.0.0",
+      "schema_type": "public",
+      "status": "active",
+      "decision_status": "accepted",
+      "compatibility": "backward",
+      "active": true,
+      "active_version": "1.0.0",
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "78463175fe2c3a66586088650872e16e121aa52bc66ffb26d2692f2bf6b42a5d",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "active",
+          "compatibility": "backward",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.room-capacity",
+      "name": "RoomCapacity",
+      "definition": "#/$defs/RoomCapacity",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "pending",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "7df79828eacf576c12305f59121ed21e5b259564a1ab883ae1f76ef62448f6f8",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.room-create-request",
+      "name": "RoomCreateRequest",
+      "definition": "#/$defs/RoomCreateRequest",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "pending",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "63ce42384a4de4770df6ee68a7033f062e72e58c76e7bbf51d52e3225a96b8e3",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.room-create-response",
+      "name": "RoomCreateResponse",
+      "definition": "#/$defs/RoomCreateResponse",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "pending",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "90c7b3945134051293aa86b69ff0c9eeaef6341f2ea590d39b245bc4fe1fa418",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.public.room-i-d",
+      "name": "RoomID",
+      "definition": "#/$defs/RoomID",
+      "version": "1.0.0",
+      "schema_type": "public",
+      "status": "active",
+      "decision_status": "accepted",
+      "compatibility": "backward",
+      "active": true,
+      "active_version": "1.0.0",
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "fb09f4785e3b4f39b24349dacad3c74a44620e534298e4a9623dbdc30318af41",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "active",
+          "compatibility": "backward",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.room-join-request",
+      "name": "RoomJoinRequest",
+      "definition": "#/$defs/RoomJoinRequest",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "pending",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "937d21123b4c662a9738a7be43bb81387a76cf37f6abf2f4273f3449837540d4",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.room-join-response",
+      "name": "RoomJoinResponse",
+      "definition": "#/$defs/RoomJoinResponse",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "pending",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "5aba413f841ee0e65bbcd3b79654c62049d7e38002b259694f6da69642d8c252",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.room-leave-request",
+      "name": "RoomLeaveRequest",
+      "definition": "#/$defs/RoomLeaveRequest",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "pending",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "6cb12566a1f9d7eda703e29c2823fb82708d21cdfb95587378aa1fe45597140f",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.room-leave-response",
+      "name": "RoomLeaveResponse",
+      "definition": "#/$defs/RoomLeaveResponse",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "pending",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "a193feb9a65625be1fdcfe1ceb121397de040d9ccf8cf1e1a7445a14ad95f5dc",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.public.room-member",
+      "name": "RoomMember",
+      "definition": "#/$defs/RoomMember",
+      "version": "1.0.0",
+      "schema_type": "public",
+      "status": "active",
+      "decision_status": "accepted",
+      "compatibility": "backward",
+      "active": true,
+      "active_version": "1.0.0",
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "ac5114b89786deee6af4f5635ab0c66bc44a1c64ee1f5f59324366bd97a257b0",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "active",
+          "compatibility": "backward",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.public.room-message",
+      "name": "RoomMessage",
+      "definition": "#/$defs/RoomMessage",
+      "version": "1.0.0",
+      "schema_type": "public",
+      "status": "active",
+      "decision_status": "accepted",
+      "compatibility": "backward",
+      "active": true,
+      "active_version": "1.0.0",
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "61eb6884e77193b9c46e516d437b1e2911c9f59d5e3cf3a0f4ebdfe06316e63b",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "active",
+          "compatibility": "backward",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.room-message-page",
+      "name": "RoomMessagePage",
+      "definition": "#/$defs/RoomMessagePage",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "pending",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "856a65679217a8cfce2b2bcc6108165e336489ad5948393b6afa1d4a05e44749",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.room-projection",
+      "name": "RoomProjection",
+      "definition": "#/$defs/RoomProjection",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "pending",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "b1b6277c672eb0846d8cd27f8f241e17cb42a4b4a47de4843321163d36b65755",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.room-ready-request",
+      "name": "RoomReadyRequest",
+      "definition": "#/$defs/RoomReadyRequest",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "pending",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "48dfaeb5f1367feb114b1aa729831b0ffa3a8c66dcb23b108b68d81a52b7744a",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.room-ready-response",
+      "name": "RoomReadyResponse",
+      "definition": "#/$defs/RoomReadyResponse",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "pending",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "7a315c92cbfa536e9cf27fbdc267a39542edb9390fd9c421267099835f81cc15",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.room-status",
+      "name": "RoomStatus",
+      "definition": "#/$defs/RoomStatus",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "pending",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "0b76bd7005f774e61b2440938ecd977e30028555d4ceca5f5ac4ef5440facae7",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.room-visibility",
+      "name": "RoomVisibility",
+      "definition": "#/$defs/RoomVisibility",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "pending",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "fb78eae7d27b4bd55e41e4cd062bfcf4ed2a7fb0890f0836f03a1fdcb3bd88f4",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.rule",
+      "name": "Rule",
+      "definition": "#/$defs/Rule",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "go-content",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "ec6ab9d5f6e73037a1ab31a3798812f285755c2ad9019998f0a22384f2e6c53d",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.rule-i-d",
+      "name": "RuleID",
+      "definition": "#/$defs/RuleID",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "28ac0b5dd24e341020e7648453031100f749f309f34fb642befa953dd48257b7",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.rule-type",
+      "name": "RuleType",
+      "definition": "#/$defs/RuleType",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "80ae39ef13f2eb0913b9a32231be37cdfd6837500c3b77316946bddbbbbfa22c",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.runtime.run-i-d",
+      "name": "RunID",
+      "definition": "#/$defs/RunID",
+      "version": "1.0.0",
+      "schema_type": "runtime",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "ai-runtime",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "f877dc04346bda967a5162044df76755ea282768ca2cb5037792c6ec195381b0",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.script",
+      "name": "Script",
+      "definition": "#/$defs/Script",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "go-content",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "def6e566fa115ff070c962aa2d07de9f007deef598ef4b7b6ebf038b297b3bbf",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.script-asset",
+      "name": "ScriptAsset",
+      "definition": "#/$defs/ScriptAsset",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "go-content",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "96075d826c3576df8be204f36927f9cec29d6f83045cb3242b8bb9abf67ce77d",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.script-catalog-item",
+      "name": "ScriptCatalogItem",
+      "definition": "#/$defs/ScriptCatalogItem",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "pending",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "go-content",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "a45b4eb046d70094127dd61443ff0f2173e554f2dd300fc44f19ab47e9eeced9",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.script-catalog-page",
+      "name": "ScriptCatalogPage",
+      "definition": "#/$defs/ScriptCatalogPage",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "pending",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "go-content",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "ebd050197b9da907111e283f68d95298c4a1e361d41d6e8549673087d692fe7f",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.script-editor-content",
+      "name": "ScriptEditorContent",
+      "definition": "#/$defs/ScriptEditorContent",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "pending",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "go-content",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "45c41112415d462ab51f36d9a5410e6f32ea1fa0ab9ed71fd2923aab67e7b158",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.script-editor-script",
+      "name": "ScriptEditorScript",
+      "definition": "#/$defs/ScriptEditorScript",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "pending",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "go-content",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "c18586ca9e59ef256e6169db941fddce84d9bc165e275f955a91db03e91a8710",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.script-editor-version",
+      "name": "ScriptEditorVersion",
+      "definition": "#/$defs/ScriptEditorVersion",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "pending",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "go-content",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "2421f52d58b20477a6c5d8a32d2c9dba55dcf7282e177fa70b2ca60054ad10a3",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.internal.script-generation-request",
+      "name": "ScriptGenerationRequest",
+      "definition": "#/$defs/ScriptGenerationRequest",
+      "version": "1.0.0",
+      "schema_type": "internal",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "go-content",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "26e6b05ef561b86012a0f4553a94b893ad2eda6bfe8b3aa0b3294f5ba07a7e0c",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.internal.script-generation-result",
+      "name": "ScriptGenerationResult",
+      "definition": "#/$defs/ScriptGenerationResult",
+      "version": "1.0.0",
+      "schema_type": "internal",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "go-content",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "f1782aba78378dce7bc7e1e41e9f9ea1f1a612d3e5108979cb6143a2a548f573",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.public.script-i-d",
+      "name": "ScriptID",
+      "definition": "#/$defs/ScriptID",
+      "version": "1.0.0",
+      "schema_type": "public",
+      "status": "active",
+      "decision_status": "accepted",
+      "compatibility": "backward",
+      "active": true,
+      "active_version": "1.0.0",
+      "owner": "go-content",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "a1585364eb12888c735948dff0c6a6a7af2243935af4d6a1387371bbd21b5e98",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "active",
+          "compatibility": "backward",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.script-object-mutation-request",
+      "name": "ScriptObjectMutationRequest",
+      "definition": "#/$defs/ScriptObjectMutationRequest",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "pending",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "go-content",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "42d69f1b44dfc2a76ac471c14dd3c0d177935efbd65dbce1a6151d820efe6ffa",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.script-search-point",
+      "name": "ScriptSearchPoint",
+      "definition": "#/$defs/ScriptSearchPoint",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "go-content",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "5c61dca278f8f033a80f5d87c7acb286205a1a4912250527e9bedc6a07345bb9",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.script-search-point-clue",
+      "name": "ScriptSearchPointClue",
+      "definition": "#/$defs/ScriptSearchPointClue",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "go-content",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "fb94a64c009af432f751304d4db6b304da525e887d5519dc93063b07d6348204",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.script-status",
+      "name": "ScriptStatus",
+      "definition": "#/$defs/ScriptStatus",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "go-content",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "17f03ec5c810028b65f0486ef2747e6f55e78f973c782d1169727388d2167732",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.script-target-players",
+      "name": "ScriptTargetPlayers",
+      "definition": "#/$defs/ScriptTargetPlayers",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "pending",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "go-content",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "fe4b191e5f836cedb65fc76233ac639e80ef96f9724676b57832eb6ccc180fb7",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.script-validation-issue",
+      "name": "ScriptValidationIssue",
+      "definition": "#/$defs/ScriptValidationIssue",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "pending",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "go-content",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "91f9b5132392dce997a9dd8a7a1a4aaa6315b5237360a1320fed088532357d12",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.script-validation-report",
+      "name": "ScriptValidationReport",
+      "definition": "#/$defs/ScriptValidationReport",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "pending",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "go-content",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "50590f313a48f1495c00e0482450f628268d699c5d64ce14f9f0f775e4400b33",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.script-version",
+      "name": "ScriptVersion",
+      "definition": "#/$defs/ScriptVersion",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "go-content",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "c85fcf26b07df4221bf17359d346898f33c36a16e9e379b9927163edc7e39fcb",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.public.script-version-i-d",
+      "name": "ScriptVersionID",
+      "definition": "#/$defs/ScriptVersionID",
+      "version": "1.0.0",
+      "schema_type": "public",
+      "status": "active",
+      "decision_status": "accepted",
+      "compatibility": "backward",
+      "active": true,
+      "active_version": "1.0.0",
+      "owner": "go-content",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "fb715cb72701a791a1ab69f427a39d50aa52c9e2e4dfdce44d861e24e3918816",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "active",
+          "compatibility": "backward",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.send-room-message-request",
+      "name": "SendRoomMessageRequest",
+      "definition": "#/$defs/SendRoomMessageRequest",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "pending",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "863f54d992985e95015129153eb275b07cd63909575cf9360fb9be2aa31363d9",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.send-room-message-response",
+      "name": "SendRoomMessageResponse",
+      "definition": "#/$defs/SendRoomMessageResponse",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "pending",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "60ac3b4a7758d7a5167002b6821d567181a0b1ae47838155f3621ec01521611c",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.sensitivity",
+      "name": "Sensitivity",
+      "definition": "#/$defs/Sensitivity",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "pending",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "c6f9f01f1d1467736872b6b7b978254cc4e6cc4737ff30d11428704ad58c6682",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.source-ref",
+      "name": "SourceRef",
+      "definition": "#/$defs/SourceRef",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "pending",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "0b1d50a0f6c25a170022228c6be77aacdb615c46387ead13ce5e673555673d10",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.stage",
+      "name": "Stage",
+      "definition": "#/$defs/Stage",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "go-content",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "7341035338877d71f556bbabf4f7bc69cf458f45265695ac2ccac6bc43c0d12e",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.timeline",
+      "name": "Timeline",
+      "definition": "#/$defs/Timeline",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "go-content",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "e4376ea46314388e8a20f7998c92315ae7d2fb71eeeae4005708e8855fe3b3ee",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.timeline-event",
+      "name": "TimelineEvent",
+      "definition": "#/$defs/TimelineEvent",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "go-game",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "75c47a6f1d55075beccfed5a6b0e6d74d975918ede9b7dc8607658c049a30cb8",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.timeline-event-i-d",
+      "name": "TimelineEventID",
+      "definition": "#/$defs/TimelineEventID",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "go-game",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "35ddcc8f440ef558663eaf2a8c3880cfa67d39d9f3e8adb977299704d3364ff3",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.timeline-i-d",
+      "name": "TimelineID",
+      "definition": "#/$defs/TimelineID",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "7694f94dc13a5ef9f8515a92c9b83b46c5c876aa5f380b5307776c8cc8669ded",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.timestamp",
+      "name": "Timestamp",
+      "definition": "#/$defs/Timestamp",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "pending",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "4ccfdfdcd927ebebf1f7510755aa41467abf79a86317d24a4a8233cc71226044",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.public.ulid",
+      "name": "Ulid",
+      "definition": "#/$defs/Ulid",
+      "version": "1.0.0",
+      "schema_type": "public",
+      "status": "active",
+      "decision_status": "accepted",
+      "compatibility": "backward",
+      "active": true,
+      "active_version": "1.0.0",
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "47f01bec6f93753c7acae7f9cad924505700e005a43c83bad1e2a75b19297ab5",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "active",
+          "compatibility": "backward",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.unpublish-script-request",
+      "name": "UnpublishScriptRequest",
+      "definition": "#/$defs/UnpublishScriptRequest",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "pending",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "go-content",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "9a25fa1422032dc5d2f5f12ab0475850f35f3092ab03c98e8aa047cc5a4abe15",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.update-script-request",
+      "name": "UpdateScriptRequest",
+      "definition": "#/$defs/UpdateScriptRequest",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "pending",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "go-content",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "f71765250228062cb9a37be929dafd256e192291d10bc43d43b6e55d76b4759d",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.public.user-i-d",
+      "name": "UserID",
+      "definition": "#/$defs/UserID",
+      "version": "1.0.0",
+      "schema_type": "public",
+      "status": "active",
+      "decision_status": "accepted",
+      "compatibility": "backward",
+      "active": true,
+      "active_version": "1.0.0",
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "f54540ac0c7f01dd77aa5e99c59660b2ef553d7617eff76899a6519831b8f656",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "active",
+          "compatibility": "backward",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.public.user-profile",
+      "name": "UserProfile",
+      "definition": "#/$defs/UserProfile",
+      "version": "1.0.0",
+      "schema_type": "public",
+      "status": "active",
+      "decision_status": "accepted",
+      "compatibility": "backward",
+      "active": true,
+      "active_version": "1.0.0",
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "b0a6c2734550c4600b67e472a234c5a927be9d846f69935baf8e76042dad0da1",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "active",
+          "compatibility": "backward",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.user-statistics",
+      "name": "UserStatistics",
+      "definition": "#/$defs/UserStatistics",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "pending",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "8109812cefe53842a44ea80af3e34c20752958d93947103e4d5fc132d912ee9c",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.public.user-summary",
+      "name": "UserSummary",
+      "definition": "#/$defs/UserSummary",
+      "version": "1.0.0",
+      "schema_type": "public",
+      "status": "active",
+      "decision_status": "accepted",
+      "compatibility": "backward",
+      "active": true,
+      "active_version": "1.0.0",
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "12fd6e95d15ec7c905edf80d4c0148fb12f7d12163bfe3b60805b897ea47f43c",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "active",
+          "compatibility": "backward",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.validate-script-version-request",
+      "name": "ValidateScriptVersionRequest",
+      "definition": "#/$defs/ValidateScriptVersionRequest",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "pending",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "go-content",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "9142d730c0703f79d96e06578e97b3a9a15ba06fb8ca4b3e4438aff286a73c72",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.validation-issue",
+      "name": "ValidationIssue",
+      "definition": "#/$defs/ValidationIssue",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "pending",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "ca785976739b8627a80fd3a66fbe8208a917b9c9de5dab2ebf12a4f2d3f79eb7",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.visibility-scope",
+      "name": "VisibilityScope",
+      "definition": "#/$defs/VisibilityScope",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "pending",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "a2b5ab3035919142e9080b1cdaf9623d0ee80eeb0f86aeeb59dda524885b1a06",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.vote-submitted",
+      "name": "VoteSubmitted",
+      "definition": "#/$defs/VoteSubmitted",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "go-game",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "f48877dc7a3ad0d1e50704d6a2a5d8c0141e1edd81284007c0d2be2cae06e393",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.internal.web-socket-envelope",
+      "name": "WebSocketEnvelope",
+      "definition": "#/$defs/WebSocketEnvelope",
+      "version": "1.0.0",
+      "schema_type": "internal",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "b580ee4747d2c923a240fd216282cfe3d299c6be014a3e24078f60afb023ba1a",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "schema_id": "mv.experimental.web-socket-stream",
+      "name": "WebSocketStream",
+      "definition": "#/$defs/WebSocketStream",
+      "version": "1.0.0",
+      "schema_type": "experimental",
+      "status": "experimental",
+      "decision_status": "proposed",
+      "compatibility": "none",
+      "active": false,
+      "active_version": null,
+      "owner": "contracts",
+      "created_at": "2026-11-25T00:00:00Z",
+      "deprecated_at": null,
+      "sunset_at": null,
+      "definition_sha256": "5feed9729088bafe5a164d8d134fe53b88ed54210546223fd9a32e2188bda650",
+      "version_history": [
+        {
+          "version": "1.0.0",
+          "status": "experimental",
+          "compatibility": "none",
+          "created_at": "2026-11-25T00:00:00Z"
+        }
+      ]
+    }
+  ],
+  "runtime_bindings": {
+    "demo_result": {
+      "task_type": "demo",
+      "definition": "DemoAgentOutput",
+      "schema_version": 1,
+      "status": "active"
+    }
+  }
+}

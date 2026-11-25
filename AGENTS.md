@@ -329,8 +329,9 @@ BLOCKED、DEFERRED 或未决契约不得通过假设继续实现。发现新冲�
 
 - 当前仓库已具备 Monorepo、Contracts、数据库迁移、数据访问平台、用户认证和等待房 REST 业务代码。后续任务不得把这些既有实现视为空仓库并重新生成。
 - 不得仅因设计文档存在就初始化项目；工程初始化必须由明确的 TASKS 任务或用户指令触发。
-- 当前决策状态为 3 项 Accepted、7 项 Proposed、0 项 Deferred；只有 Accepted
-  部分形成强制基线。
+- 当前 ADR 状态仍为 3 项 Accepted、7 项 Proposed；DQ-18/DQ-19 已获负责人批准
+  并完成测试级实现，DQ-20 至 DQ-22 仍为 Proposed。只有 Accepted ADR 和已批准
+  DQ 范围形成强制基线。
 - `GATE-API`、`GATE-WS`、`GATE-GAMESTATE`、`GATE-ADMIN` 只有在契约、生成物、迁移和测试实际存在后才能通过。
 - Proposed 决策获得负责人确认前，依赖它们的实时、事件、后台、Memory 和 AI 上下文任务不得冻结契约。
 - 当前 `docs/TASKS.md` 中 `P1-DB-006`、`P1-DB-007`、`P1-DB-008`、`P1-DB-009`、`P1-GO-009` 等仍受 Proposed ADR 或契约门禁限制；Phase 5、6、7 的多项任务为 `DEFERRED`。执行前必须重新读取实时状态。
@@ -346,14 +347,19 @@ BLOCKED、DEFERRED 或未决契约不得通过假设继续实现。发现新冲�
 - Task 8 已实现 Python 通用 LangGraph Agent Runtime、Mock/OpenAI-compatible
   Provider、注册式 Tool Registry、授权 Context Builder、非权威短期 Memory 端口、
   Trace/脱敏、内部 `/internal/v1/ai/agent-runs` 和最小 Go InternalAIClient。
-  当前只有 `demo` 任务级输出 Schema；AI DM/NPC/生成业务、MCP、mTLS/请求签名、
-  `mv_ai` trace 持久化与 LangGraph checkpoint 尚未实现，不得描述为 GATE-AI 已通过。
+  当时只有 `demo` 任务级输出 Schema；AI DM/NPC/生成业务、外部 MCP、`mv_ai`
+  trace 持久化与 LangGraph checkpoint 仍未实现，不得描述为 GATE-AI 已通过。
 - Task 9 已补充版本化输出 Schema Registry、可选 HMAC/timestamp/nonce 请求完整性
   原型、双签名密钥轮换窗口、D3/D4 默认上下文阻断、Tool trust/确认/结果上限和
-  进程内 Run 元数据原型。GATE-AI 仍未通过；正式 mTLS、外部 MCP、Checkpoint
-  持久化、真实 Provider 政策和业务 Schema 仍以
+  进程内 Run 元数据原型。GATE-AI 仍未通过；外部 MCP、Checkpoint 持久化、
+  真实 Provider 政策和业务 Schema 仍以
   `docs/architecture/gate-ai-checklist.md` 与 DQ-18 至 DQ-22 为准。
-- Task 10/11 已完成 DQ-18 至 DQ-22 候选设计和批准状态审计，但仓库中 DQ-18/DQ-19
-  仍为 Proposed。正式 Schema Registry、mTLS/KMS/共享 nonce/ACL 实施保持 BLOCKED，
-  见 `docs/architecture/task-11-approval-blockers.md`。
+- Task 10 已完成 DQ-18 至 DQ-22 候选设计。Task 11 经负责人 2026-11-25 授权后，
+  DQ-18 已实现正式 Contracts Registry、兼容性基线、Active Schema 和 Demo 输出
+  绑定；DQ-19 已实现 `mv-hmac-sha256-v1`、Key ID/Key Provider、nonce Store、
+  scope ACL、安全审计、FastAPI TLS 配置和 Go mTLS Client。真实 CA、KMS、Redis
+  多实例和生产 mTLS 部署仍为 `NOT VERIFIED`。
+- DQ-20 至 DQ-22、ADR-001/004/005/008 仍未被 Task 11 授权批准。外部 MCP、
+  Run/Checkpoint、真实 Provider、Memory、正式事件版本、暂停恢复和持久
+  PlayerContext 继续保持门禁，见 `docs/architecture/task-11-approval-blockers.md`。
 - 开始任何 TASKS 任务前，应先完成其契约缺口和依赖检查；不得把 BLOCKED、DEFERRED 或 P1 可选能力反向当作无争议的 P0 前置。

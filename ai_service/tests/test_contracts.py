@@ -9,6 +9,7 @@ from jsonschema import Draft202012Validator  # type: ignore[import-untyped]
 from pydantic import ValidationError
 
 from mysteryverse_ai.schemas.generated import models
+from mysteryverse_ai.schemas.registry import ContractsSchemaRegistry, SchemaRegistryError
 
 ROOT = Path(__file__).resolve().parents[2]
 SCHEMA_PATH = ROOT / "packages/contracts/json-schema/mysteryverse.schema.json"
@@ -142,3 +143,15 @@ def test_websocket_envelope_scope_rules() -> None:
     fake_game_id["game_id"] = game_envelope["game_id"]
     with pytest.raises(AssertionError):
         _validate_envelope_rules(schema, fake_game_id)
+
+
+def test_generated_schema_registry_selects_only_active_contracts() -> None:
+    registry = ContractsSchemaRegistry.load_default()
+    active = registry.active("DemoAgentOutput")
+    assert active.version == "1.0.0"
+    assert active.decision_status == "accepted"
+    assert registry.runtime_binding("demo_result").definition == "DemoAgentOutput"
+
+    with pytest.raises(SchemaRegistryError) as inactive:
+        registry.active("PlayerContext")
+    assert inactive.value.code == "SCHEMA_NOT_ACTIVE"

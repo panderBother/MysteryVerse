@@ -25,7 +25,7 @@ definitions will reference or generate component schemas from this source.
 | API | `ApiSuccessResponse`, `ApiErrorResponse`, `CursorPage`, `ParameterValidationError`, `BusinessErrorCode` |
 | Realtime | `WebSocketEnvelope`, `WebSocketStream` |
 | Events | `GameEvent` and the 11 MVP event payload types |
-| AI | `AgentRequest`, `AgentResponse`, `AgentExecutionContext`, `AgentExecutionLimits`, `AgentTaskType`, `AgentExecutionStatus`, `AgentTraceStep`, `AgentToolCall`, `PlayerContext`, `MemoryCandidate`, `ScriptGenerationRequest`, `ScriptGenerationResult`, `AIError` |
+| AI | `AgentRequest`, `AgentResponse`, `AgentExecutionContext`, `AgentExecutionLimits`, `AgentTaskType`, `AgentExecutionStatus`, `AgentTraceStep`, `AgentToolCall`, `PlayerContext`, `MemoryCandidate`, `ScriptGenerationRequest`, `ScriptGenerationResult`, `DemoAgentOutput`, `AIError` |
 | Script | `Script`, `Chapter`, `Character`, `Clue`, `Timeline`, `Relationship`, `Ending`, `Rule` |
 | Script Management | `Stage`, `ScriptAsset`, `ScriptVersion`, `ScriptCatalogItem`, `ScriptEditorContent`, `ScriptValidationIssue`, `ScriptValidationReport`, create/update/validate/publish requests |
 
@@ -35,7 +35,11 @@ definitions will reference or generate component schemas from this source.
 apps/web/src/generated/contracts.ts
 backend/internal/contracts/contracts_gen.go
 ai_service/src/mysteryverse_ai/schemas/generated/models.py
+ai_service/src/mysteryverse_ai/schemas/generated/active_output_schemas.py
+ai_service/src/mysteryverse_ai/schemas/generated/schema-registry.json
 compatibility/schema-fingerprint.json
+compatibility/schema-baseline-v1.json
+registry/schema-registry.json
 ```
 
 Generated files must not be edited by hand.
@@ -77,15 +81,33 @@ Root command equivalents:
 ./scripts/mv.ps1 contracts-check
 ```
 
+## Schema Registry
+
+`registry/schema-governance.json` contains version, Active, lifecycle, compatibility
+and runtime binding policy. The generator reads the policy and the authoritative
+JSON Schema definitions to produce `registry/schema-registry.json`.
+
+Runtime code only binds schemas marked `active`. The current formal output binding
+is `demo_result -> DemoAgentOutput@1`. Proposed business schemas remain
+`experimental` and cannot be treated as trusted Agent output.
+
+Detailed policy:
+
+```text
+../docs/architecture/contracts-registry.md
+```
+
 ## Change Process
 
 1. Update `json-schema/mysteryverse.schema.json`.
-2. Add or update a fixture in `examples/` and register it in
+2. Update `registry/schema-governance.json` when version, status or runtime
+   binding changes.
+3. Add or update a fixture in `examples/` and register it in
    `examples/manifest.json`.
-3. Run `./scripts/contracts.ps1 generate`.
-4. Run `./scripts/contracts.ps1 check`.
-5. Review generated code diffs and the schema fingerprint.
-6. Do not manually patch generated models.
+4. Run `./scripts/contracts.ps1 generate`.
+5. Run `./scripts/contracts.ps1 check`.
+6. Review generated code, compatibility findings, Registry and fingerprint diffs.
+7. Do not manually patch generated models or Registry artifacts.
 
 ## Compatibility
 
@@ -96,17 +118,20 @@ Root command equivalents:
 - WebSocket payload changes require a new schema version and compatible
   `mvws.v1` behavior.
 - ID values remain pure 26-character ULIDs.
+- Breaking changes fail against `compatibility/schema-baseline-v1.json` until a
+  reviewed baseline or migration path is approved.
 
 ## Decision Gate
 
 ADR-003, ADR-009 and ADR-010 are `Accepted`.
 
-WebSocket, event versioning, Memory, PlayerContext, Agent Runtime extensions,
-script editor, stage DSL, ending conditions and voting policy contracts remain
-`Proposed`. They are generated and tested as candidates, but they must not be
-presented as approved production contracts until the corresponding ADR is
-accepted. The Task 7 APIs actively reject unsupported non-empty condition DSL
-and public publish; Task 8 only enables the `demo` Agent output schema.
+DQ-18 Contracts Registry and DQ-19 internal service security are `Approved`.
+WebSocket, event versioning, Memory, PlayerContext, script editor, stage DSL,
+ending conditions and voting policy contracts still depend on `Proposed` ADRs.
+They are generated and tested as candidates, but they must not be presented as
+approved production contracts. The Task 7 APIs actively reject unsupported
+non-empty condition DSL and public publish; the Agent Runtime only enables the
+`demo` output schema and one formal Active binding.
 
 The game-scoped `game_id` rule uses the schema extension
 `x-envelope-rules`; the contract validator and language tests enforce this rule

@@ -16,17 +16,48 @@ from mysteryverse_ai.api.dependencies import (
 )
 from mysteryverse_ai.errors import AppError
 from mysteryverse_ai.schemas.generated.models import AgentRequest, AgentResponse
+from mysteryverse_ai.security.acl import (
+    AclError,
+    ServicePrincipal,
+    authorize_resource,
+)
+from mysteryverse_ai.security.audit import audit_security_event
 
-router = APIRouter(tags=["agent-runtime"], dependencies=[Depends(require_internal_service)])
+router = APIRouter(tags=["agent-runtime"])
 
 
 @router.post("/internal/v1/ai/agent-runs", response_model=AgentResponse)
 async def run_agent(
     payload: AgentRequest,
     request: Request,
+    principal: Annotated[ServicePrincipal, Depends(require_internal_service)],
     runtime: Annotated[AgentRuntime, Depends(get_agent_runtime)],
     idempotency: Annotated[InMemoryIdempotencyCache, Depends(get_idempotency_cache)],
 ) -> AgentResponse:
+    run_id = str(getattr(payload.run_id, "root", payload.run_id))
+    try:
+        authorize_resource(
+            principal,
+            resource_type="run",
+            resource_id=run_id,
+        )
+    except AclError as exc:
+        audit_security_event(
+            service_id=principal.service_id,
+            request_id=str(getattr(request.state, "request_id", "")),
+            key_id=principal.key_id,
+            action=f"ai:agent:run:{run_id}",
+            authentication="pass",
+            authorization="fail",
+            scopes=principal.scopes,
+            failure_reason=exc.reason,
+        )
+        raise AppError(
+            code=exc.reason,
+            message="The internal service is not authorized for this run.",
+            status_code=403,
+        ) from exc
+
     idempotency_key = request.headers.get("Idempotency-Key", "").strip()
     if not idempotency_key:
         raise AppError(
@@ -51,7 +82,7 @@ async def run_agent(
     resolved_trace_id = payload.trace_id or header_trace_id or payload.request_id
     resolved_payload = payload.model_copy(update={"trace_id": resolved_trace_id})
     digest = request_hash(resolved_payload.model_dump(mode="json"))
-    scope = str(resolved_payload.run_id)
+    scope = str(getattr(resolved_payload.run_id, "root", resolved_payload.run_id))
     cached = await idempotency.begin(
         scope=scope,
         idempotency_key=idempotency_key,

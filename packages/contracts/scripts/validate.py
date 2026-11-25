@@ -2,12 +2,18 @@ from __future__ import annotations
 
 import argparse
 import hashlib
-import json
 import sys
 from pathlib import Path
 from typing import Any
 
 from jsonschema import Draft202012Validator
+from schema_registry import (
+    RegistryValidationError,
+    build_registry,
+    check_baseline_compatibility,
+    load_json,
+    validate_registry,
+)
 
 REQUIRED_DEFINITIONS = {
     "UserID",
@@ -43,6 +49,7 @@ REQUIRED_DEFINITIONS = {
     "AgentToolCall",
     "AgentTraceStep",
     "AgentOutputValidationIssue",
+    "DemoAgentOutput",
     "PlayerContext",
     "MemoryCandidate",
     "ScriptGenerationRequest",
@@ -73,10 +80,6 @@ ID_DEFINITIONS = {
     "EventID",
     "MemoryID",
 }
-
-
-def load_json(path: Path) -> Any:
-    return json.loads(path.read_text(encoding="utf-8"))
 
 
 def validate_schema(schema: dict[str, Any]) -> None:
@@ -134,7 +137,9 @@ def validate_examples(root: Path, schema: dict[str, Any]) -> None:
         if definition == "WebSocketEnvelope":
             validate_envelope_rules(schema, document)
 
-        errors = sorted(validator.iter_errors(document), key=lambda error: list(error.path))
+        errors = sorted(
+            validator.iter_errors(document), key=lambda error: list(error.path)
+        )
 
         if errors:
             messages = "; ".join(error.message for error in errors)
@@ -167,6 +172,40 @@ def verify_fingerprint(root: Path, schema_path: Path) -> None:
         )
 
 
+def validate_registry_governance(
+    root: Path,
+    schema: dict[str, Any],
+) -> None:
+    governance = load_json(root / "packages/contracts/registry/schema-governance.json")
+    registry_path = root / "packages/contracts/registry/schema-registry.json"
+    stored_registry = load_json(registry_path)
+    expected_registry = build_registry(schema, governance)
+    validate_registry(schema, expected_registry)
+    if stored_registry != expected_registry:
+        raise RegistryValidationError(
+            "generated schema registry is stale; run contracts generation"
+        )
+
+    ai_registry = load_json(
+        root / "ai_service/src/mysteryverse_ai/schemas/generated/schema-registry.json"
+    )
+    if ai_registry != expected_registry:
+        raise RegistryValidationError(
+            "AI service schema registry copy is stale; run contracts generation"
+        )
+
+    baseline = load_json(
+        root / "packages/contracts/compatibility/schema-baseline-v1.json"
+    )
+    findings = check_baseline_compatibility(baseline, schema)
+    errors = [finding for finding in findings if finding.severity == "error"]
+    if errors:
+        messages = "; ".join(f"{finding.path}: {finding.message}" for finding in errors)
+        raise RegistryValidationError(
+            f"breaking contract change without a new schema baseline: {messages}"
+        )
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--skip-fingerprint", action="store_true")
@@ -178,6 +217,7 @@ def main() -> int:
 
     validate_schema(schema)
     validate_examples(root, schema)
+    validate_registry_governance(root, schema)
     if not args.skip_fingerprint:
         verify_fingerprint(root, schema_path)
 
