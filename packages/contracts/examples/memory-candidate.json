@@ -1,0 +1,18 @@
+{
+  "candidate_id": "01J9Z3K4M7Q2R8T5V6W1XB0000",
+  "game_id": "01J9Z3K4M7Q2R8T5V6W1X20000",
+  "game_npc_id": "01J9Z3K4M7Q2R8T5V6W1XC0000",
+  "owner_actor_scope": "npc:01J9Z3K4M7Q2R8T5V6W1XC0000",
+  "memory_type": "promise",
+  "authority_class": "fact",
+  "summary": "The player promised to search for the missing brother.",
+  "source_event_ids": [
+    "01J9Z3K4M7Q2R8T5V6W1XD0000"
+  ],
+  "confidence": 0.93,
+  "importance": 80,
+  "proposed_expiry": "game_end",
+  "dedupe_key": "promise:missing-brother",
+  "run_id": "01J9Z3K4M7Q2R8T5V6W1XE0000",
+  "schema_version": 1
+}

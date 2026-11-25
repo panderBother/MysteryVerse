@@ -1,0 +1,28 @@
+{
+  "name": "mysteryverse",
+  "version": "0.1.0",
+  "private": true,
+  "description": "MysteryVerse multi-service monorepo",
+  "workspaces": [
+    "apps/*"
+  ],
+  "engines": {
+    "node": ">=22.18.0",
+    "npm": ">=11.0.0"
+  },
+  "packageManager": "npm@11.8.0",
+  "devDependencies": {
+    "ajv": "8.20.0",
+    "ajv-formats": "3.0.1",
+    "json-schema-to-typescript": "16.0.0"
+  },
+  "scripts": {
+    "dev:web": "npm --workspace @mysteryverse/web run dev",
+    "build:web": "npm --workspace @mysteryverse/web run build",
+    "test:web": "npm --workspace @mysteryverse/web run test:run",
+    "lint:web": "npm --workspace @mysteryverse/web run lint",
+    "typecheck:web": "npm --workspace @mysteryverse/web run typecheck",
+    "format:web": "npm --workspace @mysteryverse/web run format",
+    "format:check:web": "npm --workspace @mysteryverse/web run format:check"
+  }
+}

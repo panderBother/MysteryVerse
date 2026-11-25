@@ -1,0 +1,13 @@
+{
+  "job_id": "01J9Z3K4M7Q2R8T5V6W1XG0000",
+  "script_id": "01J9Z3K4M7Q2R8T5V6W1XF0000",
+  "source_document_uri": "s3://mysteryverse-dev/source/demo.docx",
+  "target_mode": "script_murder",
+  "language": "zh-CN",
+  "min_players": 4,
+  "max_players": 8,
+  "duration_minutes": 90,
+  "difficulty": "standard",
+  "locked_fields": [],
+  "schema_version": 1
+}

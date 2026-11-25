@@ -1,0 +1,13 @@
+{
+  "error": {
+    "code": "STATE_VERSION_CONFLICT",
+    "message": "Game state changed.",
+    "details": {
+      "expected_version": 17,
+      "current_version": 18
+    },
+    "retryable": true,
+    "request_id": "request-02",
+    "trace_id": "trace-02"
+  }
+}

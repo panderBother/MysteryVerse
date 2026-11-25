@@ -1,0 +1,20 @@
+{
+  "script_id": "01J9Z3K4M7Q2R8T5V6W1XF0000",
+  "script_version_id": "01J9Z3K4M7Q2R8T5V6W1XW0000",
+  "version_row_version": 7,
+  "status": "warning",
+  "blocking_issue_count": 0,
+  "warning_issue_count": 1,
+  "info_issue_count": 0,
+  "issues": [
+    {
+      "error_code": "VOTE_POLICY_SCHEMA_PENDING",
+      "severity": "warning",
+      "path": "version.rule_template_id",
+      "message": "Voting policy schema is not frozen; only explicitly supported policy can be published.",
+      "state": "checked",
+      "object_id": null
+    }
+  ],
+  "validated_at": "2026-11-23T12:00:00Z"
+}

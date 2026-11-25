@@ -1,0 +1,11 @@
+{
+  "data": {
+    "status": "ready",
+    "service": "go-api"
+  },
+  "meta": {
+    "request_id": "request-01",
+    "server_time": "2026-11-21T10:00:00Z",
+    "api_version": "v1"
+  }
+}

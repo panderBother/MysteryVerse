@@ -1,0 +1,66 @@
+{
+  "run_id": "01J9Z3K4M7Q2R8T5V6W1XE0000",
+  "request_id": "agent-runtime-request-01",
+  "trace_id": "01J9Z3K4M7Q2R8T5V6W1XT0000",
+  "schema_version": 1,
+  "status": "succeeded",
+  "output_schema_key": "demo_result",
+  "output_schema_version": 1,
+  "validation_errors": [],
+  "output": {
+    "speech": "The authorized context contains one public clue.",
+    "intent": {
+      "task_type": "demo"
+    },
+    "referenced_event_ids": [],
+    "visibility": "runtime"
+  },
+  "structured_output": {
+    "answer": "The authorized context contains one public clue.",
+    "confidence": 0.9,
+    "used_tool": true
+  },
+  "tool_calls": [
+    {
+      "call_id": "call-1",
+      "tool_name": "mock_context_lookup",
+      "arguments_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "status": "succeeded",
+      "duration_ms": 3,
+      "error_code": null
+    }
+  ],
+  "steps": [
+    {
+      "step_index": 0,
+      "step_type": "model",
+      "name": "mock-deterministic",
+      "status": "succeeded",
+      "duration_ms": 2,
+      "model_name": "mock-v1",
+      "input_tokens": 120,
+      "output_tokens": 20,
+      "error_code": null,
+      "summary_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+    },
+    {
+      "step_index": 1,
+      "step_type": "tool",
+      "name": "mock_context_lookup",
+      "status": "succeeded",
+      "duration_ms": 3,
+      "model_name": null,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error_code": null,
+      "summary_hash": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+    }
+  ],
+  "safety_flags": [],
+  "usage": {
+    "input_tokens": 240,
+    "output_tokens": 45,
+    "cost_usd": "0.0001"
+  },
+  "error": null
+}

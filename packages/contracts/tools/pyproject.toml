@@ -1,0 +1,10 @@
+[project]
+name = "mysteryverse-contracts-tools"
+version = "0.1.0"
+description = "Reproducible generators and validators for MysteryVerse contracts"
+requires-python = ">=3.12"
+dependencies = [
+  "datamodel-code-generator==0.99.0",
+  "jsonschema==4.26.0",
+  "pyyaml==6.0.4",
+]

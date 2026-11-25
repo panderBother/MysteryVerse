@@ -1,0 +1,20 @@
+{
+  "run_id": "01J9Z3K4M7Q2R8T5V6W1XE0000",
+  "request_id": "agent-request-01",
+  "actor_type": "dm",
+  "actor_id": "dm:01J9Z3K4M7Q2R8T5V6W1X20000",
+  "game_id": "01J9Z3K4M7Q2R8T5V6W1X20000",
+  "script_id": "01J9Z3K4M7Q2R8T5V6W1XF0000",
+  "phase_key": "search_round_1",
+  "state_version": 9,
+  "event_seq": 18,
+  "allowed_entity_ids": [
+    "01J9Z3K4M7Q2R8T5V6W1X80000"
+  ],
+  "requested_topics": [
+    "current_phase",
+    "public_clues"
+  ],
+  "schema_version": 1,
+  "budget_ms": 10000
+}

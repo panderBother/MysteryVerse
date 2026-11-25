@@ -1,0 +1,18 @@
+{
+  "stage_id": "01J9Z3K4M7Q2R8T5V6W1XD0000",
+  "chapter_id": "01J9Z3K4M7Q2R8T5V6W1XK0000",
+  "stage_key": "search-round-1",
+  "phase_type": "search",
+  "sequence_no": 3,
+  "title": "Search Round 1",
+  "entry_conditions": null,
+  "exit_conditions": null,
+  "timeout_seconds": 600,
+  "fallback_action": "advance_to_discussion",
+  "allowed_actions": [
+    "search",
+    "advance_phase"
+  ],
+  "visibility": "room",
+  "is_terminal": false
+}

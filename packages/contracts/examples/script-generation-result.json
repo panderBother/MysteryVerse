@@ -1,0 +1,11 @@
+{
+  "job_id": "01J9Z3K4M7Q2R8T5V6W1XG0000",
+  "script_id": "01J9Z3K4M7Q2R8T5V6W1XF0000",
+  "artifact_id": "01J9Z3K4M7Q2R8T5V6W1XH0000",
+  "artifact_uri": "s3://mysteryverse-dev/artifacts/demo-package.json.gz",
+  "validation_status": "passed",
+  "blocking_issue_count": 0,
+  "content_hash": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+  "schema_version": 1,
+  "generated_at": "2026-11-21T10:10:00Z"
+}

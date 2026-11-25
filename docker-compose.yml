@@ -1,0 +1,96 @@
+name: mysteryverse
+
+services:
+  mysql:
+    image: mysql:8.0.36
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-change-me-root-password}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-mysteryverse}
+      MYSQL_USER: ${MYSQL_USER:-mysteryverse}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-change-me-db-password}
+      TZ: UTC
+    ports:
+      - "${MYSQL_PORT:-3306}:3306"
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_0900_ai_ci
+      - --default-time-zone=+00:00
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "mysqladmin ping -h 127.0.0.1 -uroot -p\"$${MYSQL_ROOT_PASSWORD}\" --silent"
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
+
+  redis:
+    image: redis:7.2.7-alpine
+    restart: unless-stopped
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-change-me-redis-password}
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    command:
+      [
+        "sh",
+        "-c",
+        "redis-server --appendonly yes --requirepass \"$${REDIS_PASSWORD}\""
+      ]
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "redis-cli -a \"$${REDIS_PASSWORD}\" ping | grep PONG"
+        ]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  ai:
+    build:
+      context: .
+      dockerfile: deploy/docker/ai.Dockerfile
+    restart: unless-stopped
+    environment:
+      AI_ENVIRONMENT: ${AI_ENVIRONMENT:-development}
+      AI_LOG_LEVEL: ${AI_LOG_LEVEL:-INFO}
+      AI_HOST: 0.0.0.0
+      AI_PORT: 8000
+      AI_DATABASE_URL: ${AI_DATABASE_URL:-}
+      AI_REDIS_URL: ${AI_REDIS_URL:-}
+      AI_MODEL_PROVIDER: ${AI_MODEL_PROVIDER:-mock}
+      AI_MODEL_NAME: ${AI_MODEL_NAME:-mock-v1}
+      AI_MODEL_BASE_URL: ${AI_MODEL_BASE_URL:-https://api.openai.com/v1}
+      AI_MODEL_API_KEY: ${AI_MODEL_API_KEY:-}
+      AI_INTERNAL_SERVICE_ID: ${AI_INTERNAL_SERVICE_ID:-go-core}
+      AI_INTERNAL_SERVICE_TOKEN: ${AI_INTERNAL_SERVICE_TOKEN:-change-me-ai-internal-token}
+      AI_INTERNAL_REQUEST_SIGNING_KEY: ${AI_INTERNAL_REQUEST_SIGNING_KEY:-}
+      AI_INTERNAL_REQUEST_SIGNING_PREVIOUS_KEY: ${AI_INTERNAL_REQUEST_SIGNING_PREVIOUS_KEY:-}
+      AI_INTERNAL_SIGNATURE_WINDOW_SECONDS: ${AI_INTERNAL_SIGNATURE_WINDOW_SECONDS:-300}
+      AI_ALLOW_RESTRICTED_MODEL_CONTEXT: ${AI_ALLOW_RESTRICTED_MODEL_CONTEXT:-false}
+    ports:
+      - "127.0.0.1:${AI_PORT:-8000}:8000"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health/ready', timeout=2)"
+        ]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
+
+volumes:
+  mysql_data:
+  redis_data:

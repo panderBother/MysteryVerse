@@ -1,0 +1,108 @@
+@import "tailwindcss";
+
+@theme {
+  --color-canvas: rgb(var(--mv-canvas));
+  --color-surface: rgb(var(--mv-surface));
+  --color-surface-raised: rgb(var(--mv-surface-raised));
+  --color-content-primary: rgb(var(--mv-text-primary));
+  --color-content-secondary: rgb(var(--mv-text-secondary));
+  --color-content-muted: rgb(var(--mv-text-muted));
+  --color-border-subtle: rgb(var(--mv-border-subtle));
+  --color-border-strong: rgb(var(--mv-border-strong));
+  --color-action: rgb(var(--mv-action-primary));
+  --color-action-ink: rgb(var(--mv-action-ink));
+  --color-focus: rgb(var(--mv-focus));
+  --color-state-success: rgb(var(--mv-state-success));
+  --color-state-warning: rgb(var(--mv-state-warning));
+  --color-state-danger: rgb(var(--mv-state-danger));
+  --radius-control: 6px;
+  --radius-card: 8px;
+  --font-narrative: "Noto Serif SC", "Source Han Serif SC", "Songti SC", Georgia, serif;
+  --font-ui: "Noto Sans SC", "Source Han Sans SC", "PingFang SC", Inter, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  --text-micro: 0.6875rem;
+  --text-caption: 0.75rem;
+  --text-ui: 0.875rem;
+  --text-body: 1rem;
+  --text-h3: 1.375rem;
+  --text-h2: 1.75rem;
+  --text-h1: 2.5rem;
+}
+
+:root,
+[data-theme="archive"] {
+  --mv-canvas: 11 13 16;
+  --mv-surface: 20 24 29;
+  --mv-surface-raised: 29 35 42;
+  --mv-text-primary: 232 227 216;
+  --mv-text-secondary: 167 170 168;
+  --mv-text-muted: 128 134 135;
+  --mv-border-subtle: 44 51 58;
+  --mv-border-strong: 89 97 102;
+  --mv-action-primary: 212 162 92;
+  --mv-action-ink: 23 26 29;
+  --mv-focus: 226 179 109;
+  --mv-state-success: 77 130 115;
+  --mv-state-warning: 201 151 67;
+  --mv-state-danger: 179 77 75;
+}
+
+[data-theme="paper"] {
+  --mv-canvas: 241 237 228;
+  --mv-surface: 230 223 210;
+  --mv-surface-raised: 248 245 238;
+  --mv-text-primary: 23 26 29;
+  --mv-text-secondary: 83 88 89;
+  --mv-text-muted: 110 116 116;
+  --mv-border-subtle: 203 193 177;
+  --mv-border-strong: 126 128 121;
+  --mv-action-primary: 151 82 43;
+  --mv-action-ink: 248 245 238;
+  --mv-focus: 151 82 43;
+  --mv-state-success: 54 106 91;
+  --mv-state-warning: 148 103 25;
+  --mv-state-danger: 153 54 52;
+}
+
+@layer base {
+  * {
+    border-color: rgb(var(--mv-border-subtle));
+  }
+
+  html {
+    background: rgb(var(--mv-canvas));
+    color: rgb(var(--mv-text-primary));
+    font-family: var(--font-ui);
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    margin: 0;
+    min-width: 320px;
+    min-height: 100vh;
+  }
+
+  button,
+  a {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  button {
+    cursor: pointer;
+  }
+
+  button:disabled {
+    cursor: not-allowed;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}

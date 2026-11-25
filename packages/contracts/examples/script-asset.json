@@ -1,0 +1,11 @@
+{
+  "asset_id": "01J9Z3K4M7Q2R8T5V6W1XA0000",
+  "asset_key": "cover",
+  "asset_type": "cover_image",
+  "uri": "s3://mysteryverse-dev/scripts/cover.webp",
+  "mime_type": "image/webp",
+  "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "byte_size": 204800,
+  "visibility": "public",
+  "sensitivity": "D0"
+}

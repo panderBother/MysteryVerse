@@ -1,0 +1,18 @@
+{
+  "user": {
+    "id": "01J9Z3K4M7Q2R8T5V6W1XA0000",
+    "public_no": "MV000001ABCD",
+    "status": "active"
+  },
+  "profile": {
+    "nickname": "Alice",
+    "avatar_url": null,
+    "bio": null,
+    "locale": "zh-CN",
+    "timezone": "Asia/Shanghai",
+    "moderation_status": "approved",
+    "row_version": 1
+  },
+  "session_expires_at": "2026-11-22T10:00:00Z",
+  "csrf_token": "csrf_example_token_value"
+}

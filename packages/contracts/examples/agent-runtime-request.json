@@ -1,0 +1,55 @@
+{
+  "run_id": "01J9Z3K4M7Q2R8T5V6W1XE0000",
+  "request_id": "agent-runtime-request-01",
+  "trace_id": "01J9Z3K4M7Q2R8T5V6W1XT0000",
+  "actor_type": "dm",
+  "actor_id": "dm:01J9Z3K4M7Q2R8T5V6W1X20000",
+  "game_id": "01J9Z3K4M7Q2R8T5V6W1X20000",
+  "script_id": "01J9Z3K4M7Q2R8T5V6W1XF0000",
+  "phase_key": "search_round_1",
+  "state_version": 9,
+  "event_seq": 18,
+  "allowed_entity_ids": [
+    "01J9Z3K4M7Q2R8T5V6W1X80000"
+  ],
+  "requested_topics": [
+    "demo_context"
+  ],
+  "task_type": "demo",
+  "task_goal": "Summarize the authorized demo context.",
+  "output_schema_key": "demo_result",
+  "output_schema_version": 1,
+  "context": {
+    "task_context": "Use only the supplied authorized context.",
+    "game_context": {
+      "phase": "search_round_1",
+      "summary": "A public clue was revealed."
+    },
+    "recent_messages": [
+      {
+        "role": "user",
+        "content": "Find the current public clue.",
+        "sensitivity": "D0",
+        "source_ref": null
+      }
+    ],
+    "history_summary": null,
+    "user_preferences": {
+      "language": "zh-CN"
+    }
+  },
+  "allowed_tools": [
+    "mock_context_lookup"
+  ],
+  "allowed_permissions": [
+    "context:read"
+  ],
+  "execution_limits": {
+    "timeout_ms": 5000,
+    "max_steps": 4,
+    "max_context_tokens": 2000,
+    "max_output_tokens": 400
+  },
+  "schema_version": 1,
+  "budget_ms": 5000
+}

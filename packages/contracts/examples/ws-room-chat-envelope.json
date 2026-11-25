@@ -1,0 +1,22 @@
+{
+  "event_id": "01J9Z3K4M7Q2R8T5V6W1XA1000",
+  "event_type": "room.message_received",
+  "stream": "room_chat",
+  "stream_id": "01J9Z3K4M7Q2R8T5V6W1X20000",
+  "seq": 18,
+  "schema_version": 1,
+  "timestamp": "2026-11-21T10:00:00Z",
+  "payload": {
+    "message_id": "01J9Z3K4M7Q2R8T5V6W1X90000",
+    "event_id": "01J9Z3K4M7Q2R8T5V6W1XA1000",
+    "sender": {
+      "user_id": "01J9Z3K4M7Q2R8T5V6W1XA0000",
+      "display_name": "Alice",
+      "avatar_url": null
+    },
+    "text": "Are you ready?",
+    "chat_seq": 18,
+    "sent_at": "2026-11-21T10:00:00Z",
+    "moderation_status": "allowed"
+  }
+}

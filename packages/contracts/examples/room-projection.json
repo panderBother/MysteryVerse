@@ -1,0 +1,43 @@
+{
+  "room": {
+    "id": "01J9Z3K4M7Q2R8T5V6W1X20000",
+    "game_type": "script_murder",
+    "script_version_id": "01J9Z3K4M7Q2R8T5V6W1XW0000",
+    "title": "Friday Harbor",
+    "host_user_id": "01J9Z3K4M7Q2R8T5V6W1XA0000",
+    "visibility": "public",
+    "has_password": false,
+    "capacity": {
+      "min": 4,
+      "max": 6
+    },
+    "status": "waiting",
+    "room_event_seq": 3,
+    "expires_at": "2026-11-21T12:00:00Z",
+    "row_version": 3
+  },
+  "members": [
+    {
+      "id": "01J9Z3K4M7Q2R8T5V6W1XR0000",
+      "user_id": "01J9Z3K4M7Q2R8T5V6W1XA0000",
+      "public_no": "MV000001ABCD",
+      "nickname": "Alice",
+      "avatar_url": null,
+      "seat_no": 1,
+      "room_role": "host",
+      "member_status": "ready",
+      "ready_at": "2026-11-21T10:01:00Z",
+      "joined_at": "2026-11-21T10:00:00Z"
+    }
+  ],
+  "viewer_capabilities": [
+    "leave_room",
+    "send_waiting_message",
+    "unready",
+    "close_room",
+    "transfer_host",
+    "kick"
+  ],
+  "room_event_seq": 3,
+  "can_start": false
+}

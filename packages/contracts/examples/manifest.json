@@ -1,0 +1,96 @@
+{
+  "examples": [
+    {
+      "file": "api-success.json",
+      "definition": "ApiSuccessResponse"
+    },
+    {
+      "file": "api-error.json",
+      "definition": "ApiErrorResponse"
+    },
+    {
+      "file": "parameter-validation-error.json",
+      "definition": "ParameterValidationError"
+    },
+    {
+      "file": "cursor-page.json",
+      "definition": "CursorPage"
+    },
+    {
+      "file": "ws-game-envelope.json",
+      "definition": "WebSocketEnvelope"
+    },
+    {
+      "file": "ws-room-envelope.json",
+      "definition": "WebSocketEnvelope"
+    },
+    {
+      "file": "game-created.json",
+      "definition": "GameCreated"
+    },
+    {
+      "file": "phase-changed.json",
+      "definition": "PhaseChanged"
+    },
+    {
+      "file": "memory-candidate.json",
+      "definition": "MemoryCandidate"
+    },
+    {
+      "file": "agent-request.json",
+      "definition": "AgentRequest"
+    },
+    {
+      "file": "agent-response.json",
+      "definition": "AgentResponse"
+    },
+    {
+      "file": "agent-runtime-request.json",
+      "definition": "AgentRequest"
+    },
+    {
+      "file": "agent-runtime-response.json",
+      "definition": "AgentResponse"
+    },
+    {
+      "file": "script-generation-request.json",
+      "definition": "ScriptGenerationRequest"
+    },
+    {
+      "file": "script-generation-result.json",
+      "definition": "ScriptGenerationResult"
+    },
+    {
+      "file": "script.json",
+      "definition": "Script"
+    },
+    {
+      "file": "stage.json",
+      "definition": "Stage"
+    },
+    {
+      "file": "script-asset.json",
+      "definition": "ScriptAsset"
+    },
+    {
+      "file": "script-validation-report.json",
+      "definition": "ScriptValidationReport"
+    },
+    {
+      "file": "auth-session.json",
+      "definition": "AuthSessionResponse"
+    },
+    {
+      "file": "room-projection.json",
+      "definition": "RoomProjection"
+    },
+    {
+      "file": "room-message.json",
+      "definition": "RoomMessage"
+    },
+    {
+      "file": "ws-room-chat-envelope.json",
+      "definition": "WebSocketEnvelope"
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+contractVersion: 1.0.0
+schema:
+  source: json-schema/mysteryverse.schema.json
+  language: json-schema-2020-12
+generators:
+  typescript:
+    tool: json-schema-to-typescript
+    version: 16.0.0
+    output: ../../apps/web/src/generated/contracts.ts
+    options:
+      - --unreachableDefinitions
+      - --additionalProperties=false
+  go:
+    tool: github.com/atombender/go-jsonschema
+    version: v0.22.0
+    output: ../../backend/internal/contracts/contracts_gen.go
+    package: contracts
+  python:
+    tool: datamodel-code-generator
+    version: 0.99.0
+    output: ../../ai_service/src/mysteryverse_ai/schemas/generated/models.py
+    modelType: pydantic_v2.BaseModel
+verification:
+  schemaFingerprint: compatibility/schema-fingerprint.json
+  examplesManifest: examples/manifest.json

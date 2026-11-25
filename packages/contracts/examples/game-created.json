@@ -1,0 +1,15 @@
+{
+  "event_id": "01J9Z3K4M7Q2R8T5V6W1X60000",
+  "game_id": "01J9Z3K4M7Q2R8T5V6W1X20000",
+  "room_id": "01J9Z3K4M7Q2R8T5V6W1X40000",
+  "script_version_id": "01J9Z3K4M7Q2R8T5V6W1X70000",
+  "seq": 1,
+  "state_version": 1,
+  "game_type": "script_murder",
+  "player_ids": [
+    "01J9Z3K4M7Q2R8T5V6W1X80000",
+    "01J9Z3K4M7Q2R8T5V6W1X90000"
+  ],
+  "occurred_at": "2026-11-21T10:00:02Z",
+  "event_type": "game.created"
+}

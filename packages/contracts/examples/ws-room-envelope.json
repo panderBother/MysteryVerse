@@ -1,0 +1,13 @@
+{
+  "event_id": "01J9Z3K4M7Q2R8T5V6W1X30000",
+  "event_type": "room.player_ready",
+  "stream": "room",
+  "stream_id": "01J9Z3K4M7Q2R8T5V6W1X40000",
+  "seq": 7,
+  "schema_version": 1,
+  "timestamp": "2026-11-21T10:00:01Z",
+  "payload": {
+    "player_id": "01J9Z3K4M7Q2R8T5V6W1X50000",
+    "ready": true
+  }
+}

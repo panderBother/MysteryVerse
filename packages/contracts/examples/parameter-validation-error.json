@@ -1,0 +1,9 @@
+{
+  "field_errors": [
+    {
+      "field": "limit",
+      "code": "OUT_OF_RANGE",
+      "message": "limit must be between 1 and 100"
+    }
+  ]
+}

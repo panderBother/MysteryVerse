@@ -1,0 +1,4747 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.mysteryverse.example/mysteryverse.schema.json",
+  "title": "MysteryVerseContracts",
+  "description": "Single authoritative JSON Schema source for MysteryVerse cross-service contracts.",
+  "x-contract-version": "1.0.0",
+  "x-contract-status": "mixed",
+  "x-approved-adrs": [
+    "ADR-003",
+    "ADR-009",
+    "ADR-010"
+  ],
+  "$defs": {
+    "Ulid": {
+      "title": "Ulid",
+      "description": "Pure 26-character Crockford Base32 ULID.",
+      "type": "string",
+      "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$",
+      "x-id-type": true,
+      "x-contract-status": "accepted"
+    },
+    "UserID": {
+      "title": "UserID",
+      "description": "MysteryVerse user identifier.",
+      "type": "string",
+      "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$",
+      "x-id-type": true,
+      "x-contract-status": "accepted"
+    },
+    "RoomID": {
+      "title": "RoomID",
+      "description": "Game room identifier.",
+      "type": "string",
+      "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$",
+      "x-id-type": true,
+      "x-contract-status": "accepted"
+    },
+    "GameID": {
+      "title": "GameID",
+      "description": "Authoritative game session identifier.",
+      "type": "string",
+      "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$",
+      "x-id-type": true,
+      "x-contract-status": "accepted"
+    },
+    "PlayerID": {
+      "title": "PlayerID",
+      "description": "Game player seat identifier.",
+      "type": "string",
+      "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$",
+      "x-id-type": true,
+      "x-contract-status": "accepted"
+    },
+    "ScriptID": {
+      "title": "ScriptID",
+      "description": "Script aggregate identifier.",
+      "type": "string",
+      "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$",
+      "x-id-type": true,
+      "x-contract-status": "accepted"
+    },
+    "EventID": {
+      "title": "EventID",
+      "description": "Globally unique authoritative event identifier.",
+      "type": "string",
+      "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$",
+      "x-id-type": true,
+      "x-contract-status": "accepted"
+    },
+    "MemoryID": {
+      "title": "MemoryID",
+      "description": "Accepted long-term memory identifier.",
+      "type": "string",
+      "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$",
+      "x-id-type": true,
+      "x-contract-status": "proposed"
+    },
+    "ScriptVersionID": {
+      "title": "ScriptVersionID",
+      "type": "string",
+      "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$",
+      "x-id-type": true,
+      "x-contract-status": "accepted"
+    },
+    "MessageID": {
+      "title": "MessageID",
+      "type": "string",
+      "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$",
+      "x-id-type": true,
+      "x-contract-status": "proposed"
+    },
+    "JobID": {
+      "title": "JobID",
+      "type": "string",
+      "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$",
+      "x-id-type": true,
+      "x-contract-status": "proposed"
+    },
+    "RunID": {
+      "title": "RunID",
+      "type": "string",
+      "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$",
+      "x-id-type": true,
+      "x-contract-status": "proposed"
+    },
+    "CandidateID": {
+      "title": "CandidateID",
+      "type": "string",
+      "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$",
+      "x-id-type": true,
+      "x-contract-status": "proposed"
+    },
+    "ArtifactID": {
+      "title": "ArtifactID",
+      "type": "string",
+      "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$",
+      "x-id-type": true,
+      "x-contract-status": "proposed"
+    },
+    "ResultID": {
+      "title": "ResultID",
+      "type": "string",
+      "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$",
+      "x-id-type": true,
+      "x-contract-status": "proposed"
+    },
+    "IntentID": {
+      "title": "IntentID",
+      "type": "string",
+      "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$",
+      "x-id-type": true,
+      "x-contract-status": "proposed"
+    },
+    "NpcID": {
+      "title": "NpcID",
+      "type": "string",
+      "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$",
+      "x-id-type": true,
+      "x-contract-status": "proposed"
+    },
+    "RoleID": {
+      "title": "RoleID",
+      "type": "string",
+      "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$",
+      "x-id-type": true,
+      "x-contract-status": "proposed"
+    },
+    "CharacterID": {
+      "title": "CharacterID",
+      "type": "string",
+      "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$",
+      "x-id-type": true,
+      "x-contract-status": "proposed"
+    },
+    "ClueID": {
+      "title": "ClueID",
+      "type": "string",
+      "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$",
+      "x-id-type": true,
+      "x-contract-status": "proposed"
+    },
+    "ChapterID": {
+      "title": "ChapterID",
+      "type": "string",
+      "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$",
+      "x-id-type": true,
+      "x-contract-status": "proposed"
+    },
+    "TimelineID": {
+      "title": "TimelineID",
+      "type": "string",
+      "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$",
+      "x-id-type": true,
+      "x-contract-status": "proposed"
+    },
+    "TimelineEventID": {
+      "title": "TimelineEventID",
+      "type": "string",
+      "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$",
+      "x-id-type": true,
+      "x-contract-status": "proposed"
+    },
+    "RelationshipID": {
+      "title": "RelationshipID",
+      "type": "string",
+      "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$",
+      "x-id-type": true,
+      "x-contract-status": "proposed"
+    },
+    "EndingID": {
+      "title": "EndingID",
+      "type": "string",
+      "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$",
+      "x-id-type": true,
+      "x-contract-status": "proposed"
+    },
+    "RuleID": {
+      "title": "RuleID",
+      "type": "string",
+      "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$",
+      "x-id-type": true,
+      "x-contract-status": "proposed"
+    },
+    "FactID": {
+      "title": "FactID",
+      "type": "string",
+      "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$",
+      "x-id-type": true,
+      "x-contract-status": "proposed"
+    },
+    "Timestamp": {
+      "title": "Timestamp",
+      "type": "string",
+      "format": "date-time"
+    },
+    "GameType": {
+      "title": "GameType",
+      "type": "string",
+      "enum": [
+        "script_murder",
+        "werewolf",
+        "rpg"
+      ]
+    },
+    "VisibilityScope": {
+      "title": "VisibilityScope",
+      "type": "string",
+      "enum": [
+        "public",
+        "room",
+        "role",
+        "role_group",
+        "player",
+        "runtime",
+        "audit"
+      ]
+    },
+    "Sensitivity": {
+      "title": "Sensitivity",
+      "type": "string",
+      "enum": [
+        "D0",
+        "D1",
+        "D2",
+        "D3",
+        "D4"
+      ]
+    },
+    "EventClass": {
+      "title": "EventClass",
+      "type": "string",
+      "enum": [
+        "state",
+        "message",
+        "narrative",
+        "system",
+        "incident"
+      ]
+    },
+    "GameEventType": {
+      "title": "GameEventType",
+      "type": "string",
+      "enum": [
+        "game.created",
+        "room.player_joined",
+        "room.player_left",
+        "game.started",
+        "game.phase_changed",
+        "game.clue_unlocked",
+        "game.message_received",
+        "game.vote_submitted",
+        "game.paused",
+        "game.resumed",
+        "game.ended"
+      ]
+    },
+    "BusinessErrorCode": {
+      "title": "BusinessErrorCode",
+      "type": "string",
+      "enum": [
+        "VALIDATION_ERROR",
+        "INVALID_CURSOR",
+        "AUTH_REQUIRED",
+        "AUTH_INVALID",
+        "ACCOUNT_RESTRICTED",
+        "CSRF_INVALID",
+        "SESSION_REVOKED",
+        "FORBIDDEN_VIEW",
+        "FORBIDDEN_ACTION",
+        "NOT_ROOM_MEMBER",
+        "NOT_GAME_PLAYER",
+        "ROOM_NOT_FOUND",
+        "ROOM_FULL",
+        "ROOM_CLOSED",
+        "ROOM_NOT_WAITING",
+        "ALREADY_JOINED",
+        "PASSWORD_INVALID",
+        "HOST_REQUIRED",
+        "TARGET_NOT_MEMBER",
+        "MESSAGE_TOO_LONG",
+        "MUTED",
+        "PLAYERS_NOT_READY",
+        "PLAYER_COUNT_MISMATCH",
+        "CONTENT_UNAVAILABLE",
+        "IDENTIFIER_ALREADY_EXISTS",
+        "NICKNAME_CONFLICT",
+        "VERSION_CONFLICT",
+        "GAME_NOT_FOUND",
+        "GAME_NOT_STARTED",
+        "GAME_ALREADY_ENDED",
+        "STATE_VERSION_STALE",
+        "STATE_VERSION_CONFLICT",
+        "IDEMPOTENCY_CONFLICT",
+        "PHASE_NOT_ALLOWED",
+        "ACTION_NOT_ALLOWED",
+        "SEARCH_QUOTA_EXHAUSTED",
+        "CLUE_ALREADY_CLAIMED",
+        "VOTE_CLOSED",
+        "AI_TIMEOUT",
+        "AI_SAFETY_BLOCKED",
+        "PROVIDER_UNAVAILABLE",
+        "WORKFLOW_FAILED",
+        "SCRIPT_NOT_FOUND",
+        "VERSION_NOT_FOUND",
+        "VERSION_FROZEN",
+        "FORBIDDEN_EDIT",
+        "PUBLISH_BLOCKED",
+        "VALIDATION_STALE",
+        "UNSUPPORTED_OBJECT_TYPE",
+        "OBJECT_NOT_FOUND",
+        "OBJECT_TYPE_MISMATCH",
+        "PUBLICATION_NOT_FOUND",
+        "MODERATION_REQUIRED",
+        "DEPENDENCY_ERROR",
+        "RATE_LIMITED",
+        "INTERNAL_ERROR",
+        "SERVICE_UNAVAILABLE",
+        "OUTPUT_SCHEMA_NOT_FOUND",
+        "OUTPUT_SCHEMA_VERSION_UNSUPPORTED",
+        "REQUEST_SIGNATURE_INVALID",
+        "REQUEST_TIMESTAMP_INVALID",
+        "REQUEST_REPLAYED",
+        "TOOL_TRUST_BLOCKED",
+        "TOOL_CONFIRMATION_REQUIRED",
+        "SENSITIVE_CONTEXT_BLOCKED",
+        "RUN_NOT_FOUND",
+        "CHECKPOINT_UNAVAILABLE"
+      ]
+    },
+    "Metadata": {
+      "title": "Metadata",
+      "type": "object",
+      "additionalProperties": true
+    },
+    "SourceRef": {
+      "title": "SourceRef",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "source_document_id": {
+          "$ref": "#/$defs/Ulid"
+        },
+        "location": {
+          "type": "string"
+        },
+        "excerpt_hash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "uri": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "location"
+      ]
+    },
+    "ApiMeta": {
+      "title": "ApiMeta",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "request_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "server_time": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "api_version": {
+          "type": "string",
+          "const": "v1"
+        },
+        "idempotent_replay": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "request_id",
+        "server_time",
+        "api_version"
+      ]
+    },
+    "ApiSuccessResponse": {
+      "title": "ApiSuccessResponse",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "data": true,
+        "meta": {
+          "$ref": "#/$defs/ApiMeta"
+        }
+      },
+      "required": [
+        "data",
+        "meta"
+      ]
+    },
+    "CursorPage": {
+      "title": "CursorPage",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "items": {
+          "type": "array"
+        },
+        "next_cursor": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "items",
+        "next_cursor"
+      ]
+    },
+    "ValidationIssue": {
+      "title": "ValidationIssue",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "field": {
+          "type": "string"
+        },
+        "code": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "field",
+        "code",
+        "message"
+      ]
+    },
+    "ParameterValidationError": {
+      "title": "ParameterValidationError",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "field_errors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ValidationIssue"
+          }
+        }
+      },
+      "required": [
+        "field_errors"
+      ]
+    },
+    "ApiError": {
+      "title": "ApiError",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "$ref": "#/$defs/BusinessErrorCode"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": true,
+        "retryable": {
+          "type": "boolean"
+        },
+        "request_id": {
+          "type": "string"
+        },
+        "trace_id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "message",
+        "retryable"
+      ]
+    },
+    "ApiErrorResponse": {
+      "title": "ApiErrorResponse",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "error": {
+          "$ref": "#/$defs/ApiError"
+        }
+      },
+      "required": [
+        "error"
+      ]
+    },
+    "WebSocketStream": {
+      "title": "WebSocketStream",
+      "type": "string",
+      "enum": [
+        "system",
+        "room",
+        "room_chat",
+        "game",
+        "ai_progress",
+        "ai_stream"
+      ],
+      "x-contract-status": "proposed",
+      "x-decision": "ADR-002"
+    },
+    "WebSocketEnvelope": {
+      "title": "WebSocketEnvelope",
+      "description": "Unified server-to-client WebSocket envelope. Game-scoped streams require game_id; non-game streams must omit it.",
+      "type": "object",
+      "additionalProperties": false,
+      "x-contract-status": "proposed",
+      "x-decision": "ADR-002",
+      "properties": {
+        "event_id": {
+          "$ref": "#/$defs/EventID"
+        },
+        "event_type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "stream": {
+          "$ref": "#/$defs/WebSocketStream"
+        },
+        "stream_id": {
+          "$ref": "#/$defs/Ulid"
+        },
+        "seq": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "schema_version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "game_id": {
+          "$ref": "#/$defs/GameID"
+        },
+        "timestamp": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "payload": true
+      },
+      "required": [
+        "event_id",
+        "event_type",
+        "stream",
+        "stream_id",
+        "seq",
+        "schema_version",
+        "timestamp",
+        "payload"
+      ],
+      "x-envelope-rules": {
+        "game_id_required_streams": [
+          "game",
+          "ai_stream"
+        ],
+        "game_id_forbidden_streams": [
+          "system",
+          "room",
+          "room_chat",
+          "ai_progress"
+        ]
+      }
+    },
+    "GameEvent": {
+      "title": "GameEvent",
+      "type": "object",
+      "additionalProperties": false,
+      "x-contract-status": "proposed",
+      "x-decision": "ADR-004",
+      "properties": {
+        "event_id": {
+          "$ref": "#/$defs/EventID"
+        },
+        "game_id": {
+          "$ref": "#/$defs/GameID"
+        },
+        "seq": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "event_type": {
+          "$ref": "#/$defs/GameEventType"
+        },
+        "event_class": {
+          "$ref": "#/$defs/EventClass"
+        },
+        "actor_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "visibility": {
+          "$ref": "#/$defs/VisibilityScope"
+        },
+        "sensitivity": {
+          "$ref": "#/$defs/Sensitivity"
+        },
+        "state_version_before": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "state_version_after": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "payload": true,
+        "occurred_at": {
+          "$ref": "#/$defs/Timestamp"
+        }
+      },
+      "required": [
+        "event_id",
+        "game_id",
+        "seq",
+        "event_type",
+        "event_class",
+        "visibility",
+        "sensitivity",
+        "payload",
+        "occurred_at"
+      ]
+    },
+    "GameCreated": {
+      "title": "GameCreated",
+      "type": "object",
+      "additionalProperties": false,
+      "x-contract-status": "proposed",
+      "properties": {
+        "event_id": {
+          "$ref": "#/$defs/EventID"
+        },
+        "game_id": {
+          "$ref": "#/$defs/GameID"
+        },
+        "room_id": {
+          "$ref": "#/$defs/RoomID"
+        },
+        "script_version_id": {
+          "$ref": "#/$defs/ScriptVersionID"
+        },
+        "seq": {
+          "type": "integer",
+          "const": 1
+        },
+        "state_version": {
+          "type": "integer",
+          "const": 1
+        },
+        "game_type": {
+          "$ref": "#/$defs/GameType"
+        },
+        "player_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/PlayerID"
+          }
+        },
+        "occurred_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "event_type": {
+          "type": "string",
+          "const": "game.created"
+        }
+      },
+      "required": [
+        "event_id",
+        "game_id",
+        "room_id",
+        "script_version_id",
+        "seq",
+        "state_version",
+        "game_type",
+        "player_ids",
+        "occurred_at",
+        "event_type"
+      ]
+    },
+    "PlayerJoined": {
+      "title": "PlayerJoined",
+      "description": "Room-scoped player membership event. It has no game_id.",
+      "type": "object",
+      "additionalProperties": false,
+      "x-contract-status": "proposed",
+      "properties": {
+        "event_id": {
+          "$ref": "#/$defs/EventID"
+        },
+        "room_id": {
+          "$ref": "#/$defs/RoomID"
+        },
+        "player_id": {
+          "$ref": "#/$defs/PlayerID"
+        },
+        "user_id": {
+          "$ref": "#/$defs/UserID"
+        },
+        "seat_no": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "room_seq": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "occurred_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "event_type": {
+          "type": "string",
+          "const": "room.player_joined"
+        }
+      },
+      "required": [
+        "event_id",
+        "room_id",
+        "player_id",
+        "seat_no",
+        "room_seq",
+        "occurred_at",
+        "event_type"
+      ]
+    },
+    "PlayerLeft": {
+      "title": "PlayerLeft",
+      "type": "object",
+      "additionalProperties": false,
+      "x-contract-status": "proposed",
+      "properties": {
+        "event_id": {
+          "$ref": "#/$defs/EventID"
+        },
+        "room_id": {
+          "$ref": "#/$defs/RoomID"
+        },
+        "player_id": {
+          "$ref": "#/$defs/PlayerID"
+        },
+        "user_id": {
+          "$ref": "#/$defs/UserID"
+        },
+        "room_seq": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "reason": {
+          "type": "string",
+          "enum": [
+            "left",
+            "kicked",
+            "disconnected_timeout",
+            "room_closed"
+          ]
+        },
+        "occurred_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "event_type": {
+          "type": "string",
+          "const": "room.player_left"
+        }
+      },
+      "required": [
+        "event_id",
+        "room_id",
+        "player_id",
+        "room_seq",
+        "reason",
+        "occurred_at",
+        "event_type"
+      ]
+    },
+    "GameStarted": {
+      "title": "GameStarted",
+      "type": "object",
+      "additionalProperties": false,
+      "x-contract-status": "proposed",
+      "properties": {
+        "event_id": {
+          "$ref": "#/$defs/EventID"
+        },
+        "game_id": {
+          "$ref": "#/$defs/GameID"
+        },
+        "seq": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "state_version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "game_type": {
+          "$ref": "#/$defs/GameType"
+        },
+        "engine_version": {
+          "type": "string"
+        },
+        "occurred_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "event_type": {
+          "type": "string",
+          "const": "game.started"
+        }
+      },
+      "required": [
+        "event_id",
+        "game_id",
+        "seq",
+        "state_version",
+        "game_type",
+        "engine_version",
+        "occurred_at",
+        "event_type"
+      ]
+    },
+    "PhaseChanged": {
+      "title": "PhaseChanged",
+      "type": "object",
+      "additionalProperties": false,
+      "x-contract-status": "proposed",
+      "properties": {
+        "event_id": {
+          "$ref": "#/$defs/EventID"
+        },
+        "game_id": {
+          "$ref": "#/$defs/GameID"
+        },
+        "seq": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "state_version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "previous_phase_key": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "phase_key": {
+          "type": "string"
+        },
+        "deadline_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "available_actions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "occurred_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "event_type": {
+          "type": "string",
+          "const": "game.phase_changed"
+        }
+      },
+      "required": [
+        "event_id",
+        "game_id",
+        "seq",
+        "state_version",
+        "phase_key",
+        "deadline_at",
+        "available_actions",
+        "occurred_at",
+        "event_type"
+      ]
+    },
+    "ClueDiscovered": {
+      "title": "ClueDiscovered",
+      "type": "object",
+      "additionalProperties": false,
+      "x-contract-status": "proposed",
+      "properties": {
+        "event_id": {
+          "$ref": "#/$defs/EventID"
+        },
+        "game_id": {
+          "$ref": "#/$defs/GameID"
+        },
+        "seq": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "state_version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "clue_id": {
+          "$ref": "#/$defs/ClueID"
+        },
+        "discoverer_player_id": {
+          "$ref": "#/$defs/PlayerID"
+        },
+        "visibility": {
+          "$ref": "#/$defs/VisibilityScope"
+        },
+        "occurred_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "event_type": {
+          "type": "string",
+          "const": "game.clue_unlocked"
+        }
+      },
+      "required": [
+        "event_id",
+        "game_id",
+        "seq",
+        "state_version",
+        "clue_id",
+        "discoverer_player_id",
+        "visibility",
+        "occurred_at",
+        "event_type"
+      ]
+    },
+    "MessageCreated": {
+      "title": "MessageCreated",
+      "type": "object",
+      "additionalProperties": false,
+      "x-contract-status": "proposed",
+      "properties": {
+        "event_id": {
+          "$ref": "#/$defs/EventID"
+        },
+        "game_id": {
+          "$ref": "#/$defs/GameID"
+        },
+        "seq": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "message_id": {
+          "$ref": "#/$defs/MessageID"
+        },
+        "message_type": {
+          "type": "string",
+          "enum": [
+            "public",
+            "private",
+            "dm",
+            "npc"
+          ]
+        },
+        "sender_player_id": {
+          "$ref": "#/$defs/PlayerID"
+        },
+        "recipient_player_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/PlayerID"
+          }
+        },
+        "visibility": {
+          "$ref": "#/$defs/VisibilityScope"
+        },
+        "occurred_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "event_type": {
+          "type": "string",
+          "const": "game.message_received"
+        }
+      },
+      "required": [
+        "event_id",
+        "game_id",
+        "seq",
+        "message_id",
+        "message_type",
+        "recipient_player_ids",
+        "visibility",
+        "occurred_at",
+        "event_type"
+      ]
+    },
+    "VoteSubmitted": {
+      "title": "VoteSubmitted",
+      "type": "object",
+      "additionalProperties": false,
+      "x-contract-status": "proposed",
+      "properties": {
+        "event_id": {
+          "$ref": "#/$defs/EventID"
+        },
+        "game_id": {
+          "$ref": "#/$defs/GameID"
+        },
+        "seq": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "state_version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "round_key": {
+          "type": "string"
+        },
+        "voter_player_id": {
+          "$ref": "#/$defs/PlayerID"
+        },
+        "target_player_id": {
+          "$ref": "#/$defs/PlayerID"
+        },
+        "ballot_type": {
+          "type": "string",
+          "enum": [
+            "vote",
+            "abstain"
+          ]
+        },
+        "occurred_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "event_type": {
+          "type": "string",
+          "const": "game.vote_submitted"
+        }
+      },
+      "required": [
+        "event_id",
+        "game_id",
+        "seq",
+        "state_version",
+        "round_key",
+        "voter_player_id",
+        "ballot_type",
+        "occurred_at",
+        "event_type"
+      ]
+    },
+    "GamePaused": {
+      "title": "GamePaused",
+      "type": "object",
+      "additionalProperties": false,
+      "x-contract-status": "proposed",
+      "properties": {
+        "event_id": {
+          "$ref": "#/$defs/EventID"
+        },
+        "game_id": {
+          "$ref": "#/$defs/GameID"
+        },
+        "seq": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "state_version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "remaining_ms": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "occurred_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "event_type": {
+          "type": "string",
+          "const": "game.paused"
+        }
+      },
+      "required": [
+        "event_id",
+        "game_id",
+        "seq",
+        "state_version",
+        "remaining_ms",
+        "occurred_at",
+        "event_type"
+      ]
+    },
+    "GameResumed": {
+      "title": "GameResumed",
+      "type": "object",
+      "additionalProperties": false,
+      "x-contract-status": "proposed",
+      "properties": {
+        "event_id": {
+          "$ref": "#/$defs/EventID"
+        },
+        "game_id": {
+          "$ref": "#/$defs/GameID"
+        },
+        "seq": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "state_version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "deadline_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "occurred_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "event_type": {
+          "type": "string",
+          "const": "game.resumed"
+        }
+      },
+      "required": [
+        "event_id",
+        "game_id",
+        "seq",
+        "state_version",
+        "deadline_at",
+        "occurred_at",
+        "event_type"
+      ]
+    },
+    "GameEnded": {
+      "title": "GameEnded",
+      "type": "object",
+      "additionalProperties": false,
+      "x-contract-status": "proposed",
+      "properties": {
+        "event_id": {
+          "$ref": "#/$defs/EventID"
+        },
+        "game_id": {
+          "$ref": "#/$defs/GameID"
+        },
+        "seq": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "state_version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "result_id": {
+          "$ref": "#/$defs/ResultID"
+        },
+        "result_code": {
+          "type": "string"
+        },
+        "occurred_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "event_type": {
+          "type": "string",
+          "const": "game.ended"
+        }
+      },
+      "required": [
+        "event_id",
+        "game_id",
+        "seq",
+        "state_version",
+        "result_id",
+        "result_code",
+        "occurred_at",
+        "event_type"
+      ]
+    },
+    "ActorType": {
+      "title": "ActorType",
+      "type": "string",
+      "enum": [
+        "dm",
+        "npc",
+        "ai_player",
+        "player_context",
+        "generator",
+        "reviewer"
+      ],
+      "x-contract-status": "proposed"
+    },
+    "MemoryType": {
+      "title": "MemoryType",
+      "type": "string",
+      "enum": [
+        "fact",
+        "dialog",
+        "inference",
+        "rumor",
+        "promise",
+        "emotion"
+      ],
+      "x-contract-status": "proposed"
+    },
+    "AuthorityClass": {
+      "title": "AuthorityClass",
+      "type": "string",
+      "enum": [
+        "fact",
+        "player_claim",
+        "inference",
+        "rumor"
+      ],
+      "x-contract-status": "proposed"
+    },
+    "PlayerContext": {
+      "title": "PlayerContext",
+      "type": "object",
+      "additionalProperties": false,
+      "x-contract-status": "proposed",
+      "x-decision": "ADR-008",
+      "properties": {
+        "player_id": {
+          "$ref": "#/$defs/PlayerID"
+        },
+        "game_id": {
+          "$ref": "#/$defs/GameID"
+        },
+        "role_id": {
+          "$ref": "#/$defs/RoleID"
+        },
+        "phase_key": {
+          "type": "string"
+        },
+        "state_version": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "event_seq": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "summary": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "known_fact_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/FactID"
+          }
+        },
+        "visible_event_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/EventID"
+          }
+        },
+        "available_actions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "expires_at": {
+          "$ref": "#/$defs/Timestamp"
+        }
+      },
+      "required": [
+        "player_id",
+        "game_id",
+        "phase_key",
+        "state_version",
+        "event_seq",
+        "known_fact_ids",
+        "visible_event_ids",
+        "available_actions"
+      ]
+    },
+    "AgentRequest": {
+      "title": "AgentRequest",
+      "type": "object",
+      "additionalProperties": false,
+      "x-contract-status": "proposed",
+      "x-decision": "ADR-008",
+      "properties": {
+        "run_id": {
+          "$ref": "#/$defs/RunID"
+        },
+        "request_id": {
+          "type": "string"
+        },
+        "actor_type": {
+          "$ref": "#/$defs/ActorType"
+        },
+        "actor_id": {
+          "type": "string"
+        },
+        "game_id": {
+          "$ref": "#/$defs/GameID"
+        },
+        "script_id": {
+          "$ref": "#/$defs/ScriptID"
+        },
+        "phase_key": {
+          "type": "string"
+        },
+        "state_version": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "event_seq": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "allowed_entity_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ulid"
+          }
+        },
+        "requested_topics": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "player_context": {
+          "$ref": "#/$defs/PlayerContext"
+        },
+        "task_type": {
+          "$ref": "#/$defs/AgentTaskType"
+        },
+        "task_goal": {
+          "type": "string",
+          "minLength": 1
+        },
+        "output_schema_key": {
+          "type": "string",
+          "minLength": 1
+        },
+        "output_schema_version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "context": {
+          "$ref": "#/$defs/AgentExecutionContext"
+        },
+        "allowed_tools": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "allowed_permissions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "execution_limits": {
+          "$ref": "#/$defs/AgentExecutionLimits"
+        },
+        "trace_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "schema_version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "budget_ms": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "run_id",
+        "request_id",
+        "actor_type",
+        "actor_id",
+        "allowed_entity_ids",
+        "requested_topics",
+        "schema_version",
+        "budget_ms"
+      ]
+    },
+    "AgentTaskType": {
+      "title": "AgentTaskType",
+      "type": "string",
+      "enum": [
+        "demo",
+        "rule_explanation",
+        "npc_reply",
+        "dm_narration",
+        "script_generation"
+      ],
+      "x-contract-status": "proposed"
+    },
+    "AgentExecutionContext": {
+      "title": "AgentExecutionContext",
+      "type": "object",
+      "additionalProperties": false,
+      "x-contract-status": "proposed",
+      "properties": {
+        "task_context": {
+          "type": "string"
+        },
+        "game_context": {
+          "$ref": "#/$defs/Metadata"
+        },
+        "recent_messages": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/AgentContextMessage"
+          }
+        },
+        "history_summary": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "user_preferences": {
+          "$ref": "#/$defs/Metadata"
+        }
+      },
+      "required": [
+        "recent_messages"
+      ]
+    },
+    "AgentContextMessage": {
+      "title": "AgentContextMessage",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "role": {
+          "type": "string",
+          "enum": [
+            "user",
+            "assistant",
+            "tool",
+            "system"
+          ]
+        },
+        "content": {
+          "type": "string"
+        },
+        "sensitivity": {
+          "$ref": "#/$defs/Sensitivity"
+        },
+        "source_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "role",
+        "content",
+        "sensitivity"
+      ]
+    },
+    "AgentExecutionLimits": {
+      "title": "AgentExecutionLimits",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "timeout_ms": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "max_steps": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "max_context_tokens": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "max_output_tokens": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "timeout_ms",
+        "max_steps",
+        "max_context_tokens"
+      ]
+    },
+    "AgentUsage": {
+      "title": "AgentUsage",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "input_tokens": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "output_tokens": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "cost_usd": {
+          "type": "string",
+          "pattern": "^[0-9]+(\\.[0-9]+)?$"
+        }
+      },
+      "required": [
+        "input_tokens",
+        "output_tokens"
+      ]
+    },
+    "AgentOutput": {
+      "title": "AgentOutput",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "speech": {
+          "type": "string"
+        },
+        "intent": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/Metadata"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "referenced_event_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/EventID"
+          }
+        },
+        "visibility": {
+          "$ref": "#/$defs/VisibilityScope"
+        }
+      },
+      "required": [
+        "speech",
+        "referenced_event_ids",
+        "visibility"
+      ]
+    },
+    "AgentResponse": {
+      "title": "AgentResponse",
+      "type": "object",
+      "additionalProperties": false,
+      "x-contract-status": "proposed",
+      "properties": {
+        "run_id": {
+          "$ref": "#/$defs/RunID"
+        },
+        "schema_version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "output": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/AgentOutput"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "safety_flags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "usage": {
+          "$ref": "#/$defs/AgentUsage"
+        },
+        "request_id": {
+          "type": "string"
+        },
+        "trace_id": {
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/AgentExecutionStatus"
+        },
+        "structured_output": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/Metadata"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "output_schema_key": {
+          "type": "string",
+          "minLength": 1
+        },
+        "output_schema_version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "validation_errors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/AgentOutputValidationIssue"
+          }
+        },
+        "tool_calls": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/AgentToolCall"
+          }
+        },
+        "steps": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/AgentTraceStep"
+          }
+        },
+        "error": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/AIError"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "run_id",
+        "schema_version",
+        "safety_flags",
+        "usage"
+      ]
+    },
+    "AgentOutputValidationIssue": {
+      "title": "AgentOutputValidationIssue",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "path",
+        "message",
+        "type"
+      ]
+    },
+    "AgentExecutionStatus": {
+      "title": "AgentExecutionStatus",
+      "type": "string",
+      "enum": [
+        "succeeded",
+        "failed",
+        "timeout",
+        "cancelled"
+      ],
+      "x-contract-status": "proposed"
+    },
+    "AgentToolCall": {
+      "title": "AgentToolCall",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "call_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "tool_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "arguments_hash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "succeeded",
+            "failed",
+            "denied",
+            "timeout",
+            "cancelled"
+          ]
+        },
+        "duration_ms": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "error_code": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "call_id",
+        "tool_name",
+        "arguments_hash",
+        "status",
+        "duration_ms"
+      ]
+    },
+    "AgentTraceStep": {
+      "title": "AgentTraceStep",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "step_index": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "step_type": {
+          "type": "string",
+          "enum": [
+            "context",
+            "model",
+            "tool",
+            "validate"
+          ]
+        },
+        "name": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "succeeded",
+            "failed",
+            "denied",
+            "timeout",
+            "cancelled"
+          ]
+        },
+        "duration_ms": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "model_name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "input_tokens": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "output_tokens": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "error_code": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "summary_hash": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "step_index",
+        "step_type",
+        "name",
+        "status",
+        "duration_ms",
+        "input_tokens",
+        "output_tokens"
+      ]
+    },
+    "MemoryCandidate": {
+      "title": "MemoryCandidate",
+      "type": "object",
+      "additionalProperties": false,
+      "x-contract-status": "proposed",
+      "x-decision": "ADR-001",
+      "properties": {
+        "candidate_id": {
+          "$ref": "#/$defs/CandidateID"
+        },
+        "game_id": {
+          "$ref": "#/$defs/GameID"
+        },
+        "game_npc_id": {
+          "$ref": "#/$defs/NpcID"
+        },
+        "owner_actor_scope": {
+          "type": "string",
+          "minLength": 1
+        },
+        "memory_type": {
+          "$ref": "#/$defs/MemoryType"
+        },
+        "authority_class": {
+          "$ref": "#/$defs/AuthorityClass"
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_event_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/EventID"
+          },
+          "minItems": 1
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "importance": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "proposed_expiry": {
+          "type": "string"
+        },
+        "dedupe_key": {
+          "type": "string",
+          "minLength": 1
+        },
+        "run_id": {
+          "$ref": "#/$defs/RunID"
+        },
+        "schema_version": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "candidate_id",
+        "game_id",
+        "game_npc_id",
+        "owner_actor_scope",
+        "memory_type",
+        "authority_class",
+        "summary",
+        "source_event_ids",
+        "confidence",
+        "importance",
+        "dedupe_key",
+        "run_id",
+        "schema_version"
+      ]
+    },
+    "ScriptGenerationRequest": {
+      "title": "ScriptGenerationRequest",
+      "type": "object",
+      "additionalProperties": false,
+      "x-contract-status": "proposed",
+      "properties": {
+        "job_id": {
+          "$ref": "#/$defs/JobID"
+        },
+        "script_id": {
+          "$ref": "#/$defs/ScriptID"
+        },
+        "source_document_uri": {
+          "type": "string",
+          "minLength": 1
+        },
+        "target_mode": {
+          "$ref": "#/$defs/GameType"
+        },
+        "language": {
+          "type": "string",
+          "minLength": 2
+        },
+        "min_players": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "max_players": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "duration_minutes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "difficulty": {
+          "type": "string"
+        },
+        "locked_fields": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "schema_version": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "job_id",
+        "script_id",
+        "source_document_uri",
+        "target_mode",
+        "language",
+        "schema_version"
+      ]
+    },
+    "ScriptGenerationResult": {
+      "title": "ScriptGenerationResult",
+      "type": "object",
+      "additionalProperties": false,
+      "x-contract-status": "proposed",
+      "properties": {
+        "job_id": {
+          "$ref": "#/$defs/JobID"
+        },
+        "script_id": {
+          "$ref": "#/$defs/ScriptID"
+        },
+        "artifact_id": {
+          "$ref": "#/$defs/ArtifactID"
+        },
+        "artifact_uri": {
+          "type": "string",
+          "minLength": 1
+        },
+        "validation_status": {
+          "type": "string",
+          "enum": [
+            "passed",
+            "warning",
+            "blocked"
+          ]
+        },
+        "blocking_issue_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "content_hash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "schema_version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "generated_at": {
+          "$ref": "#/$defs/Timestamp"
+        }
+      },
+      "required": [
+        "job_id",
+        "script_id",
+        "artifact_id",
+        "artifact_uri",
+        "validation_status",
+        "blocking_issue_count",
+        "content_hash",
+        "schema_version",
+        "generated_at"
+      ]
+    },
+    "AIError": {
+      "title": "AIError",
+      "type": "object",
+      "additionalProperties": false,
+      "x-contract-status": "proposed",
+      "properties": {
+        "code": {
+          "$ref": "#/$defs/BusinessErrorCode"
+        },
+        "message": {
+          "type": "string"
+        },
+        "retryable": {
+          "type": "boolean"
+        },
+        "run_id": {
+          "$ref": "#/$defs/RunID"
+        },
+        "details": true
+      },
+      "required": [
+        "code",
+        "message",
+        "retryable"
+      ]
+    },
+    "ScriptStatus": {
+      "title": "ScriptStatus",
+      "type": "string",
+      "enum": [
+        "draft",
+        "validating",
+        "review",
+        "published",
+        "unlisted",
+        "soft_deleted"
+      ],
+      "x-contract-status": "proposed"
+    },
+    "CharacterRoleClass": {
+      "title": "CharacterRoleClass",
+      "type": "string",
+      "enum": [
+        "player_role",
+        "npc",
+        "faction_leader"
+      ],
+      "x-contract-status": "proposed"
+    },
+    "ClueType": {
+      "title": "ClueType",
+      "type": "string",
+      "enum": [
+        "public",
+        "private",
+        "physical",
+        "testimony"
+      ],
+      "x-contract-status": "proposed"
+    },
+    "RuleType": {
+      "title": "RuleType",
+      "type": "string",
+      "enum": [
+        "phase",
+        "visibility",
+        "voting",
+        "skill",
+        "world_condition",
+        "ending"
+      ],
+      "x-contract-status": "proposed"
+    },
+    "Chapter": {
+      "title": "Chapter",
+      "type": "object",
+      "additionalProperties": false,
+      "x-contract-status": "proposed",
+      "properties": {
+        "chapter_id": {
+          "$ref": "#/$defs/ChapterID"
+        },
+        "chapter_key": {
+          "type": "string",
+          "minLength": 1
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sequence_no": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "summary": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SourceRef"
+          }
+        },
+        "row_version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "created_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "updated_at": {
+          "$ref": "#/$defs/Timestamp"
+        }
+      },
+      "required": [
+        "chapter_id",
+        "title",
+        "sequence_no",
+        "source_refs"
+      ]
+    },
+    "Character": {
+      "title": "Character",
+      "type": "object",
+      "additionalProperties": false,
+      "x-contract-status": "proposed",
+      "properties": {
+        "character_id": {
+          "$ref": "#/$defs/CharacterID"
+        },
+        "character_key": {
+          "type": "string",
+          "minLength": 1
+        },
+        "display_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "role_class": {
+          "$ref": "#/$defs/CharacterRoleClass"
+        },
+        "public_profile": {
+          "type": "string"
+        },
+        "public_goals": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "private_profile_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "visibility": {
+          "$ref": "#/$defs/VisibilityScope"
+        },
+        "sensitivity": {
+          "$ref": "#/$defs/Sensitivity"
+        },
+        "source_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SourceRef"
+          }
+        },
+        "row_version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "created_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "updated_at": {
+          "$ref": "#/$defs/Timestamp"
+        }
+      },
+      "required": [
+        "character_id",
+        "display_name",
+        "role_class",
+        "public_profile",
+        "public_goals",
+        "visibility",
+        "sensitivity",
+        "source_refs"
+      ]
+    },
+    "Clue": {
+      "title": "Clue",
+      "type": "object",
+      "additionalProperties": false,
+      "x-contract-status": "proposed",
+      "properties": {
+        "clue_id": {
+          "$ref": "#/$defs/ClueID"
+        },
+        "clue_key": {
+          "type": "string",
+          "minLength": 1
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "public_text": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "private_text_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "clue_type": {
+          "$ref": "#/$defs/ClueType"
+        },
+        "is_repeatable": {
+          "type": "boolean"
+        },
+        "max_discoveries": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "visibility": {
+          "$ref": "#/$defs/VisibilityScope"
+        },
+        "sensitivity": {
+          "$ref": "#/$defs/Sensitivity"
+        },
+        "related_fact_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/FactID"
+          }
+        },
+        "row_version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "created_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "updated_at": {
+          "$ref": "#/$defs/Timestamp"
+        }
+      },
+      "required": [
+        "clue_id",
+        "title",
+        "clue_type",
+        "is_repeatable",
+        "visibility",
+        "sensitivity",
+        "related_fact_ids"
+      ]
+    },
+    "TimelineEvent": {
+      "title": "TimelineEvent",
+      "type": "object",
+      "additionalProperties": false,
+      "x-contract-status": "proposed",
+      "properties": {
+        "timeline_event_id": {
+          "$ref": "#/$defs/TimelineEventID"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "relative_order": {
+          "type": "integer"
+        },
+        "occurs_at_text": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "participant_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ulid"
+          }
+        },
+        "description": {
+          "type": "string"
+        },
+        "source_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SourceRef"
+          }
+        }
+      },
+      "required": [
+        "timeline_event_id",
+        "title",
+        "relative_order",
+        "participant_ids",
+        "description",
+        "source_refs"
+      ]
+    },
+    "Timeline": {
+      "title": "Timeline",
+      "type": "object",
+      "additionalProperties": false,
+      "x-contract-status": "proposed",
+      "properties": {
+        "timeline_id": {
+          "$ref": "#/$defs/TimelineID"
+        },
+        "events": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/TimelineEvent"
+          }
+        }
+      },
+      "required": [
+        "timeline_id",
+        "events"
+      ]
+    },
+    "Relationship": {
+      "title": "Relationship",
+      "type": "object",
+      "additionalProperties": false,
+      "x-contract-status": "proposed",
+      "properties": {
+        "relationship_id": {
+          "$ref": "#/$defs/RelationshipID"
+        },
+        "source_character_id": {
+          "$ref": "#/$defs/CharacterID"
+        },
+        "target_character_id": {
+          "$ref": "#/$defs/CharacterID"
+        },
+        "relation_type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "public_description": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "private_description_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "visibility": {
+          "$ref": "#/$defs/VisibilityScope"
+        },
+        "sensitivity": {
+          "$ref": "#/$defs/Sensitivity"
+        }
+      },
+      "required": [
+        "relationship_id",
+        "source_character_id",
+        "target_character_id",
+        "relation_type",
+        "visibility",
+        "sensitivity"
+      ]
+    },
+    "Ending": {
+      "title": "Ending",
+      "type": "object",
+      "additionalProperties": false,
+      "x-contract-status": "proposed",
+      "properties": {
+        "ending_id": {
+          "$ref": "#/$defs/EndingID"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string"
+        },
+        "conditions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "is_hidden": {
+          "type": "boolean"
+        },
+        "visibility": {
+          "$ref": "#/$defs/VisibilityScope"
+        },
+        "row_version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "created_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "updated_at": {
+          "$ref": "#/$defs/Timestamp"
+        }
+      },
+      "required": [
+        "ending_id",
+        "title",
+        "description",
+        "conditions",
+        "is_hidden",
+        "visibility"
+      ]
+    },
+    "Rule": {
+      "title": "Rule",
+      "type": "object",
+      "additionalProperties": false,
+      "x-contract-status": "proposed",
+      "properties": {
+        "rule_id": {
+          "$ref": "#/$defs/RuleID"
+        },
+        "rule_key": {
+          "type": "string",
+          "minLength": 1
+        },
+        "rule_type": {
+          "$ref": "#/$defs/RuleType"
+        },
+        "description": {
+          "type": "string"
+        },
+        "version_no": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "parameters": {
+          "$ref": "#/$defs/Metadata"
+        }
+      },
+      "required": [
+        "rule_id",
+        "rule_key",
+        "rule_type",
+        "description",
+        "version_no",
+        "parameters"
+      ]
+    },
+    "AuthProvider": {
+      "title": "AuthProvider",
+      "type": "string",
+      "enum": [
+        "email"
+      ]
+    },
+    "UserSummary": {
+      "title": "UserSummary",
+      "type": "object",
+      "additionalProperties": false,
+      "x-contract-status": "accepted",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/UserID"
+        },
+        "public_no": {
+          "type": "string",
+          "pattern": "^[A-Z0-9]{12}$"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "pending",
+            "active",
+            "suspended",
+            "disabled",
+            "deleted"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "public_no",
+        "status"
+      ]
+    },
+    "UserProfile": {
+      "title": "UserProfile",
+      "type": "object",
+      "additionalProperties": false,
+      "x-contract-status": "accepted",
+      "properties": {
+        "nickname": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "avatar_url": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 512
+        },
+        "bio": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 500
+        },
+        "locale": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 16
+        },
+        "timezone": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "moderation_status": {
+          "type": "string",
+          "enum": [
+            "pending",
+            "approved",
+            "rejected"
+          ]
+        },
+        "row_version": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "nickname",
+        "avatar_url",
+        "bio",
+        "locale",
+        "timezone",
+        "moderation_status",
+        "row_version"
+      ]
+    },
+    "PrivacySettings": {
+      "title": "PrivacySettings",
+      "type": "object",
+      "additionalProperties": false,
+      "x-contract-status": "accepted",
+      "properties": {
+        "history_visibility": {
+          "type": "string",
+          "enum": [
+            "private",
+            "friends",
+            "public"
+          ]
+        },
+        "online_visibility": {
+          "type": "string",
+          "enum": [
+            "private",
+            "friends",
+            "public"
+          ]
+        },
+        "profile_visibility": {
+          "type": "string",
+          "enum": [
+            "private",
+            "friends",
+            "public"
+          ]
+        },
+        "friend_request_policy": {
+          "type": "string",
+          "enum": [
+            "nobody",
+            "friends_of_friends",
+            "everyone"
+          ]
+        }
+      },
+      "required": [
+        "history_visibility",
+        "online_visibility",
+        "profile_visibility",
+        "friend_request_policy"
+      ]
+    },
+    "UserStatistics": {
+      "title": "UserStatistics",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "games_started": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "games_completed": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "games_won": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "script_murder_games": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "werewolf_games": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "rpg_games": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "experience": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "level": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "games_started",
+        "games_completed",
+        "games_won",
+        "script_murder_games",
+        "werewolf_games",
+        "rpg_games",
+        "experience",
+        "level"
+      ]
+    },
+    "PrivacyPatch": {
+      "title": "PrivacyPatch",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "history_visibility": {
+          "type": "string",
+          "enum": [
+            "private",
+            "friends",
+            "public"
+          ]
+        },
+        "online_visibility": {
+          "type": "string",
+          "enum": [
+            "private",
+            "friends",
+            "public"
+          ]
+        },
+        "profile_visibility": {
+          "type": "string",
+          "enum": [
+            "private",
+            "friends",
+            "public"
+          ]
+        },
+        "friend_request_policy": {
+          "type": "string",
+          "enum": [
+            "nobody",
+            "friends_of_friends",
+            "everyone"
+          ]
+        }
+      }
+    },
+    "AuthRegisterRequest": {
+      "title": "AuthRegisterRequest",
+      "type": "object",
+      "additionalProperties": false,
+      "x-contract-status": "accepted",
+      "properties": {
+        "provider": {
+          "$ref": "#/$defs/AuthProvider"
+        },
+        "identifier": {
+          "type": "string",
+          "format": "email",
+          "maxLength": 191
+        },
+        "password": {
+          "type": "string",
+          "minLength": 8,
+          "maxLength": 128
+        },
+        "nickname": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "terms_version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "privacy_version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        }
+      },
+      "required": [
+        "provider",
+        "identifier",
+        "password",
+        "nickname",
+        "terms_version",
+        "privacy_version"
+      ]
+    },
+    "AuthLoginRequest": {
+      "title": "AuthLoginRequest",
+      "type": "object",
+      "additionalProperties": false,
+      "x-contract-status": "accepted",
+      "properties": {
+        "provider": {
+          "$ref": "#/$defs/AuthProvider"
+        },
+        "identifier": {
+          "type": "string",
+          "format": "email",
+          "maxLength": 191
+        },
+        "password": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "remember_device": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "provider",
+        "identifier",
+        "password",
+        "remember_device"
+      ]
+    },
+    "AuthSessionResponse": {
+      "title": "AuthSessionResponse",
+      "type": "object",
+      "additionalProperties": false,
+      "x-contract-status": "accepted",
+      "properties": {
+        "user": {
+          "$ref": "#/$defs/UserSummary"
+        },
+        "profile": {
+          "$ref": "#/$defs/UserProfile"
+        },
+        "session_expires_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "csrf_token": {
+          "type": "string",
+          "minLength": 20
+        }
+      },
+      "required": [
+        "user",
+        "profile",
+        "session_expires_at",
+        "csrf_token"
+      ]
+    },
+    "CurrentUserResponse": {
+      "title": "CurrentUserResponse",
+      "type": "object",
+      "additionalProperties": false,
+      "x-contract-status": "accepted",
+      "properties": {
+        "user": {
+          "$ref": "#/$defs/UserSummary"
+        },
+        "profile": {
+          "$ref": "#/$defs/UserProfile"
+        },
+        "privacy": {
+          "$ref": "#/$defs/PrivacySettings"
+        },
+        "statistics": {
+          "$ref": "#/$defs/UserStatistics"
+        },
+        "capabilities": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "user",
+        "profile",
+        "privacy",
+        "statistics",
+        "capabilities"
+      ]
+    },
+    "ProfileUpdateRequest": {
+      "title": "ProfileUpdateRequest",
+      "type": "object",
+      "additionalProperties": false,
+      "x-contract-status": "accepted",
+      "properties": {
+        "row_version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "profile_patch": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "nickname": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64
+            },
+            "avatar_url": {
+              "type": "string",
+              "maxLength": 512
+            },
+            "bio": {
+              "type": "string",
+              "maxLength": 500
+            }
+          }
+        },
+        "privacy_patch": {
+          "$ref": "#/$defs/PrivacyPatch"
+        }
+      },
+      "required": [
+        "row_version"
+      ]
+    },
+    "RoomVisibility": {
+      "title": "RoomVisibility",
+      "type": "string",
+      "enum": [
+        "private",
+        "public",
+        "password",
+        "invite_only"
+      ]
+    },
+    "RoomStatus": {
+      "title": "RoomStatus",
+      "type": "string",
+      "enum": [
+        "waiting",
+        "starting",
+        "in_game",
+        "paused",
+        "settling",
+        "result_ready",
+        "closed",
+        "cancelled",
+        "aborted"
+      ]
+    },
+    "RoomCapacity": {
+      "title": "RoomCapacity",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "min": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "max": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "min",
+        "max"
+      ]
+    },
+    "Room": {
+      "title": "Room",
+      "type": "object",
+      "additionalProperties": false,
+      "x-contract-status": "accepted",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/RoomID"
+        },
+        "game_type": {
+          "$ref": "#/$defs/GameType"
+        },
+        "script_version_id": {
+          "$ref": "#/$defs/ScriptVersionID"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "host_user_id": {
+          "$ref": "#/$defs/UserID"
+        },
+        "visibility": {
+          "$ref": "#/$defs/RoomVisibility"
+        },
+        "has_password": {
+          "type": "boolean"
+        },
+        "capacity": {
+          "$ref": "#/$defs/RoomCapacity"
+        },
+        "status": {
+          "$ref": "#/$defs/RoomStatus"
+        },
+        "room_event_seq": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "expires_at": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/Timestamp"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "row_version": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "id",
+        "game_type",
+        "script_version_id",
+        "title",
+        "host_user_id",
+        "visibility",
+        "has_password",
+        "capacity",
+        "status",
+        "room_event_seq",
+        "expires_at",
+        "row_version"
+      ]
+    },
+    "RoomMember": {
+      "title": "RoomMember",
+      "type": "object",
+      "additionalProperties": false,
+      "x-contract-status": "accepted",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/Ulid"
+        },
+        "user_id": {
+          "$ref": "#/$defs/UserID"
+        },
+        "public_no": {
+          "type": "string",
+          "pattern": "^[A-Z0-9]{12}$"
+        },
+        "nickname": {
+          "type": "string"
+        },
+        "avatar_url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "seat_no": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "room_role": {
+          "type": "string",
+          "enum": [
+            "host",
+            "player",
+            "spectator"
+          ]
+        },
+        "member_status": {
+          "type": "string",
+          "enum": [
+            "joined",
+            "ready",
+            "disconnected",
+            "left",
+            "kicked"
+          ]
+        },
+        "ready_at": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/Timestamp"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "joined_at": {
+          "$ref": "#/$defs/Timestamp"
+        }
+      },
+      "required": [
+        "id",
+        "user_id",
+        "public_no",
+        "nickname",
+        "avatar_url",
+        "seat_no",
+        "room_role",
+        "member_status",
+        "ready_at",
+        "joined_at"
+      ]
+    },
+    "RoomProjection": {
+      "title": "RoomProjection",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "room": {
+          "$ref": "#/$defs/Room"
+        },
+        "members": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/RoomMember"
+          }
+        },
+        "viewer_capabilities": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "room_event_seq": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "can_start": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "room",
+        "members",
+        "viewer_capabilities",
+        "room_event_seq",
+        "can_start"
+      ]
+    },
+    "RoomCreateRequest": {
+      "title": "RoomCreateRequest",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "script_version_id": {
+          "$ref": "#/$defs/ScriptVersionID"
+        },
+        "game_type": {
+          "$ref": "#/$defs/GameType"
+        },
+        "rule_template_id": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/Ulid"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "visibility": {
+          "$ref": "#/$defs/RoomVisibility"
+        },
+        "password": {
+          "type": "string",
+          "minLength": 4,
+          "maxLength": 64
+        },
+        "capacity": {
+          "$ref": "#/$defs/RoomCapacity"
+        },
+        "mode_config": {
+          "$ref": "#/$defs/Metadata"
+        },
+        "privacy_confirmed": {
+          "type": "boolean",
+          "const": true
+        }
+      },
+      "required": [
+        "script_version_id",
+        "game_type",
+        "title",
+        "visibility",
+        "capacity",
+        "mode_config",
+        "privacy_confirmed"
+      ]
+    },
+    "RoomCreateResponse": {
+      "title": "RoomCreateResponse",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "room": {
+          "$ref": "#/$defs/Room"
+        },
+        "member": {
+          "$ref": "#/$defs/RoomMember"
+        },
+        "invite_hint": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "code_enabled": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "code_enabled"
+          ]
+        },
+        "room_event_seq": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "invitation_token": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "room",
+        "member",
+        "invite_hint",
+        "room_event_seq"
+      ]
+    },
+    "RoomJoinRequest": {
+      "title": "RoomJoinRequest",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "room_code": {
+          "type": "string"
+        },
+        "invitation_token": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string",
+          "maxLength": 64
+        },
+        "preferred_seat_no": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        }
+      }
+    },
+    "RoomReadyRequest": {
+      "title": "RoomReadyRequest",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "ready": {
+          "type": "boolean"
+        },
+        "expected_room_event_seq": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "ready",
+        "expected_room_event_seq"
+      ]
+    },
+    "RoomReadyResponse": {
+      "title": "RoomReadyResponse",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "member": {
+          "$ref": "#/$defs/RoomMember"
+        },
+        "ready_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "can_start": {
+          "type": "boolean"
+        },
+        "room_event_seq": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "member",
+        "ready_count",
+        "can_start",
+        "room_event_seq"
+      ]
+    },
+    "RoomLeaveRequest": {
+      "title": "RoomLeaveRequest",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "reason": {
+          "type": "string",
+          "maxLength": 64
+        },
+        "expected_room_event_seq": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "reason",
+        "expected_room_event_seq"
+      ]
+    },
+    "RoomJoinResponse": {
+      "title": "RoomJoinResponse",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "member": {
+          "$ref": "#/$defs/RoomMember"
+        },
+        "room_projection": {
+          "$ref": "#/$defs/Room"
+        },
+        "room_event_seq": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "game_id": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/GameID"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "member",
+        "room_projection",
+        "room_event_seq",
+        "game_id"
+      ]
+    },
+    "RoomLeaveResponse": {
+      "title": "RoomLeaveResponse",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "member_status": {
+          "type": "string",
+          "const": "left"
+        },
+        "room_status": {
+          "$ref": "#/$defs/RoomStatus"
+        },
+        "host_transfer_required": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "member_status",
+        "room_status",
+        "host_transfer_required"
+      ]
+    },
+    "RoomMessage": {
+      "title": "RoomMessage",
+      "type": "object",
+      "additionalProperties": false,
+      "x-contract-status": "accepted",
+      "properties": {
+        "message_id": {
+          "$ref": "#/$defs/MessageID"
+        },
+        "event_id": {
+          "$ref": "#/$defs/EventID"
+        },
+        "sender": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "user_id": {
+              "$ref": "#/$defs/UserID"
+            },
+            "display_name": {
+              "type": "string"
+            },
+            "avatar_url": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "user_id",
+            "display_name"
+          ]
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000
+        },
+        "chat_seq": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "sent_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "moderation_status": {
+          "type": "string",
+          "enum": [
+            "pending",
+            "allowed",
+            "rejected",
+            "redacted"
+          ]
+        }
+      },
+      "required": [
+        "message_id",
+        "event_id",
+        "sender",
+        "text",
+        "chat_seq",
+        "sent_at",
+        "moderation_status"
+      ]
+    },
+    "RoomMessagePage": {
+      "title": "RoomMessagePage",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/RoomMessage"
+          }
+        },
+        "next_cursor": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        }
+      },
+      "required": [
+        "items",
+        "next_cursor"
+      ]
+    },
+    "SendRoomMessageRequest": {
+      "title": "SendRoomMessageRequest",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "client_message_id": {
+          "$ref": "#/$defs/Ulid"
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000
+        }
+      },
+      "required": [
+        "client_message_id",
+        "text"
+      ]
+    },
+    "SendRoomMessageResponse": {
+      "title": "SendRoomMessageResponse",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "message": {
+          "$ref": "#/$defs/RoomMessage"
+        },
+        "event_id": {
+          "$ref": "#/$defs/EventID"
+        },
+        "chat_seq": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "message",
+        "event_id",
+        "chat_seq"
+      ]
+    },
+    "ScriptTargetPlayers": {
+      "title": "ScriptTargetPlayers",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "min": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "max": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "min",
+        "max"
+      ]
+    },
+    "CreateScriptRequest": {
+      "title": "CreateScriptRequest",
+      "type": "object",
+      "additionalProperties": false,
+      "x-contract-status": "proposed",
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "game_type": {
+          "$ref": "#/$defs/GameType"
+        },
+        "rights_type": {
+          "type": "string",
+          "enum": [
+            "original",
+            "authorized",
+            "public_domain",
+            "private_only"
+          ]
+        },
+        "language": {
+          "type": "string",
+          "minLength": 2
+        },
+        "target_players": {
+          "$ref": "#/$defs/ScriptTargetPlayers"
+        },
+        "duration_minutes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1440
+        },
+        "difficulty": {
+          "type": "string",
+          "minLength": 1
+        },
+        "content_rating": {
+          "type": "string",
+          "enum": [
+            "all",
+            "12+",
+            "16+",
+            "18+"
+          ]
+        },
+        "rule_template_id": {
+          "$ref": "#/$defs/Ulid"
+        }
+      },
+      "required": [
+        "title",
+        "game_type",
+        "rights_type",
+        "language",
+        "target_players",
+        "duration_minutes",
+        "difficulty"
+      ]
+    },
+    "UpdateScriptRequest": {
+      "title": "UpdateScriptRequest",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "row_version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "patch": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "title": {
+              "type": "string",
+              "minLength": 1
+            },
+            "summary": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "cover_asset_uri": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "language": {
+              "type": "string",
+              "minLength": 2
+            },
+            "content_rating": {
+              "type": "string",
+              "enum": [
+                "all",
+                "12+",
+                "16+",
+                "18+"
+              ]
+            },
+            "min_players": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "max_players": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "duration_minutes": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "difficulty": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      },
+      "required": [
+        "row_version",
+        "patch"
+      ]
+    },
+    "DeleteScriptRequest": {
+      "title": "DeleteScriptRequest",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "row_version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "reason": {
+          "type": "string",
+          "maxLength": 500
+        }
+      },
+      "required": [
+        "row_version"
+      ]
+    },
+    "CreateScriptDraftRequest": {
+      "title": "CreateScriptDraftRequest",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "draft_name": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "rule_template_id": {
+          "$ref": "#/$defs/Ulid"
+        }
+      }
+    },
+    "ScriptObjectMutationRequest": {
+      "title": "ScriptObjectMutationRequest",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "expected_row_version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "object": true
+      },
+      "required": [
+        "expected_row_version",
+        "object"
+      ]
+    },
+    "DeleteScriptObjectRequest": {
+      "title": "DeleteScriptObjectRequest",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "expected_row_version": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "expected_row_version"
+      ]
+    },
+    "ValidateScriptVersionRequest": {
+      "title": "ValidateScriptVersionRequest",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "expected_row_version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "validation_profile": {
+          "type": "string",
+          "enum": [
+            "publish",
+            "structure"
+          ]
+        }
+      }
+    },
+    "PublishScriptVersionRequest": {
+      "title": "PublishScriptVersionRequest",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "channel": {
+          "type": "string",
+          "enum": [
+            "private",
+            "invite",
+            "public"
+          ]
+        },
+        "expected_row_version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "content_rating_confirm": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "channel",
+        "expected_row_version",
+        "content_rating_confirm"
+      ]
+    },
+    "UnpublishScriptRequest": {
+      "title": "UnpublishScriptRequest",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "reason_code": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "reason": {
+          "type": "string",
+          "maxLength": 1000
+        },
+        "expected_status": {
+          "type": "string",
+          "enum": [
+            "active"
+          ]
+        }
+      },
+      "required": [
+        "reason_code"
+      ]
+    },
+    "Stage": {
+      "title": "Stage",
+      "type": "object",
+      "additionalProperties": false,
+      "x-contract-status": "proposed",
+      "properties": {
+        "stage_id": {
+          "$ref": "#/$defs/Ulid"
+        },
+        "chapter_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$"
+        },
+        "stage_key": {
+          "type": "string",
+          "minLength": 1
+        },
+        "phase_type": {
+          "type": "string",
+          "enum": [
+            "read",
+            "opening",
+            "search",
+            "private_chat",
+            "discussion",
+            "final_statement",
+            "vote",
+            "settlement",
+            "replay"
+          ]
+        },
+        "sequence_no": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "entry_conditions": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "exit_conditions": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "timeout_seconds": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "fallback_action": {
+          "type": "string"
+        },
+        "allowed_actions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "reading_complete",
+              "search",
+              "vote",
+              "advance_phase"
+            ]
+          }
+        },
+        "visibility": {
+          "$ref": "#/$defs/VisibilityScope"
+        },
+        "is_terminal": {
+          "type": "boolean"
+        },
+        "row_version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "created_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "updated_at": {
+          "$ref": "#/$defs/Timestamp"
+        }
+      },
+      "required": [
+        "stage_id",
+        "stage_key",
+        "phase_type",
+        "sequence_no",
+        "title",
+        "fallback_action",
+        "allowed_actions",
+        "visibility",
+        "is_terminal"
+      ]
+    },
+    "ScriptAsset": {
+      "title": "ScriptAsset",
+      "type": "object",
+      "additionalProperties": false,
+      "x-contract-status": "proposed",
+      "properties": {
+        "asset_id": {
+          "$ref": "#/$defs/Ulid"
+        },
+        "asset_key": {
+          "type": "string",
+          "minLength": 1
+        },
+        "asset_type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "uri": {
+          "type": "string",
+          "minLength": 1
+        },
+        "mime_type": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sha256": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "byte_size": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "visibility": {
+          "$ref": "#/$defs/VisibilityScope"
+        },
+        "sensitivity": {
+          "$ref": "#/$defs/Sensitivity"
+        },
+        "metadata": true,
+        "row_version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "created_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "updated_at": {
+          "$ref": "#/$defs/Timestamp"
+        }
+      },
+      "required": [
+        "asset_id",
+        "asset_key",
+        "asset_type",
+        "uri",
+        "visibility",
+        "sensitivity"
+      ]
+    },
+    "ScriptVersion": {
+      "title": "ScriptVersion",
+      "type": "object",
+      "additionalProperties": false,
+      "x-contract-status": "proposed",
+      "properties": {
+        "version_id": {
+          "$ref": "#/$defs/ScriptVersionID"
+        },
+        "script_id": {
+          "$ref": "#/$defs/ScriptID"
+        },
+        "version_no": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "version_kind": {
+          "type": "string",
+          "enum": [
+            "draft",
+            "release",
+            "rollback"
+          ]
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "draft",
+            "validating",
+            "review",
+            "published_private",
+            "published_public",
+            "unlisted",
+            "archived"
+          ]
+        },
+        "schema_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "validation_status": {
+          "type": "string",
+          "enum": [
+            "pending",
+            "passed",
+            "warning",
+            "blocked"
+          ]
+        },
+        "blocking_issue_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "frozen_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "published_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "row_version": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "version_id",
+        "script_id",
+        "version_no",
+        "version_kind",
+        "status",
+        "schema_version",
+        "validation_status",
+        "blocking_issue_count",
+        "row_version"
+      ]
+    },
+    "ScriptValidationIssue": {
+      "title": "ScriptValidationIssue",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "error_code": {
+          "type": "string",
+          "minLength": 1
+        },
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning",
+            "info"
+          ]
+        },
+        "path": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "checked",
+            "unsupported",
+            "pending"
+          ]
+        },
+        "object_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "error_code",
+        "severity",
+        "path",
+        "message",
+        "state"
+      ]
+    },
+    "ScriptValidationReport": {
+      "title": "ScriptValidationReport",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "script_id": {
+          "$ref": "#/$defs/ScriptID"
+        },
+        "script_version_id": {
+          "$ref": "#/$defs/ScriptVersionID"
+        },
+        "version_row_version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "passed",
+            "warning",
+            "blocked"
+          ]
+        },
+        "blocking_issue_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "warning_issue_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "info_issue_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "issues": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ScriptValidationIssue"
+          }
+        },
+        "validated_at": {
+          "$ref": "#/$defs/Timestamp"
+        }
+      },
+      "required": [
+        "script_id",
+        "script_version_id",
+        "version_row_version",
+        "status",
+        "blocking_issue_count",
+        "warning_issue_count",
+        "info_issue_count",
+        "issues",
+        "validated_at"
+      ]
+    },
+    "ScriptCatalogItem": {
+      "title": "ScriptCatalogItem",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "script_id": {
+          "$ref": "#/$defs/ScriptID"
+        },
+        "owner_user_id": {
+          "$ref": "#/$defs/UserID"
+        },
+        "title": {
+          "type": "string"
+        },
+        "summary": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "game_type": {
+          "$ref": "#/$defs/GameType"
+        },
+        "cover_asset_uri": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "language": {
+          "type": "string"
+        },
+        "content_rating": {
+          "type": "string"
+        },
+        "min_players": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "max_players": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "duration_minutes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "difficulty": {
+          "type": "string"
+        },
+        "script_version_id": {
+          "$ref": "#/$defs/ScriptVersionID"
+        },
+        "version_no": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "schema_version": {
+          "type": "string"
+        },
+        "created_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "updated_at": {
+          "$ref": "#/$defs/Timestamp"
+        }
+      },
+      "required": [
+        "script_id",
+        "owner_user_id",
+        "title",
+        "game_type",
+        "language",
+        "content_rating",
+        "min_players",
+        "max_players",
+        "duration_minutes",
+        "difficulty",
+        "script_version_id",
+        "version_no",
+        "schema_version",
+        "created_at",
+        "updated_at"
+      ]
+    },
+    "ScriptCatalogPage": {
+      "title": "ScriptCatalogPage",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ScriptCatalogItem"
+          }
+        },
+        "next_cursor": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "items",
+        "next_cursor"
+      ]
+    },
+    "ScriptSearchPoint": {
+      "title": "ScriptSearchPoint",
+      "type": "object",
+      "additionalProperties": false,
+      "x-contract-status": "proposed",
+      "properties": {
+        "search_point_id": {
+          "$ref": "#/$defs/Ulid"
+        },
+        "point_key": {
+          "type": "string",
+          "minLength": 1
+        },
+        "stage_id": {
+          "$ref": "#/$defs/Ulid"
+        },
+        "scene_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "public_description": {
+          "type": "string"
+        },
+        "max_searches": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "conflict_policy": {
+          "type": "string",
+          "enum": [
+            "first_wins",
+            "repeatable",
+            "queue"
+          ]
+        },
+        "visibility": {
+          "$ref": "#/$defs/VisibilityScope"
+        },
+        "reveal_gate_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "metadata": true,
+        "row_version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "created_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "updated_at": {
+          "$ref": "#/$defs/Timestamp"
+        }
+      },
+      "required": [
+        "search_point_id",
+        "point_key",
+        "stage_id",
+        "title",
+        "public_description",
+        "max_searches",
+        "conflict_policy",
+        "visibility"
+      ]
+    },
+    "ScriptSearchPointClue": {
+      "title": "ScriptSearchPointClue",
+      "type": "object",
+      "additionalProperties": false,
+      "x-contract-status": "proposed",
+      "properties": {
+        "search_point_id": {
+          "$ref": "#/$defs/Ulid"
+        },
+        "clue_id": {
+          "$ref": "#/$defs/ClueID"
+        },
+        "weight": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "is_default": {
+          "type": "boolean"
+        },
+        "metadata": true,
+        "created_at": {
+          "$ref": "#/$defs/Timestamp"
+        }
+      },
+      "required": [
+        "search_point_id",
+        "clue_id",
+        "weight",
+        "is_default"
+      ]
+    },
+    "ScriptEditorScript": {
+      "title": "ScriptEditorScript",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "script_id": {
+          "$ref": "#/$defs/ScriptID"
+        },
+        "owner_user_id": {
+          "$ref": "#/$defs/UserID"
+        },
+        "public_slug": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "title": {
+          "type": "string"
+        },
+        "summary": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "game_type": {
+          "$ref": "#/$defs/GameType"
+        },
+        "source_kind": {
+          "type": "string"
+        },
+        "rights_type": {
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/ScriptStatus"
+        },
+        "cover_asset_uri": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "language": {
+          "type": "string"
+        },
+        "content_rating": {
+          "type": "string"
+        },
+        "min_players": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "max_players": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "duration_minutes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "difficulty": {
+          "type": "string"
+        },
+        "ai_assisted_ratio_bp": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10000
+        },
+        "active_draft_version_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "published_version_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "row_version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "created_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "updated_at": {
+          "$ref": "#/$defs/Timestamp"
+        }
+      },
+      "required": [
+        "script_id",
+        "owner_user_id",
+        "title",
+        "summary",
+        "game_type",
+        "source_kind",
+        "rights_type",
+        "status",
+        "cover_asset_uri",
+        "language",
+        "content_rating",
+        "min_players",
+        "max_players",
+        "duration_minutes",
+        "difficulty",
+        "ai_assisted_ratio_bp",
+        "active_draft_version_id",
+        "published_version_id",
+        "row_version",
+        "created_at",
+        "updated_at"
+      ]
+    },
+    "ScriptEditorVersion": {
+      "title": "ScriptEditorVersion",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "version_id": {
+          "$ref": "#/$defs/ScriptVersionID"
+        },
+        "script_id": {
+          "$ref": "#/$defs/ScriptID"
+        },
+        "version_no": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "version_kind": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "schema_version": {
+          "type": "string"
+        },
+        "workflow_version": {
+          "type": "string"
+        },
+        "base_version_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "rule_template_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "blueprint": true,
+        "package_uri": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "manifest": true,
+        "validation_report": true,
+        "validation_status": {
+          "type": "string"
+        },
+        "blocking_issue_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "created_by": {
+          "$ref": "#/$defs/UserID"
+        },
+        "frozen_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "published_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "row_version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "created_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "updated_at": {
+          "$ref": "#/$defs/Timestamp"
+        }
+      },
+      "required": [
+        "version_id",
+        "script_id",
+        "version_no",
+        "version_kind",
+        "status",
+        "schema_version",
+        "workflow_version",
+        "blueprint",
+        "validation_status",
+        "blocking_issue_count",
+        "created_by",
+        "row_version",
+        "created_at",
+        "updated_at"
+      ]
+    },
+    "ScriptEditorContent": {
+      "title": "ScriptEditorContent",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "script": {
+          "$ref": "#/$defs/ScriptEditorScript"
+        },
+        "version": {
+          "$ref": "#/$defs/ScriptEditorVersion"
+        },
+        "chapters": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Chapter"
+          }
+        },
+        "stages": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Stage"
+          }
+        },
+        "characters": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Character"
+          }
+        },
+        "clues": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Clue"
+          }
+        },
+        "endings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ending"
+          }
+        },
+        "assets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ScriptAsset"
+          }
+        },
+        "search_points": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ScriptSearchPoint"
+          }
+        },
+        "point_clues": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ScriptSearchPointClue"
+          }
+        }
+      },
+      "required": [
+        "script",
+        "version",
+        "chapters",
+        "stages",
+        "characters",
+        "clues",
+        "endings",
+        "assets",
+        "search_points",
+        "point_clues"
+      ]
+    },
+    "Script": {
+      "title": "Script",
+      "type": "object",
+      "additionalProperties": false,
+      "x-contract-status": "proposed",
+      "properties": {
+        "script_id": {
+          "$ref": "#/$defs/ScriptID"
+        },
+        "owner_user_id": {
+          "$ref": "#/$defs/UserID"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "summary": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "game_type": {
+          "$ref": "#/$defs/GameType"
+        },
+        "status": {
+          "$ref": "#/$defs/ScriptStatus"
+        },
+        "language": {
+          "type": "string",
+          "minLength": 2
+        },
+        "content_rating": {
+          "type": "string",
+          "enum": [
+            "all",
+            "12+",
+            "16+",
+            "18+"
+          ]
+        },
+        "min_players": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "max_players": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "duration_minutes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "difficulty": {
+          "type": "string"
+        },
+        "schema_version": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+        },
+        "chapters": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Chapter"
+          }
+        },
+        "characters": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Character"
+          }
+        },
+        "clues": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Clue"
+          }
+        },
+        "timelines": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Timeline"
+          }
+        },
+        "relationships": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Relationship"
+          }
+        },
+        "endings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ending"
+          }
+        },
+        "rules": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Rule"
+          }
+        }
+      },
+      "required": [
+        "script_id",
+        "owner_user_id",
+        "title",
+        "game_type",
+        "status",
+        "language",
+        "content_rating",
+        "min_players",
+        "max_players",
+        "duration_minutes",
+        "difficulty",
+        "schema_version",
+        "chapters",
+        "characters",
+        "clues",
+        "timelines",
+        "relationships",
+        "endings",
+        "rules"
+      ]
+    }
+  }
+}

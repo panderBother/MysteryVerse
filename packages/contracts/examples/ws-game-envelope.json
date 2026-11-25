@@ -1,0 +1,13 @@
+{
+  "event_id": "01J9Z3K4M7Q2R8T5V6W1X10000",
+  "event_type": "game.phase_changed",
+  "stream": "game",
+  "stream_id": "01J9Z3K4M7Q2R8T5V6W1X20000",
+  "seq": 18,
+  "schema_version": 1,
+  "game_id": "01J9Z3K4M7Q2R8T5V6W1X20000",
+  "timestamp": "2026-11-21T10:00:00Z",
+  "payload": {
+    "phase_key": "search_round_1"
+  }
+}

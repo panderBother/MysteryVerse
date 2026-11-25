@@ -1,0 +1,106 @@
+{
+  "script_id": "01J9Z3K4M7Q2R8T5V6W1XF0000",
+  "owner_user_id": "01J9Z3K4M7Q2R8T5V6W1XJ0000",
+  "title": "Last Ferry to Fog Harbor",
+  "summary": null,
+  "game_type": "script_murder",
+  "status": "draft",
+  "language": "en",
+  "content_rating": "16+",
+  "min_players": 4,
+  "max_players": 8,
+  "duration_minutes": 90,
+  "difficulty": "standard",
+  "schema_version": "1.0.0",
+  "chapters": [
+    {
+      "chapter_id": "01J9Z3K4M7Q2R8T5V6W1XK0000",
+      "title": "Arrival",
+      "sequence_no": 0,
+      "summary": "The players arrive before the storm.",
+      "source_refs": []
+    }
+  ],
+  "characters": [
+    {
+      "character_id": "01J9Z3K4M7Q2R8T5V6W1XM0000",
+      "display_name": "Lin Lan",
+      "role_class": "player_role",
+      "public_profile": "The ferry's night operator.",
+      "public_goals": [
+        "Find the killer"
+      ],
+      "private_profile_ref": "secret:character:01J9Z3K4M7Q2R8T5V6W1XM0000",
+      "visibility": "role",
+      "sensitivity": "D2",
+      "source_refs": []
+    },
+    {
+      "character_id": "01J9Z3K4M7Q2R8T5V6W1XT0000",
+      "display_name": "Chen Mo",
+      "role_class": "player_role",
+      "public_profile": "A dock worker with a debt to settle.",
+      "public_goals": [
+        "Protect the night manifest"
+      ],
+      "private_profile_ref": "secret:character:01J9Z3K4M7Q2R8T5V6W1XT0000",
+      "visibility": "role",
+      "sensitivity": "D2",
+      "source_refs": []
+    }
+  ],
+  "clues": [
+    {
+      "clue_id": "01J9Z3K4M7Q2R8T5V6W1XN0000",
+      "title": "Torn Ferry Ticket",
+      "public_text": "The time was scratched away.",
+      "private_text_ref": null,
+      "clue_type": "physical",
+      "is_repeatable": false,
+      "max_discoveries": 1,
+      "visibility": "player",
+      "sensitivity": "D1",
+      "related_fact_ids": []
+    }
+  ],
+  "timelines": [
+    {
+      "timeline_id": "01J9Z3K4M7Q2R8T5V6W1XP0000",
+      "events": []
+    }
+  ],
+  "relationships": [
+    {
+      "relationship_id": "01J9Z3K4M7Q2R8T5V6W1XQ0000",
+      "source_character_id": "01J9Z3K4M7Q2R8T5V6W1XM0000",
+      "target_character_id": "01J9Z3K4M7Q2R8T5V6W1XT0000",
+      "relation_type": "knows",
+      "public_description": "They know each other from the docks.",
+      "private_description_ref": null,
+      "visibility": "room",
+      "sensitivity": "D1"
+    }
+  ],
+  "endings": [
+    {
+      "ending_id": "01J9Z3K4M7Q2R8T5V6W1XR0000",
+      "title": "The Killer Is Revealed",
+      "description": "The correct suspect is voted out.",
+      "conditions": [
+        "correct_vote"
+      ],
+      "is_hidden": false,
+      "visibility": "room"
+    }
+  ],
+  "rules": [
+    {
+      "rule_id": "01J9Z3K4M7Q2R8T5V6W1XS0000",
+      "rule_key": "murder-standard",
+      "rule_type": "voting",
+      "description": "Standard plurality vote.",
+      "version_no": 1,
+      "parameters": {}
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "event_id": "01J9Z3K4M7Q2R8T5V6W1XA0000",
+  "game_id": "01J9Z3K4M7Q2R8T5V6W1X20000",
+  "seq": 19,
+  "state_version": 9,
+  "previous_phase_key": "opening",
+  "phase_key": "search_round_1",
+  "deadline_at": null,
+  "available_actions": [
+    "search",
+    "chat"
+  ],
+  "occurred_at": "2026-11-21T10:03:00Z",
+  "event_type": "game.phase_changed"
+}
