@@ -30,7 +30,7 @@
 | Agent 模型 action | `ModelAction` | `ai_service/agent_runtime/outputs.py` | Private Implementation | 不纳入 |
 | 输出 Schema Registry | `SchemaRecord`、`RuntimeSchemaBinding`、`OutputSchemaRegistration` | Contracts Registry + Python Runtime | Approved / Implemented / Verified | Registry 为治理权威，Runtime 只绑定 Active schema |
 | 内部认证 header/canonical | HMAC header 与签名规范 | `docs/api/ai-internal-api.md`；security modules | DQ-19 Approved / Test-Verified | `mv-hmac-sha256-v1` internal security profile |
-| 持久化 DDL | `mv_ai.agent_*` 设计 | `DATABASE_DESIGN.md` | Designed/Not Migrated | DQ-21 批准后迁移 |
+| 持久化 DDL | `mv_ai.agent_*` / runtime audit / cleanup | `DATABASE_DESIGN.md`；`00009_ai_runtime_persistence.sql` | Migrated in source / DB execution NOT VERIFIED | 内部 Schema，不进入公共 Contracts |
 
 ## 2. Contracts 纳入规则
 

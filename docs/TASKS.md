@@ -106,7 +106,7 @@
 | DQ-18 | APPROVED；正式 Registry IMPLEMENTED/VERIFIED | Contracts Registry、兼容/Replay 策略、Active Demo Schema | 未经逐项批准冻结 AI DM/NPC 业务 Schema |
 | DQ-19 | APPROVED；安全基础 IMPLEMENTED/TEST-VERIFIED；生产基础设施 NOT VERIFIED | HMAC、Key ID、nonce、ACL、审计、TLS 客户端测试 | 真实 CA/KMS/Redis 多实例生产验证 |
 | DQ-20 | PROPOSED；本地工具 trust 原型 IMPLEMENTED；外部 MCP BLOCKED | 本地白名单工具和拒绝策略 | 接入真实 MCP、开放 egress |
-| DQ-21 | PROPOSED；内存 Run 原型 IMPLEMENTED/VERIFIED；持久化 BLOCKED | 生命周期测试和文档设计 | 创建正式 `mv_ai` 迁移、声称可恢复 |
+| DQ-21 | APPROVED；Run/Step/Checkpoint/Recovery/Retention IMPLEMENTED；UNIT-VERIFIED；MySQL+Redis Integration & Restore NOT VERIFIED | 正式迁移、状态机、DB Fencing、加密 Blob、Cleanup Eligibility/Worker、Recovery Attempt | 未部署基础设施前宣称多实例或生产恢复已验证 |
 | DQ-22 | PROPOSED；Mock/兼容 HTTP Provider IMPLEMENTED；真实供应商 BLOCKED | Mock、低敏测试、配置校验 | 真实数据外发、自动 fallback、生产 SLA 声明 |
 
 完整候选方案和依赖图见 `docs/architecture/dq-18-22-ai-runtime-design.md`；
@@ -129,6 +129,60 @@ GATE-AI 逐项状态见 `docs/architecture/gate-ai-checklist.md`。
   `docs/architecture/gate-ai-checklist.md`。
 - **剩余风险**：真实 CA、KMS、Redis 多实例和生产 mTLS 部署为 `NOT VERIFIED`；
   DQ-20 至 DQ-22、ADR-001/004/005/008 仍为 Proposed。
+
+### 1.4 Task 12 DQ-21 Runtime Persistence
+
+- **状态**：`IMPLEMENTED / UNIT-VERIFIED`；真实 MySQL+Redis Integration、
+  KMS、Restore `NOT VERIFIED`
+- **实际变更**：`mv_ai` 迁移、MySQL Repository、Redis Lease、DB Fencing、
+  AES-GCM Checkpoint、Recovery Attempt、Retention/Cleanup Worker 和 Runtime Store。
+- **测试命令**：`uv run --project ai_service pytest ai_service/tests`、
+  `./scripts/mv.ps1 check`。
+- **测试结果**：Python 63 项通过、3 项 Integration/双 Worker 条件跳过；mypy 74 个源文件、
+  Ruff、Go migration package 通过。
+- **验收证据**：`docs/architecture/task-12-report.md`、
+  `docs/architecture/dq-21-persistence-candidate.md`。
+- **剩余风险**：没有 Docker/MySQL/Redis，真实迁移、双实例、故障注入、KMS 和
+  Restore 未验证。
+
+### 1.5 Task 13 DQ-21 Infrastructure Verification
+
+- **状态**：`BLOCKED`（真实基础设施验证）；配置与测试代码已完成。
+- **阻塞项**：当前机器没有 Docker、MySQL Server 或 Redis Server。
+- **已提供**：`scripts/dq21-infra.ps1`、`scripts/dq21-verify.ps1`、
+  双 Worker Probe、Migration Up/Down/Up 测试、Infrastructure/Restore 指南。
+- **已验证**：63 项 Python 测试、3 项真实基础设施测试条件跳过；mypy 74 个
+  源文件、Ruff、Go/Web/Contracts/Build 通过。
+- **未验证**：真实 Migration、MySQL/Redis Integration、双 Worker Failover、
+  Stale Fence DB 拒绝、Backup/Restore、KMS、Production。
+- **证据**：`docs/architecture/task-13-verification.md`、
+  `docs/architecture/dq21-verification-guide.md`。
+
+### 1.6 Task 14 DQ-21 CI Verification Pipeline
+
+- **状态**：`IMPLEMENTED / NOT VERIFIED`（CI 尚未推送触发）。
+- **实际变更**：GitHub Actions Workflow、MySQL/Redis Service Container、
+  Persistence/Recovery/Cleanup Integration、双 Worker Probe 测试、
+  Backup/Restore Probe 与双 MySQL Restore Job。
+- **CI Job**：Unit、Integration + Multi-Worker、Backup/Restore、Summary。
+- **安全**：`contents: read`、无生产 Secret、Backup SQL 不上传 Artifact。
+- **本地验证**：63 项 Python 测试通过、3 项 Integration 条件跳过；mypy 74、
+  Workflow YAML、`actionlint v1.7.7` 和 PowerShell 脚本语法通过。
+- **未验证**：Hosted CI、真实 MySQL/Redis、多 Worker、Restore、Production。
+- **证据**：`docs/architecture/task-14-ci-report.md`、
+  `docs/architecture/dq21-ci-guide.md`。
+
+### 1.7 Task 15 First CI Execution
+
+- **状态**：`BLOCKED`（等待推送授权）。
+- **已完成**：Workflow readiness、本地全量检查、actionlint、敏感信息扫描、
+  Git 提交范围审计与首次执行方案。
+- **当前分支/Remote**：`main` →
+  `https://github.com/panderBother/MysteryVerse.git`。
+- **当前 SHA**：本地与远端均为 `79e587a`；Task 12–15 改动尚未提交。
+- **未完成**：Commit、Push、GitHub Actions Run、Run ID、Job Results、Artifacts。
+- **建议 Commit**：`test(ci): enable DQ-21 infrastructure verification`
+- **证据**：`docs/architecture/task-15-first-ci-execution.md`。
 
 可以先行：
 

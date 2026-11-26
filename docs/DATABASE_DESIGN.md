@@ -10,6 +10,11 @@
 > ADR-001、ADR-004、ADR-006、ADR-007、ADR-008 为 Proposed。
 > Proposed 表结构与状态语义在负责人确认前不得作为迁移依据。
 
+> **2026-11-25 DQ-21 批准补充**：MySQL 是 Run/Step/Checkpoint Metadata 权威源，
+> Redis 提供 Owner Lease，MySQL `owner_lease_expires_at + fencing_token`
+> 负责权威写入保护。首版 Checkpoint 加密正文使用 MySQL Blob；DQ-21 相关表由
+> `00009_ai_runtime_persistence.sql` 创建。
+
 ---
 
 ## 0. 设计结论与 TECH_DESIGN 修正建议
@@ -1598,11 +1603,21 @@ AI 表默认位于 `mv_ai`。下列 `script_id`、`script_version_id`、`room_id
 | `retry_count` | `SMALLINT UNSIGNED` | `DEFAULT 0` | 重试次数 |
 | `accepted_status` | `VARCHAR(20)` | `NULL` | `accepted`、`rejected`、`ignored` |
 | `trace_id` | `VARCHAR(64)` | `IX` | trace |
+| `correlation_id` | `VARCHAR(64)` | `NULL` | 调用链关联 |
+| `schema_version` | `VARCHAR(32)` |  | Run Schema |
+| `tenant_id` | `VARCHAR(64)` | `NULL` | 内部租户 scope |
+| `execution_version` | `BIGINT UNSIGNED` | `DEFAULT 0` | 乐观状态版本 |
+| `current_step_no` | `INT UNSIGNED` | `DEFAULT 0` | 当前 Step |
+| `owner_id` | `VARCHAR(128)` | `NULL` | Runtime 实例身份 |
+| `fencing_token` | `BIGINT UNSIGNED` | `DEFAULT 0` | 单调写入保护 |
+| `owner_lease_expires_at` | `DATETIME(3)` | `NULL` | DB 权威 Lease 到期 |
+| `runtime_deadline_at` | `DATETIME(3)` | `NULL` | 运行期限 |
 | `started_at` | `DATETIME(3)` | `NULL` | 开始 |
 | `finished_at` | `DATETIME(3)` | `NULL`，`IX` | 结束 |
+| `cancelled_at` | `DATETIME(3)` | `NULL` | 取消时间 |
 | `duration_ms` | `INT UNSIGNED` | `NULL` | 总耗时 |
-| `error_code` | `VARCHAR(64)` | `NULL` | 异常类别 |
-| `error_summary` | `VARCHAR(500)` | `NULL` | 脱敏错误 |
+| `failure_category` | `VARCHAR(64)` | `NULL` | 异常类别 |
+| `failure_summary` | `VARCHAR(500)` | `NULL` | 脱敏错误 |
 
 #### 6.5.3 `agent_steps`
 
@@ -1746,6 +1761,49 @@ AI 表默认位于 `mv_ai`。下列 `script_id`、`script_version_id`、`room_id
 | `metrics_json` | `JSON` |  | 准确率、Schema、成本、安全指标 |
 | `conclusion` | `VARCHAR(1000)` | `NULL` | 发布结论 |
 | `finished_at` | `DATETIME(3)` | `NULL` | 完成 |
+
+#### 6.5.11 `agent_step_attempts`
+
+| 字段 | 类型 | 约束 | 业务说明 |
+| --- | --- | --- | --- |
+| `agent_step_id` | `CHAR(26)` | `FK agent_steps.id`，`UQ(step_id,attempt_no)` | Step |
+| `attempt_no` | `SMALLINT UNSIGNED` | `UQ(...)` | 尝试序号 |
+| `status` | `VARCHAR(20)` | `IX` | running、succeeded、failed、cancelled |
+| `input_digest` / `output_digest` | `BINARY(32)` | `NULL` | 输入输出摘要 |
+| `started_at` / `finished_at` | `DATETIME(3)` |  | 时间 |
+| `failure_category` / `failure_summary` |  | `NULL` | 脱敏失败信息 |
+
+#### 6.5.12 `agent_recovery_attempts`
+
+| 字段 | 类型 | 约束 | 业务说明 |
+| --- | --- | --- | --- |
+| `agent_run_id` | `CHAR(26)` | `FK agent_runs.id`，`UQ(run_id,attempt_no)` | 同 Run 恢复 |
+| `attempt_no` | `SMALLINT UNSIGNED` | `UQ(...)` | 恢复序号 |
+| `recovery_checkpoint_id` | `CHAR(26)` | `FK agent_checkpoints.id` | 恢复源 |
+| `previous_owner_id` / `new_owner_id` | `VARCHAR(128)` |  | Owner 迁移 |
+| `fencing_token` | `BIGINT UNSIGNED` |  | 接管 Fence |
+| `status` | `VARCHAR(20)` | `IX` | started、succeeded、failed、cancelled |
+| `trigger_category` | `VARCHAR(64)` |  | owner_failure/manual |
+
+#### 6.5.13 `runtime_audit_records`
+
+独立于 Run 删除，默认保留 180 天。保存 Run/Step/Recovery ID、Tenant、事件类别、
+Actor、结果、失败类别、Correlation ID 与脱敏摘要，不保存完整 Payload。
+该表不对 `agent_runs` 建物理外键，以便 Run 清理后 Audit 仍可查询。
+
+#### 6.5.14 `agent_idempotency_records`
+
+| 字段 | 类型 | 约束 | 业务说明 |
+| --- | --- | --- | --- |
+| `idempotency_scope` / `idempotency_key` | `VARCHAR` | `UQ` | 幂等作用域 |
+| `request_hash` | `BINARY(32)` |  | 冲突检测 |
+| `run_id` | `CHAR(26)` | `FK agent_runs.id` | 关联 Run |
+| `expires_at` | `DATETIME(3)` | `IX` | 默认 7 天 |
+
+#### 6.5.15 `runtime_cleanup_jobs`
+
+记录清理 Job、Resource、状态、Attempt、时间、失败类别。Cleanup 使用小批量事务，
+不得通过 Cascade Delete 绕过引用、Recovery 或 Audit 检查。
 
 ### 6.6 社区与运营
 

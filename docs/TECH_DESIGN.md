@@ -1196,7 +1196,10 @@ Trace 记录 context/model/tool/validate 步骤、耗时、Usage、状态和错�
   token 或业务正文。
 - D3/D4 上下文默认不发送模型；SecretPayload 正式数据政策仍为 DQ-15/DQ-22。
 - MCP/外部网络工具当前默认拒绝，高风险工具要求确认，工具结果按不可信数据限长。
-- Run 元数据和 checkpoint 引用有进程内原型，正式持久化与恢复为 DQ-21。
+- DQ-21 已批准：`mv_ai` Run/Step/Checkpoint/Recovery 元数据、Redis Owner
+  Lease、MySQL Lease Expiry + Fencing、AES-GCM Checkpoint Blob、Retention
+  Cleanup Worker 和 Recovery Attempt 已实现。真实 MySQL/Redis 多实例、KMS
+  与 Restore 仍为 `NOT VERIFIED`。
 
 GATE-AI 逐项状态见 `docs/architecture/gate-ai-checklist.md`。DQ-18/DQ-19
 测试级实现已通过，但真实 CA、KMS、Redis 多实例和生产部署仍为 `NOT VERIFIED`；

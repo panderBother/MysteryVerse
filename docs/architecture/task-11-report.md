@@ -128,7 +128,8 @@ ADR-001/004/005/008。
 - DQ-18 是否 VERIFIED：是，测试与生成漂移验证通过。
 - DQ-19 是否 IMPLEMENTED：是。
 - DQ-19 是否 VERIFIED：测试范围 VERIFIED；生产基础设施 NOT VERIFIED。
-- 是否可进入 DQ-21：不可以。DQ-21 仍为 Proposed，需负责人单独批准。
+- 是否可进入 DQ-21：Task 11 完成时不可以；负责人随后已单独批准 DQ-21，
+  当前实施状态见 `task-12-report.md`。
 - 是否仍禁止 AI DM 正式实现：是。具体业务 Schema、ADR-008、DQ-21、DQ-22
   和 GATE-AI 仍未满足。
 

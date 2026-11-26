@@ -34,6 +34,15 @@ func TestMigrationsUpStatusAndDown(t *testing.T) {
 		_ = db.Close()
 	})
 
+	if _, err := db.SQL().ExecContext(ctx, "DROP DATABASE IF EXISTS mv_ai"); err != nil {
+		t.Fatalf("drop stale mv_ai schema: %v", err)
+	}
+	if _, err := db.SQL().ExecContext(ctx, `
+CREATE DATABASE mv_ai CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci
+`); err != nil {
+		t.Fatalf("create mv_ai schema: %v", err)
+	}
+
 	var existingTables int
 	if err := db.SQL().QueryRowContext(ctx, `
 SELECT COUNT(*)
@@ -81,6 +90,17 @@ WHERE trigger_schema = DATABASE()
 	if triggerCount != 2 {
 		t.Fatalf("audit trigger count = %d, want 2", triggerCount)
 	}
+	var aiTableCount int
+	if err := db.SQL().QueryRowContext(ctx, `
+SELECT COUNT(*)
+FROM information_schema.tables
+WHERE table_schema = 'mv_ai'
+`).Scan(&aiTableCount); err != nil {
+		t.Fatalf("count mv_ai tables: %v", err)
+	}
+	if aiTableCount != 8 {
+		t.Fatalf("mv_ai table count = %d, want 8", aiTableCount)
+	}
 
 	if err := goose.Down(db.SQL(), "."); err != nil {
 		t.Fatalf("Down() trigger-only migration error = %v", err)
@@ -109,5 +129,41 @@ WHERE table_schema = DATABASE()
 	}
 	if tableCount != 0 {
 		t.Fatalf("table count after rollback = %d, want 0", tableCount)
+	}
+	if err := db.SQL().QueryRowContext(ctx, `
+SELECT COUNT(*)
+FROM information_schema.tables
+WHERE table_schema = 'mv_ai'
+`).Scan(&aiTableCount); err != nil {
+		t.Fatalf("count mv_ai tables after rollback: %v", err)
+	}
+	if aiTableCount != 0 {
+		t.Fatalf("mv_ai table count after rollback = %d, want 0", aiTableCount)
+	}
+
+	if err := goose.Up(db.SQL(), "."); err != nil {
+		t.Fatalf("second Up() after full rollback error = %v", err)
+	}
+	if err := db.SQL().QueryRowContext(ctx, `
+SELECT COUNT(*)
+FROM information_schema.tables
+WHERE table_schema = 'mv_ai'
+`).Scan(&aiTableCount); err != nil {
+		t.Fatalf("count mv_ai tables after re-execution: %v", err)
+	}
+	if aiTableCount != 8 {
+		t.Fatalf("mv_ai table count after re-execution = %d, want 8", aiTableCount)
+	}
+	for {
+		version, err := goose.GetDBVersion(db.SQL())
+		if err != nil {
+			t.Fatalf("GetDBVersion() after re-execution error: %v", err)
+		}
+		if version == 0 {
+			break
+		}
+		if err := goose.Down(db.SQL(), "."); err != nil {
+			t.Fatalf("final Down() from version %d error: %v", version, err)
+		}
 	}
 }

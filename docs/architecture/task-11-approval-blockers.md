@@ -40,7 +40,7 @@
 | 决策 | 当前状态 | 影响 |
 | --- | --- | --- |
 | DQ-20 | Proposed | 外部 MCP Server、信任等级和开放 egress 继续阻塞 |
-| DQ-21 | Proposed | 正式 Run/Checkpoint 持久化、恢复和 owner lease 继续阻塞 |
+| DQ-21 | Task 11 时为 Proposed；2026-11-25 后续已单独批准 | 实施与验证见 `task-12-report.md` |
 | DQ-22 | Proposed | 真实 Provider 白名单、区域、预算和 fallback 继续阻塞 |
 | ADR-001 | Proposed | Memory 权威写入与正式 Python Memory 协议继续阻塞 |
 | ADR-004 | Proposed | `event_seq` / `state_version` 正式语义继续阻塞 |

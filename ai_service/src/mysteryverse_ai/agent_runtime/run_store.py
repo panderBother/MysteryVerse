@@ -7,6 +7,8 @@ from typing import Literal, Protocol
 
 from pydantic import BaseModel, ConfigDict, Field
 
+from mysteryverse_ai.schemas.generated.models import AgentTraceStep
+
 RunLifecycleStatus = Literal[
     "running",
     "succeeded",
@@ -75,6 +77,8 @@ class AgentRunStore(Protocol):
 
     async def record_checkpoint(self, checkpoint: CheckpointReference) -> None: ...
 
+    async def record_steps(self, run_id: str, steps: list[AgentTraceStep]) -> None: ...
+
     async def cleanup_expired(self) -> int: ...
 
 
@@ -87,6 +91,7 @@ class InMemoryAgentRunStore:
     ) -> None:
         self._runs: dict[str, AgentRunRecord] = {}
         self._checkpoints: dict[str, list[CheckpointReference]] = {}
+        self._steps: dict[str, list[AgentTraceStep]] = {}
         self._max_records = max_records
         self._clock = clock or (lambda: datetime.now(tz=UTC))
         self._lock = asyncio.Lock()
@@ -163,6 +168,12 @@ class InMemoryAgentRunStore:
                 raise KeyError(checkpoint.run_id)
             self._checkpoints.setdefault(checkpoint.run_id, []).append(checkpoint)
 
+    async def record_steps(self, run_id: str, steps: list[AgentTraceStep]) -> None:
+        async with self._lock:
+            if run_id not in self._runs:
+                raise KeyError(run_id)
+            self._steps.setdefault(run_id, []).extend(steps)
+
     async def cleanup_expired(self) -> int:
         async with self._lock:
             return await self._cleanup_locked()
@@ -173,4 +184,5 @@ class InMemoryAgentRunStore:
         for run_id in expired:
             self._runs.pop(run_id, None)
             self._checkpoints.pop(run_id, None)
+            self._steps.pop(run_id, None)
         return len(expired)

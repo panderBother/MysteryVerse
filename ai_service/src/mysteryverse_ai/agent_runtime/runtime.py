@@ -80,6 +80,9 @@ class AgentRuntime:
         close = getattr(self._provider, "aclose", None)
         if close is not None:
             await close()
+        store_close = getattr(self._run_store, "aclose", None)
+        if store_close is not None:
+            await store_close()
 
     async def run(
         self,
@@ -369,6 +372,7 @@ class AgentRuntime:
         return response
 
     async def _finish_run(self, run_id: str, response: AgentResponse) -> None:
+        await self._run_store.record_steps(run_id, response.steps or [])
         status = response.status.value if response.status else "failed"
         if status not in {"succeeded", "failed", "timeout", "cancelled"}:
             status = "failed"

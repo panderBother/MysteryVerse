@@ -10,7 +10,9 @@
 内容管理、版本化跨语言 Contracts Registry 和 Python Agent Runtime 安全基础。
 DQ-18/DQ-19 的 Registry、HMAC、Key ID、ACL、审计和 TLS 客户端已落地并通过
 测试级验证；真实 CA/KMS/Redis 多实例仍待部署。AI DM、NPC 完整玩法、外部
-MCP 与生产级 Run/Checkpoint 仍在决策门禁后。
+MCP 仍在决策门禁后。DQ-21 的 MySQL Run/Step/Checkpoint Metadata、Redis
+Owner Lease、DB Fencing、AES-GCM Checkpoint、Recovery 与 Cleanup Worker
+已实现并通过单元测试；真实 MySQL/Redis 多实例与 Restore 仍待基础设施验证。
 
 ## 技术栈
 

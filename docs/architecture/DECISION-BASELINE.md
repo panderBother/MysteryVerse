@@ -135,7 +135,7 @@ AI Runtime 新未决项：
 | DQ-18 | 任务级输出 Schema 与正式版本治理 | Approved / Implemented / Verified | 正式 Registry、兼容性、Active 与 Runtime 输出绑定已落地 |
 | DQ-19 | mTLS、请求签名、nonce 存储和密钥轮换 | Approved / Implemented / Test-Verified；生产基础设施 Not Verified | Go/Python 内部通信基础已落地；真实 CA/KMS/Redis 多实例待部署验证 |
 | DQ-20 | MCP Server 信任、工具发现和审计 | Proposed | 外部工具接入 |
-| DQ-21 | Run/Checkpoint 存储、恢复与保留 | Proposed | 长任务恢复和生产可靠性 |
+| DQ-21 | Run/Checkpoint 存储、恢复与保留 | Approved / Implemented / Unit-Verified；CI Pipeline Implemented；CI Execution、Multi-Worker、Restore、Production Not Verified | 本机无 Docker；GitHub Actions Workflow 尚未推送触发 |
 | DQ-22 | 真实供应商、数据边界、预算和降级政策 | Proposed | 真实模型上线 |
 
 详细候选方案、依赖图和验收要求：

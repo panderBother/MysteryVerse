@@ -20,6 +20,22 @@ class Settings(BaseSettings):
     port: int = Field(default=8000, ge=1, le=65535)
     database_url: str | None = None
     redis_url: str | None = None
+    runtime_persistence_enabled: bool = False
+    runtime_instance_id: str = "ai-runtime-dev-1"
+    owner_lease_ttl_seconds: int = Field(default=30, ge=5, le=600)
+    owner_lease_renew_interval_seconds: int = Field(default=10, ge=1, le=300)
+    run_runtime_deadline_seconds: int = Field(default=86_400, ge=60)
+    checkpoint_encryption_key: SecretStr | None = None
+    checkpoint_encryption_key_id: str = "dev-checkpoint-v1"
+    checkpoint_max_blob_bytes: int = Field(default=1 << 20, ge=1)
+    checkpoint_compression_level: int = Field(default=9, ge=1, le=9)
+    completed_run_retention_seconds: int = Field(default=30 * 86_400, ge=60)
+    failed_run_retention_seconds: int = Field(default=90 * 86_400, ge=60)
+    cancelled_run_retention_seconds: int = Field(default=30 * 86_400, ge=60)
+    runtime_audit_retention_seconds: int = Field(default=180 * 86_400, ge=60)
+    idempotency_retention_seconds: int = Field(default=7 * 86_400, ge=60)
+    cleanup_batch_size: int = Field(default=100, ge=1, le=10_000)
+    cleanup_interval_seconds: int = Field(default=300, ge=10)
 
     model_provider: Literal["mock", "openai_compatible"] = "mock"
     model_name: str = "mock-v1"
@@ -73,6 +89,7 @@ class Settings(BaseSettings):
         if self.agent_default_timeout_ms > retry_budget_ms:
             raise ValueError("agent default timeout must fit the configured model retry budget")
         self._validate_internal_security()
+        self._validate_runtime_persistence()
         return self
 
     def _validate_internal_security(self) -> None:
@@ -119,6 +136,28 @@ class Settings(BaseSettings):
             raise ValueError("production internal service mTLS is required")
         if self.internal_kms_provider != "external":
             raise ValueError("production signing keys require an external KMS provider")
+
+    def _validate_runtime_persistence(self) -> None:
+        if self.owner_lease_renew_interval_seconds >= self.owner_lease_ttl_seconds:
+            raise ValueError("owner lease renew interval must be shorter than TTL")
+        checkpoint_key = (
+            self.checkpoint_encryption_key.get_secret_value()
+            if self.checkpoint_encryption_key is not None
+            else ""
+        )
+        if checkpoint_key and len(checkpoint_key.encode()) != 32:
+            raise ValueError("checkpoint encryption key must be exactly 32 bytes")
+        if not self.runtime_persistence_enabled:
+            return
+        if not self.database_url:
+            raise ValueError("runtime persistence requires AI_DATABASE_URL")
+        if not checkpoint_key:
+            raise ValueError("runtime persistence requires checkpoint encryption key material")
+        if self.environment == "production":
+            if not self.redis_url:
+                raise ValueError("production runtime persistence requires Redis")
+            if not self.internal_kms_uri:
+                raise ValueError("production checkpoint encryption requires a KMS URI")
 
     @classmethod
     def for_test(cls) -> "Settings":

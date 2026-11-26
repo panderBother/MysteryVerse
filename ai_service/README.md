@@ -40,6 +40,23 @@ The implemented demo graph performs a finite model -> tool -> model ->
 structured-output validation loop. AI DM, NPC behavior, MemoryCandidate
 acceptance and game-state mutation are intentionally not implemented.
 
+Candidate DQ-21 persistence foundations under
+`agent_runtime/persistence_foundation/` validate Run lifecycle transitions,
+Owner Lease/Fencing, checkpoint integrity, idempotency and retry decisions.
+The formal `persistence/` package adds MySQL Run/Step/Checkpoint repositories,
+Redis Owner Lease, DB Fencing, encrypted Checkpoint Blob, recovery coordination
+and Retention Cleanup Worker. Enable with:
+
+```text
+AI_RUNTIME_PERSISTENCE_ENABLED=true
+AI_DATABASE_URL=mysql+asyncmy://...
+AI_REDIS_URL=redis://...
+AI_CHECKPOINT_ENCRYPTION_KEY=<32-byte secret>
+```
+
+Real MySQL/Redis integration, production KMS and Restore tests remain
+`NOT VERIFIED`.
+
 DQ-19 request integrity profile:
 
 ```text

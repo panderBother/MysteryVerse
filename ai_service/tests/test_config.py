@@ -48,3 +48,23 @@ def test_production_internal_security_is_fail_closed() -> None:
                 "internal_request_signing_key": "a" * 32,
             }
         )
+
+
+def test_runtime_persistence_requires_database_and_encryption_key() -> None:
+    with pytest.raises(ValidationError):
+        Settings.model_validate({"runtime_persistence_enabled": True})
+    with pytest.raises(ValidationError):
+        Settings.model_validate(
+            {
+                "runtime_persistence_enabled": True,
+                "database_url": "mysql://user:pass@localhost/db",
+            }
+        )
+    settings = Settings.model_validate(
+        {
+            "runtime_persistence_enabled": True,
+            "database_url": "mysql://user:pass@localhost/db",
+            "checkpoint_encryption_key": "k" * 32,
+        }
+    )
+    assert settings.runtime_persistence_enabled is True

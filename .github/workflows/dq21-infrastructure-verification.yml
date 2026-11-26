@@ -1,0 +1,331 @@
+name: DQ-21 Infrastructure Verification
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/dq21-infrastructure-verification.yml"
+      - "ai_service/**"
+      - "backend/migrations/**"
+      - "backend/cmd/migrate/**"
+      - "deploy/mysql/**"
+      - "scripts/dq21-*.ps1"
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/dq21-infrastructure-verification.yml"
+      - "ai_service/**"
+      - "backend/migrations/**"
+      - "backend/cmd/migrate/**"
+      - "deploy/mysql/**"
+      - "scripts/dq21-*.ps1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: dq21-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PYTHON_VERSION: "3.12"
+  GO_VERSION: "1.24"
+  MYSQL_DATABASE: mysteryverse_ci
+  MYSQL_ROOT_PASSWORD: ci-test-root-password
+  MYSQL_USER: mysteryverse
+  MYSQL_PASSWORD: ci-test-db-password
+  REDIS_IMAGE: redis:7.2.7
+  MYSQL_IMAGE: mysql:8.0.36
+
+jobs:
+  unit:
+    name: Unit and Static Verification
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - uses: astral-sh/setup-uv@v6
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache-dependency-path: backend/go.sum
+      - name: Install dependencies
+        run: |
+          uv sync --project ai_service
+          uv sync --project packages/contracts/tools
+          (cd backend && go mod download)
+      - name: Python unit tests
+        run: |
+          mkdir -p artifacts
+          uv run --project ai_service pytest ai_service/tests -m "not integration" \
+            --junitxml=artifacts/pytest-unit.xml
+      - name: Contracts tests
+        run: |
+          uv run --project ai_service pytest packages/contracts/tests \
+            --junitxml=artifacts/pytest-contracts.xml
+      - name: Python lint and type check
+        run: |
+          uv run --project ai_service ruff check ai_service
+          uv run --project ai_service ruff format --check ai_service
+          uv run --project ai_service mypy ai_service/src
+      - name: Go unit tests
+        run: |
+          cd backend
+          go test ./...
+          go vet ./...
+      - name: Upload unit evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dq21-unit-evidence
+          path: artifacts
+          if-no-files-found: warn
+
+  integration:
+    name: MySQL Redis Integration and Multi-Worker
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    services:
+      mysql:
+        image: mysql:8.0.36
+        env:
+          MYSQL_ROOT_PASSWORD: ci-test-root-password
+          MYSQL_DATABASE: mysteryverse_ci
+          MYSQL_USER: mysteryverse
+          MYSQL_PASSWORD: ci-test-db-password
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd "mysqladmin ping -h 127.0.0.1 -uroot -pci-test-root-password --silent"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 30
+          --health-start-period 20s
+      redis:
+        image: redis:7.2.7
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 20
+    env:
+      MYSQL_MIGRATION_TEST_DSN: root:ci-test-root-password@tcp(127.0.0.1:3306)/mysteryverse_ci?parseTime=true
+      MYSQL_DSN: root:ci-test-root-password@tcp(127.0.0.1:3306)/mysteryverse_ci?parseTime=true
+      AI_RUNTIME_TEST_DATABASE_URL: mysql+asyncmy://root:ci-test-root-password@127.0.0.1:3306/mysteryverse_ci
+      AI_RUNTIME_TEST_REDIS_URL: redis://127.0.0.1:6379/0
+      AI_RUNTIME_TEST_CHECKPOINT_KEY: ci-checkpoint-key-32-bytes-long!
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - uses: astral-sh/setup-uv@v6
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache-dependency-path: backend/go.sum
+      - name: Install dependencies
+        run: |
+          uv sync --project ai_service
+          (cd backend && go mod download)
+      - name: Resolve service container IDs
+        run: |
+          echo "MYSQL_CONTAINER_ID=${{ job.services.mysql.id }}" >> "$GITHUB_ENV"
+          echo "REDIS_CONTAINER_ID=${{ job.services.redis.id }}" >> "$GITHUB_ENV"
+      - name: Prepare isolated schemas
+        run: |
+          set -euo pipefail
+          docker exec "$MYSQL_CONTAINER_ID" mysql -uroot -p"$MYSQL_ROOT_PASSWORD" -e "
+            CREATE DATABASE IF NOT EXISTS mv_ai
+              CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
+            GRANT ALL PRIVILEGES ON mv_ai.* TO '$MYSQL_USER'@'%';
+            FLUSH PRIVILEGES;
+          "
+      - name: Migration verification
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts
+          cd backend
+          go test ./migrations -run TestMigrationsUpStatusAndDown -count=1 -v \
+            2>&1 | tee ../artifacts/migration.log
+      - name: Apply migrated schema for integration
+        run: |
+          set -euo pipefail
+          cd backend
+          go run ./cmd/migrate --command=up
+      - name: MySQL Redis and multi-worker integration
+        run: |
+          set -euo pipefail
+          uv run --project ai_service pytest \
+            ai_service/tests/test_runtime_persistence_mysql.py \
+            ai_service/tests/test_runtime_persistence_multiworker.py \
+            -m integration -v \
+            --junitxml=artifacts/pytest-dq21-integration.xml \
+            2>&1 | tee artifacts/dq21-integration.log
+      - name: Collect infrastructure diagnostics
+        if: always()
+        run: |
+          mkdir -p artifacts
+          docker logs "$MYSQL_CONTAINER_ID" > artifacts/mysql.log 2>&1 || true
+          docker logs "$REDIS_CONTAINER_ID" > artifacts/redis.log 2>&1 || true
+      - name: Upload integration evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dq21-integration-evidence
+          path: artifacts
+          if-no-files-found: warn
+
+  backup-restore:
+    name: Backup and Restore Verification
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    services:
+      mysql_source:
+        image: mysql:8.0.36
+        env:
+          MYSQL_ROOT_PASSWORD: ci-test-root-password
+          MYSQL_DATABASE: mysteryverse_ci
+          MYSQL_USER: mysteryverse
+          MYSQL_PASSWORD: ci-test-db-password
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd "mysqladmin ping -h 127.0.0.1 -uroot -pci-test-root-password --silent"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 30
+          --health-start-period 20s
+      mysql_restore:
+        image: mysql:8.0.36
+        env:
+          MYSQL_ROOT_PASSWORD: ci-test-root-password
+          MYSQL_DATABASE: mysteryverse_ci
+          MYSQL_USER: mysteryverse
+          MYSQL_PASSWORD: ci-test-db-password
+        ports:
+          - 3307:3306
+        options: >-
+          --health-cmd "mysqladmin ping -h 127.0.0.1 -uroot -pci-test-root-password --silent"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 30
+          --health-start-period 20s
+    env:
+      MYSQL_ROOT_PASSWORD: ci-test-root-password
+      MYSQL_DATABASE: mysteryverse_ci
+      MYSQL_DSN: root:ci-test-root-password@tcp(127.0.0.1:3306)/mysteryverse_ci?parseTime=true
+      AI_RUNTIME_TEST_DATABASE_URL: mysql+asyncmy://root:ci-test-root-password@127.0.0.1:3306/mysteryverse_ci
+      AI_RUNTIME_RESTORE_DATABASE_URL: mysql+asyncmy://root:ci-test-root-password@127.0.0.1:3307/mysteryverse_ci
+      AI_RUNTIME_TEST_CHECKPOINT_KEY: ci-checkpoint-key-32-bytes-long!
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - uses: astral-sh/setup-uv@v6
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache-dependency-path: backend/go.sum
+      - name: Install dependencies
+        run: |
+          uv sync --project ai_service
+          (cd backend && go mod download)
+      - name: Resolve service container IDs
+        run: |
+          echo "MYSQL_SOURCE_ID=${{ job.services.mysql_source.id }}" >> "$GITHUB_ENV"
+          echo "MYSQL_RESTORE_ID=${{ job.services.mysql_restore.id }}" >> "$GITHUB_ENV"
+      - name: Prepare source and restore schemas
+        run: |
+          set -euo pipefail
+          for container in "$MYSQL_SOURCE_ID" "$MYSQL_RESTORE_ID"; do
+            docker exec "$container" mysql -uroot -p"$MYSQL_ROOT_PASSWORD" -e "
+              CREATE DATABASE IF NOT EXISTS mv_ai
+                CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
+              GRANT ALL PRIVILEGES ON mv_ai.* TO 'mysteryverse'@'%';
+            "
+          done
+      - name: Migrate source database
+        run: |
+          set -euo pipefail
+          cd backend
+          go run ./cmd/migrate --command=up
+      - name: Seed backup fixture
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts
+          uv run --project ai_service python \
+            -m mysteryverse_ai.workers.backup_restore_probe seed \
+            --metadata artifacts/dq21-restore-metadata.json
+      - name: Backup source database
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts
+          docker exec "$MYSQL_SOURCE_ID" sh -c \
+            'mysqldump -uroot -p"$MYSQL_ROOT_PASSWORD" --single-transaction --routines --triggers --databases mysteryverse_ci mv_ai | gzip > /tmp/dq21-backup.sql.gz'
+          docker cp "$MYSQL_SOURCE_ID:/tmp/dq21-backup.sql.gz" /tmp/dq21-backup.sql.gz
+          gzip -t /tmp/dq21-backup.sql.gz
+          sha256sum /tmp/dq21-backup.sql.gz > artifacts/dq21-backup.sha256
+      - name: Restore isolated MySQL
+        run: |
+          set -euo pipefail
+          docker cp /tmp/dq21-backup.sql.gz "$MYSQL_RESTORE_ID:/tmp/dq21-backup.sql.gz"
+          docker exec "$MYSQL_RESTORE_ID" sh -c \
+            'gunzip -c /tmp/dq21-backup.sql.gz | mysql -uroot -p"$MYSQL_ROOT_PASSWORD"'
+      - name: Verify restored data and checkpoint integrity
+        run: |
+          set -euo pipefail
+          uv run --project ai_service python \
+            -m mysteryverse_ai.workers.backup_restore_probe verify \
+            --metadata artifacts/dq21-restore-metadata.json \
+            2>&1 | tee artifacts/dq21-restore-verification.log
+      - name: Collect restore diagnostics
+        if: always()
+        run: |
+          mkdir -p artifacts
+          docker logs "$MYSQL_SOURCE_ID" > artifacts/mysql-source.log 2>&1 || true
+          docker logs "$MYSQL_RESTORE_ID" > artifacts/mysql-restore.log 2>&1 || true
+      - name: Upload restore evidence without backup contents
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dq21-backup-restore-evidence
+          path: |
+            artifacts/dq21-restore-metadata.json
+            artifacts/dq21-backup.sha256
+            artifacts/dq21-restore-verification.log
+            artifacts/mysql-source.log
+            artifacts/mysql-restore.log
+          if-no-files-found: warn
+
+  report:
+    name: DQ-21 Verification Summary
+    if: always()
+    needs: [unit, integration, backup-restore]
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Summarize verification evidence
+        run: |
+          set -euo pipefail
+          {
+            echo "## DQ-21 CI Verification"
+            echo ""
+            echo "| Job | Result |"
+            echo "| --- | --- |"
+            echo "| Unit | ${{ needs.unit.result }} |"
+            echo "| MySQL/Redis/Multi-Worker | ${{ needs.integration.result }} |"
+            echo "| Backup/Restore | ${{ needs['backup-restore'].result }} |"
+            echo ""
+            echo "Production Verification remains NOT VERIFIED."
+            echo "DQ-22 remains PROPOSED and is not authorized by this workflow."
+          } >> "$GITHUB_STEP_SUMMARY"
+          test "${{ needs.unit.result }}" = "success"
+          test "${{ needs.integration.result }}" = "success"
+          test "${{ needs['backup-restore'].result }}" = "success"

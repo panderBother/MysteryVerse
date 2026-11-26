@@ -103,7 +103,10 @@
 - 问题：`mv_ai` Run/Step/Tool/Usage 与 LangGraph checkpoint 的保留周期和恢复目标。
 - 影响：故障恢复、成本归因、审计和存储。
 - 推荐：Run 摘要长期保留，完整上下文短期加密保存，Checkpoint 按任务生命周期清理。
-- 阻塞：生产级异步工作流和长任务恢复。
+- 当前：DQ-21 已批准；MySQL 迁移、DB Fencing、Redis Lease 代码、加密
+  Checkpoint、Retention 和 Recovery Attempt 已实现并通过单元测试。
+- 剩余：真实 MySQL/Redis 多实例、KMS、Restore Test 和容量验证仍
+  `NOT VERIFIED`。
 
 ## OQ-015：内部请求签名最终规范（已解决）
 

@@ -43,9 +43,14 @@
 | 超时与取消 | PASS | Runtime 单元测试 |
 | 最大执行步数 | PASS | LangGraph 和 Runtime 双重限制 |
 | Agent API 幂等 | PASS | 进程内幂等缓存与 HTTP 测试 |
-| 正式 Run 持久化 | BLOCKED | DQ-21；仅进程内原型 |
-| LangGraph Checkpoint/恢复 | NOT_IMPLEMENTED | 无正式 checkpointer 和恢复端点 |
-| 多实例并发隔离 | BLOCKED | DQ-21；无 owner lease |
+| 正式 Run 持久化 | PASS（Unit） | `mv_ai` 迁移、Repository 和 Runtime Store 已实现；真实 MySQL Integration NOT VERIFIED |
+| Checkpoint 加密与恢复 | PASS（Unit） | AES-GCM、压缩、1 MiB 限制、Hash/Schema 校验和 Recovery Coordinator 测试 |
+| LangGraph Checkpoint 自动恢复 | NOT_IMPLEMENTED | Checkpoint Envelope/Persistence 已实现；Graph Thread 自动重放尚未接入 |
+| 多实例并发隔离 | BLOCKED | DB Lease Expiry + Fencing、双 Worker Probe 和 GitHub Actions Job 已准备；CI 尚未执行 |
+| Recovery Attempt / 准入 | PASS（Candidate/Unit） | 同 Run recovery、Checkpoint/Schema/Lease 与 Lease Conflict 测试 |
+| Retention Eligibility | PASS（Unit） | Active 永不清理、终态/引用/Recovery 条件测试 |
+| Cleanup Worker | PASS（Unit） | 批处理、Job、Audit、失败记录和 Worker 周期已实现；真实 MySQL Integration NOT VERIFIED |
+| Backup / Restore | NOT_VERIFIED | 已提供本地与 GitHub Actions 双 MySQL 恢复流程；CI 尚未执行 |
 | 故障重试与降级 | PASS | Provider 有限重试、Tool 失败、Timeout 测试 |
 | Trace 关联 | PASS | request/trace/run/step 关联 |
 | Trace 长期持久化 | NOT_IMPLEMENTED | 未写 `mv_ai`，未接 OpenTelemetry |
@@ -79,14 +84,14 @@
 
 | 检查项 | 状态 | 证据 |
 | --- | --- | --- |
-| Python 单元测试 | PASS | 48 tests；Runtime、Contract Registry 与安全测试通过 |
+| Python 单元测试 | PASS | 63 tests + 3 integration/multi-worker skips；Runtime、Registry、Security 与 Persistence 测试通过 |
 | FastAPI 集成测试 | PASS | health、agent、认证、签名、幂等 |
 | Go/Python 契约测试 | PASS | 141 definitions、三端 examples |
 | 真实跨进程协议测试 | PASS | Go Client → FastAPI Mock Provider，Token 与 HMAC 模式均通过 |
 | 权限测试 | PASS | Tool permissions/actor/trust/confirmation |
 | 认证篡改/重放测试 | PASS | signed HTTP tests |
 | 超时/取消/失败测试 | PASS | Runtime tests |
-| 持久化/Checkpoint 故障注入 | NOT_IMPLEMENTED | DQ-21 |
+| 持久化/Checkpoint 故障注入 | PASS（Unit）/ BLOCKED（Infra） | Lease/Fence/Hash/Schema/Recovery/Cleanup 单元测试通过；真实 MySQL/Redis 故障注入 NOT VERIFIED |
 | mTLS/多实例 nonce 测试 | PASS（Test） | Go mTLS 握手、共享 Store 协议与 Redis Store 原子消费；真实部署 NOT VERIFIED |
 | SSRF/真实 MCP 安全测试 | BLOCKED | DQ-20 |
 
