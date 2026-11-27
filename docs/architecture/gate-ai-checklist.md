@@ -43,14 +43,14 @@
 | 超时与取消 | PASS | Runtime 单元测试 |
 | 最大执行步数 | PASS | LangGraph 和 Runtime 双重限制 |
 | Agent API 幂等 | PASS | 进程内幂等缓存与 HTTP 测试 |
-| 正式 Run 持久化 | PASS（Unit） | `mv_ai` 迁移、Repository 和 Runtime Store 已实现；真实 MySQL Integration NOT VERIFIED |
-| Checkpoint 加密与恢复 | PASS（Unit） | AES-GCM、压缩、1 MiB 限制、Hash/Schema 校验和 Recovery Coordinator 测试 |
+| 正式 Run 持久化 | PASS | CI Run `45803587621` 真实 MySQL Migration/Integration 通过 |
+| Checkpoint 加密与恢复 | PASS | CI 真实 AES-GCM Checkpoint、Hash/Schema 与 Recovery Integration 通过 |
 | LangGraph Checkpoint 自动恢复 | NOT_IMPLEMENTED | Checkpoint Envelope/Persistence 已实现；Graph Thread 自动重放尚未接入 |
-| 多实例并发隔离 | BLOCKED | DB Lease Expiry + Fencing、双 Worker Probe 和 GitHub Actions Job 已准备；CI 尚未执行 |
-| Recovery Attempt / 准入 | PASS（Candidate/Unit） | 同 Run recovery、Checkpoint/Schema/Lease 与 Lease Conflict 测试 |
-| Retention Eligibility | PASS（Unit） | Active 永不清理、终态/引用/Recovery 条件测试 |
-| Cleanup Worker | PASS（Unit） | 批处理、Job、Audit、失败记录和 Worker 周期已实现；真实 MySQL Integration NOT VERIFIED |
-| Backup / Restore | NOT_VERIFIED | 已提供本地与 GitHub Actions 双 MySQL 恢复流程；CI 尚未执行 |
+| 多实例并发隔离 | PASS | 双独立 Worker Process、Owner 冲突、新 Fence 接管和旧 Fence DB 拒绝通过 |
+| Recovery Attempt / 准入 | PASS | CI 真实 MySQL/Redis Recovery Attempt、Checkpoint Recovery 通过 |
+| Retention Eligibility | PASS | Unit + CI 真实 Cleanup Integration 通过 |
+| Cleanup Worker | PASS | CI 真实 MySQL Batch/Recovery Cleanup、Audit 保留通过 |
+| Backup / Restore | PASS | 双 MySQL dump/restore、Checkpoint 解密和记录一致性验证通过 |
 | 故障重试与降级 | PASS | Provider 有限重试、Tool 失败、Timeout 测试 |
 | Trace 关联 | PASS | request/trace/run/step 关联 |
 | Trace 长期持久化 | NOT_IMPLEMENTED | 未写 `mv_ai`，未接 OpenTelemetry |
@@ -91,7 +91,7 @@
 | 权限测试 | PASS | Tool permissions/actor/trust/confirmation |
 | 认证篡改/重放测试 | PASS | signed HTTP tests |
 | 超时/取消/失败测试 | PASS | Runtime tests |
-| 持久化/Checkpoint 故障注入 | PASS（Unit）/ BLOCKED（Infra） | Lease/Fence/Hash/Schema/Recovery/Cleanup 单元测试通过；真实 MySQL/Redis 故障注入 NOT VERIFIED |
+| 持久化/Checkpoint 故障注入 | PASS | 旧 Fence、Lease Expiry、Checkpoint Tamper/Schema、Recovery/Cleanup 故障路径已测试 |
 | mTLS/多实例 nonce 测试 | PASS（Test） | Go mTLS 握手、共享 Store 协议与 Redis Store 原子消费；真实部署 NOT VERIFIED |
 | SSRF/真实 MCP 安全测试 | BLOCKED | DQ-20 |
 

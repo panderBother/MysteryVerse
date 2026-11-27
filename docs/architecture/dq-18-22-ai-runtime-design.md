@@ -14,7 +14,7 @@
 | DQ-18 | APPROVED / IMPLEMENTED / VERIFIED | 防止任意 JSON 成为可信结果；业务 Schema 仍需逐项批准 | 正式 Registry、兼容基线和 Active 输出绑定已落地 | 中：Contracts 生成、Registry、回归 fixture | DQ-08～DQ-12、ADR-004、ADR-008、DQ-22 | 三端生成、版本选择、非法输出拒绝、历史兼容测试 |
 | DQ-19 | APPROVED / IMPLEMENTED / TEST-VERIFIED；生产基础设施 NOT VERIFIED | 防伪造、篡改、重放和跨服务越权 | Internal API 安全 profile v1 已版本化 | 高：真实证书、KMS、Redis、ACL、轮换 | DQ-21 共享存储、DQ-22 部署区域 | mTLS+HMAC 失败、重放、轮换、ACL 测试 |
 | DQ-20 | PROPOSED；本地 trust 原型 IMPLEMENTED；外部 MCP BLOCKED | 阻断 SSRF、恶意工具、注入结果和高风险副作用 | MCP 未启用，不影响现有 API；未来需新 Tool Schema | 高：MCP client、egress、身份、审计、人工确认 | DQ-19、DQ-22、ADR-001/008 | 信任等级、白名单、SSRF、注入、确认、审计测试 |
-| DQ-21 | APPROVED / IMPLEMENTED / UNIT-VERIFIED；MySQL+Redis Integration & Restore NOT VERIFIED | 防重复执行、泄露、丢失更新和故障恢复失控 | MySQL 元数据、Redis Lease、DB Fencing、加密 Blob 与 Recovery 基础已实现 | 高：真实 MySQL/Redis、lease、清理、恢复 | ADR-001/008、DQ-19、DQ-22 | 单实例/候选测试通过；双实例与 Restore 待基础设施验证 |
+| DQ-21 | APPROVED / IMPLEMENTED / HOSTED-CI VERIFIED；Production NOT VERIFIED | 防重复执行、泄露、丢失更新和故障恢复失控 | MySQL 元数据、Redis Lease、DB Fencing、加密 Blob、Recovery/Cleanup 与 Restore 已验证 | 高：Release 部署与生产 KMS | ADR-001/008、DQ-19、DQ-22 | CI Run `45803587621` 全部通过 |
 | DQ-22 | PROPOSED；Mock/兼容 HTTP adapter IMPLEMENTED；真实供应商 BLOCKED | 控制 D3/D4 外发、密钥、成本、区域和降级安全 | Provider 内部不变；正式模型政策影响 Prompt/Schema 兼容 | 中高：准入评审、预算、熔断、评测、合同 | DQ-15、DQ-18、DQ-19、DQ-20、DQ-21 | 白名单、区域、预算、D3/D4、降级、真实合同验证 |
 
 `VERIFIED` 只覆盖测试环境中的代码路径。真实 CA、KMS、Redis 多实例和生产部署

@@ -3,8 +3,9 @@
 > 日期：2026-11-26
 > DQ-21：APPROVED / IMPLEMENTED
 > Unit Verification：VERIFIED
-> Integration / Multi-Worker / Backup Restore / Production Verification：
-> NOT VERIFIED
+> Task 15 update：GitHub Actions Run `45803587621` 已完成 Integration、
+> Multi-Worker、Recovery/Cleanup 和 Backup/Restore 的真实验证。
+> Production Verification：仍 `NOT VERIFIED`
 
 ## 1. Preflight Audit
 
@@ -27,11 +28,10 @@
 - 双独立 Worker 进程的 Failover/Stale Fence 测试代码。
 - Migration Up/Down/Re-execution 测试代码。
 
-当前缺口：
+当时缺口：
 
 - 执行环境没有 Docker、MySQL Server 或 Redis Server。
-- 真实 Infrastructure 测试未运行。
-- Backup/Restore 与 KMS 未运行。
+- 后续由 GitHub-hosted CI 补齐。
 - LangGraph Thread 自动恢复未实现，且不在 Task 13 范围。
 
 ## 2. Implementation Changes
@@ -65,7 +65,7 @@ Migration 测试补充 Up -> Down -> Up 重新执行验证。
 
 ## 4. Migration Results
 
-状态：`NOT VERIFIED`
+状态：Task 13 本地为 `NOT VERIFIED`；Task 15 GitHub-hosted CI 为 `VERIFIED`。
 
 测试代码覆盖：
 
@@ -79,6 +79,13 @@ Migration 测试补充 Up -> Down -> Up 重新执行验证。
 
 ## 5. Integration Test Results
 
+Task 15 GitHub Actions Run `45803587621` 已真实执行：
+
+- Integration Job：`3 passed, 1 deselected`。
+- Job `139852856357`：success。
+
+Task 13 本地环境的历史结果：
+
 执行：
 
 ```powershell
@@ -88,13 +95,14 @@ uv run --project ai_service pytest ai_service/tests
 结果：
 
 - 63 passed。
-- 3 skipped：真实 MySQL/Redis Persistence、Recovery/Cleanup 与 Multi-Worker。
+- 3 skipped：真实 MySQL/Redis Persistence、Recovery/Cleanup 与 Multi-Worker
+  （后由 Task 15 CI 补齐）。
 - mypy 74 个源文件通过。
 - Ruff 通过。
 
 ## 6. Multi-Worker Results
 
-状态：`NOT VERIFIED`
+状态：Task 13 本地为 `NOT VERIFIED`；Task 15 CI 为 `VERIFIED`。
 
 已准备双进程测试：
 
@@ -107,34 +115,37 @@ uv run --project ai_service pytest ai_service/tests
 
 ## 7. Fencing Token Results
 
-- 单元/候选：VERIFIED。
-- 真实 MySQL 条件更新：NOT VERIFIED。
-- 双 Worker 并发：NOT VERIFIED。
-- 旧 Token 写入拒绝的生产证据：不存在。
+- 单元：VERIFIED。
+- 真实 MySQL 条件更新：VERIFIED（CI）。
+- 双 Worker 并发：VERIFIED（CI）。
+- 旧 Token 写入由真实 MySQL 拒绝：VERIFIED（CI）。
+- Production 证据：不存在。
 
 ## 8. Recovery Results
 
-- 同 Run Recovery、Recovery Attempt、Checkpoint/Schema/Lease 准入：Unit Verified。
-- Checkpoint Integrity：Unit Verified。
-- Worker Crash 后真实接管：NOT VERIFIED。
+- 同 Run Recovery、Recovery Attempt、Checkpoint/Schema/Lease 准入：Unit + CI Verified。
+- Checkpoint Integrity：Unit + CI Verified。
+- Real MySQL/Redis Recovery：CI Verified。
+- 独立 Worker Lease Expiry/Failover：CI Verified。
+- 强制 Kill -9/OS Crash 注入：NOT VERIFIED。
 - LangGraph Thread Replay：NOT IMPLEMENTED（明确不在本 Task 范围）。
 
 ## 9. Cleanup Results
 
 - Retention Eligibility、Active/Cancel/Completed/Failed 边界：Unit Verified。
 - Cleanup Job、Audit、Batch、Failure Path：Unit Verified。
-- 真实 MySQL Batch Cleanup：NOT VERIFIED。
-- 真实引用保护查询：测试代码存在，未执行。
+- 真实 MySQL Recovery/Cleanup：CI Verified。
+- 真实引用保护查询：Unit + CI Verified。
 
 ## 10. Idempotency Results
 
 - Request Hash 冲突与过期策略：Unit Verified。
-- 真实 MySQL Unique Constraint/并发：NOT VERIFIED。
+- 真实 MySQL Idempotency Conflict：CI Verified。
 - 未宣称 Exactly-once。
 
 ## 11. Backup / Restore Results
 
-状态：`NOT VERIFIED`
+状态：Task 15 CI 为 `VERIFIED`。
 
 已提供隔离 Backup/Restore 操作指南，包含：
 
@@ -208,17 +219,18 @@ Not in Scope：
 
 ## 16. DQ-21 Gate Recommendation
 
-- DQ-21 整体不得标记为 `VERIFIED`。
+- DQ-21 Hosted CI Verification：`VERIFIED`。
+- DQ-21 Production Verification：`NOT VERIFIED`。
 - Unit Verification：`VERIFIED`。
-- Integration Verification：`NOT VERIFIED`。
-- Multi-Worker Verification：`NOT VERIFIED`。
-- Backup/Restore Verification：`NOT VERIFIED`。
+- Integration Verification：`VERIFIED`。
+- Multi-Worker Verification：`VERIFIED`。
+- Backup/Restore Verification：`VERIFIED`。
 - Production Verification：`NOT VERIFIED`。
 
 ## 17. DQ-22 Readiness
 
-当前不具备讨论 DQ-22 实施的条件，原因：
+当前具备讨论 DQ-22 范围与批准条件的 CI 证据，但不具备直接实施条件：
 
-- DQ-21 的真实多实例与 Restore 尚未验证。
+- DQ-21 Hosted CI 多实例与 Restore 已验证。
 - DQ-22 仍为 Proposed。
-- 必须等基础设施验证通过并获得负责人单独批准。
+- 仍需负责人批准供应商、区域、预算、D3/D4 外发和降级合同。

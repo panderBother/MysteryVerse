@@ -368,11 +368,11 @@ BLOCKED、DEFERRED 或未决契约不得通过假设继续实现。发现新冲�
   MySQL 或 Redis，因此上述真实基础设施验证保持 `NOT VERIFIED`。
 - Task 14 已建立 GitHub Actions DQ-21 Workflow，使用 MySQL 8.0.36、Redis 7.2.7
   Service Containers，覆盖 Unit、Migration、Persistence、Recovery/Cleanup、
-  双进程 Failover 和双 MySQL Backup/Restore。Workflow 尚未推送触发，CI
-  Execution 仍为 `NOT VERIFIED`；不得把 YAML 存在当作 CI 通过。
-- Task 15 已完成首次 CI 执行前审计、本地全量检查、actionlint 和敏感信息扫描。
-  当前 Task 12–15 改动尚未 commit/push；在执行任何远程 Git 操作前必须取得
-  负责人明确授权。证据见 `docs/architecture/task-15-first-ci-execution.md`。
+  双进程 Failover 和双 MySQL Backup/Restore。
+- Task 15 已在 Commit `2e14d06` 触发 GitHub Actions Run `45803587621`。Unit、
+  Integration、Multi-Worker、Recovery/Cleanup、Backup/Restore 和 Summary 全部
+  成功；Hosted CI Verification 通过。Production Verification 仍为
+  `NOT VERIFIED`。证据见 `docs/architecture/task-15-first-ci-execution.md`。
 - DQ-20、DQ-22、ADR-001/004/005/008 仍未被批准。外部 MCP、真实 Provider、
   Memory、正式事件版本、暂停恢复和持久 PlayerContext 继续保持门禁。
 - 开始任何 TASKS 任务前，应先完成其契约缺口和依赖检查；不得把 BLOCKED、DEFERRED 或 P1 可选能力反向当作无争议的 P0 前置。

@@ -54,8 +54,9 @@ AI_REDIS_URL=redis://...
 AI_CHECKPOINT_ENCRYPTION_KEY=<32-byte secret>
 ```
 
-Real MySQL/Redis integration, production KMS and Restore tests remain
-`NOT VERIFIED`.
+GitHub Actions Run `45803587621` verified real MySQL/Redis persistence,
+multi-worker failover, recovery/cleanup and isolated Backup/Restore.
+Production deployment, real KMS and Graph Auto Replay remain `NOT VERIFIED`.
 
 DQ-19 request integrity profile:
 

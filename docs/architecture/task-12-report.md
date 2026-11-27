@@ -2,7 +2,8 @@
 
 > 日期：2026-11-25
 > DQ-21：APPROVED / IMPLEMENTED / UNIT-VERIFIED
-> 真实 MySQL + Redis Integration、KMS 与 Restore：NOT VERIFIED
+> Task 15 CI：Integration / Multi-Worker / Recovery / Cleanup / Backup-Restore
+> VERIFIED。Production、真实 KMS 与 LangGraph Auto Replay：NOT VERIFIED。
 
 ## 1. 批准记录
 
@@ -144,14 +145,14 @@ go test ./migrations
 
 ## 4. Multi-instance 验证
 
-状态：`NOT VERIFIED`
+状态：`VERIFIED`（GitHub Actions Run `45803587621`）
 
-原因：
+证据：
 
-- 当前执行环境没有 Docker、MySQL Server 或 Redis Server。
-- 未执行两个 Worker 同时争抢同一 Run。
-- 未执行真实 Redis Lease 过期、MySQL 条件更新竞争和故障转移。
-- 现有测试验证了算法与故障分支，但不能替代多进程/多实例集成验证。
+- Worker A/Worker B 使用两个独立进程。
+- Worker A 旧 Fence 写入被真实 MySQL 拒绝。
+- Worker B 使用新 Fence 写入成功。
+- Job `139852856357` 成功。
 
 ## 5. Failure Scenario 状态
 
@@ -174,13 +175,10 @@ go test ./migrations
 
 ## 6. NOT VERIFIED / 未实现
 
-- 真实 MySQL Migration Up/Down。
-- 真实 Redis Lease 与两个 Runtime 实例。
-- 真实 MySQL 条件更新并发与死锁重试。
 - 生产 KMS、密钥轮换/撤销和证书化密钥访问。
 - LangGraph Thread 自动恢复与业务状态重放。
 - Step Attempt 自动 Retry 调度；目前记录单次执行 Attempt。
-- Backup/Restore、RTO/RPO。
+- RTO/RPO 实测；备份恢复功能已验证，但未测目标指标。
 - OpenTelemetry/Prometheus Run/Lease/Fence/Cleanup 指标；当前只有结构化日志。
 
 ### 6.1 Restore Test Plan
@@ -201,13 +199,13 @@ go test ./migrations
 ## 7. 状态回答
 
 - DQ-21 是否 IMPLEMENTED：是，正式代码与迁移已落地。
-- DQ-21 是否 VERIFIED：Unit Verified；真实 Integration 与 Restore NOT VERIFIED。
-- 是否具备安全 Run Recovery：领域流程与测试已具备，生产环境未验证。
-- 是否具备 Owner Lease：Redis 实现存在，真实 Redis 集成未验证。
-- 是否具备 Fencing Token：DB 条件写入和单调 Token 已实现，真实并发未验证。
-- 是否具备多实例接管：设计、代码与测试入口存在，双实例验证未执行。
-- 是否具备 Cleanup：Worker 与单元测试存在，真实 MySQL 批量清理未验证。
-- 是否具备 Restore Verification：否。
+- DQ-21 是否 VERIFIED：Hosted CI Verified；Production NOT VERIFIED。
+- 是否具备安全 Run Recovery：领域流程、真实 MySQL/Redis Integration 已验证。
+- 是否具备 Owner Lease：真实 Redis Lease 与双 Worker 已验证。
+- 是否具备 Fencing Token：真实 MySQL 条件写入和旧 Owner 拒绝已验证。
+- 是否具备多实例接管：双独立 Worker 接管已验证。
+- 是否具备 Cleanup：真实 MySQL Recovery/Cleanup Integration 已验证。
+- 是否具备 Restore Verification：独立 MySQL Backup/Restore 已验证；RTO/RPO 未测量。
 - 是否可以进入 DQ-22：不可以。DQ-22 仍为 Proposed，需单独批准。
 - DQ-20 是否仍 BLOCKED：是。
 - AI DM 正式实现是否仍 BLOCKED：是。

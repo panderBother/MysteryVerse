@@ -3,10 +3,10 @@
 > 日期：2026-11-26
 > CI Platform：GitHub Actions
 > Workflow：`IMPLEMENTED`
-> CI Execution：`NOT VERIFIED`（尚未推送或触发）
+> CI Execution：`VERIFIED`
 > Production Verification：`NOT VERIFIED`
-> Task 15 更新：首次执行前审计已完成，当前等待负责人明确授权 commit/push；
-> 证据见 `task-15-first-ci-execution.md`。
+> Task 15 更新：首次真实 CI Run `45803587621` 全部 Job 成功；证据见
+> `task-15-first-ci-execution.md`。
 
 ## 1. Preflight Audit
 
@@ -140,17 +140,21 @@ CI Execution：`NOT VERIFIED`。
 - Workflow 文件：`IMPLEMENTED`。
 - YAML 解析：通过。
 - `actionlint v1.7.7`：通过。
-- 本地无法执行 Service Container：Docker 不存在。
-- GitHub Actions：未推送/未触发，`NOT VERIFIED`。
+- GitHub Actions Run：`45803587621`。
+- Commit：`2e14d0679b75dc0abfb27745539f7be4a48e72c9`。
+- Result：`success`。
+- Jobs：Unit、Integration、Backup/Restore、Summary 全部 `success`。
 
 ## 14. Verification Evidence
 
 - 本地 `./scripts/mv.ps1 check`：通过。
-- Python：63 passed，3 integration/multi-worker skipped。
+- CI Unit：63 passed。
+- CI Contracts：5 passed。
+- CI Integration：3 passed。
 - mypy：74 个源文件通过。
 - Workflow YAML：解析通过。
 - PowerShell 验证脚本：语法通过。
-- Docker：未安装，真实 Infrastructure 仍未执行。
+- GitHub-hosted MySQL/Redis/Backup-Restore Jobs 全部通过。
 
 ## 15. Implemented vs Verified
 
@@ -165,23 +169,18 @@ Implemented：
 Verified：
 
 - Unit、static、contracts、Go/Web/Python build。
-- CI YAML schema-level parsing。
-- Test code compilation and local skip behavior。
+- Hosted CI execution。
+- Real Migration、MySQL/Redis Integration、Multi-Worker、Recovery/Cleanup。
+- Real stale-Fence rejection。
+- Backup/Restore。
 
 Not Verified：
 
-- Hosted CI execution。
-- Real Migration。
-- Real MySQL/Redis Integration。
-- Multi-Worker failover。
-- Real stale-Fence rejection。
-- Backup/Restore。
 - Production。
 
 ## 16. Blocked / Remaining Issues
 
-- Workflow 尚未推送触发；不能生成 GitHub Actions Run ID/URL。
-- 本地无 Docker，无法执行等价 Service Container 流程。
+- Production 环境与真实 KMS 未验证。
 - DQ-20 仍 BLOCKED。
 - DQ-22 仍 PROPOSED。
 - ADR-001/004/005/008 仍 PROPOSED。
@@ -190,15 +189,16 @@ Not Verified：
 ## 17. DQ-21 Gate Recommendation
 
 - Unit Verification：VERIFIED。
-- Integration Verification：NOT VERIFIED。
-- Multi-Worker Verification：NOT VERIFIED。
-- Fencing Token Real DB：NOT VERIFIED。
-- Recovery Integration：NOT VERIFIED。
-- Cleanup Integration：NOT VERIFIED。
-- Backup/Restore：NOT VERIFIED。
+- Integration Verification：VERIFIED。
+- Multi-Worker Verification：VERIFIED。
+- Fencing Token Real DB：VERIFIED。
+- Recovery Integration：VERIFIED。
+- Cleanup Integration：VERIFIED。
+- Backup/Restore：VERIFIED。
 - Production Verification：NOT VERIFIED。
 
 ## 18. DQ-22 Readiness
 
-当前不具备讨论 DQ-22 实施的条件。必须先推送并成功执行 GitHub Actions，
-由负责人审查 CI Run 证据后，再讨论 DQ-22。
+Task 15 已成功执行 GitHub Actions。现在具备讨论 DQ-22 范围与批准条件的证据，
+但不具备直接实施条件：DQ-22 仍需负责人批准供应商、区域、预算、D3/D4 外发和
+降级合同。

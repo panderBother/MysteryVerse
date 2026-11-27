@@ -3,7 +3,7 @@ from __future__ import annotations
 import asyncio
 import os
 import secrets
-from datetime import timedelta
+from datetime import UTC, datetime, timedelta
 
 import pytest
 from redis.asyncio import Redis
@@ -309,6 +309,82 @@ def test_mysql_recovery_attempt_and_cleanup_integration() -> None:
             assert await repository.count_audit_records(run_id) >= 1
         finally:
             await lease_store.close()
+            await engine.dispose()
+
+    asyncio.run(scenario())
+
+
+@pytest.mark.integration
+def test_mysql_concurrent_old_and_new_fence_writes() -> None:
+    database_url = _database_url()
+    if not database_url:
+        pytest.skip("AI_RUNTIME_TEST_DATABASE_URL is required")
+
+    async def scenario() -> None:
+        current = [datetime(2026, 11, 26, tzinfo=UTC).replace(tzinfo=None)]
+        engine = create_async_engine(database_url)
+        repository = MySQLRuntimeRepository(engine=engine, clock=lambda: current[0])
+        run_id = new_ulid()
+        try:
+            await repository.create_run(
+                run_id=run_id,
+                tenant_id="tenant-test",
+                task_type="concurrent-write",
+                actor_type="system",
+                actor_id=None,
+                trace_id="trace-concurrent",
+                correlation_id="correlation-concurrent",
+                schema_version="1",
+                idempotency_scope=f"concurrent:{run_id}",
+                idempotency_key="concurrent",
+                request_hash=b"e" * 32,
+                runtime_deadline_seconds=120,
+                idempotency_ttl_seconds=60,
+            )
+            old_claim = await repository.claim_owner(
+                run_id=run_id,
+                owner_id="worker-old",
+                allowed_statuses=frozenset({RunStatus.QUEUED}),
+                lease_ttl_seconds=1,
+            )
+            current[0] = current[0] + timedelta(seconds=2)
+            new_claim = await repository.claim_owner(
+                run_id=run_id,
+                owner_id="worker-new",
+                allowed_statuses=frozenset({RunStatus.RUNNING}),
+                lease_ttl_seconds=10,
+            )
+            assert new_claim.fencing_token == old_claim.fencing_token + 1
+            old_write, new_write = await asyncio.gather(
+                repository.transition_run(
+                    run_id=run_id,
+                    current=RunStatus.RUNNING,
+                    target=RunStatus.COMPLETED,
+                    owner_id=old_claim.owner_id,
+                    fencing_token=old_claim.fencing_token,
+                ),
+                repository.transition_run(
+                    run_id=run_id,
+                    current=RunStatus.RUNNING,
+                    target=RunStatus.FAILED,
+                    owner_id=new_claim.owner_id,
+                    fencing_token=new_claim.fencing_token,
+                    failure_category="CONCURRENT_WRITE_TEST",
+                    failure_summary="New owner won the concurrent write.",
+                ),
+                return_exceptions=True,
+            )
+            assert isinstance(old_write, FencingRejectedError)
+            assert new_write is None
+            snapshot = await repository.get_run(run_id)
+            assert snapshot is not None and snapshot.status == RunStatus.FAILED
+            await repository.release_owner(
+                run_id=run_id,
+                owner_id=new_claim.owner_id,
+                fencing_token=new_claim.fencing_token,
+            )
+            await repository.cleanup_run(run_id=run_id)
+        finally:
             await engine.dispose()
 
     asyncio.run(scenario())

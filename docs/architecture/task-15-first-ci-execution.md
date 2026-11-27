@@ -1,168 +1,186 @@
-# Task 15 首次 CI 执行报告
+# Task 15 首次 CI 执行与验证关闭报告
 
 > 日期：2026-11-26
-> 当前阶段：Preflight Complete / Awaiting Push Authorization
-> CI Execution：`NOT VERIFIED`
+> CI Platform：GitHub Actions
+> CI Execution：`VERIFIED`
+> DQ-21 Hosted CI Verification：`VERIFIED`
 > Production Verification：`NOT VERIFIED`
 
 ## 1. Preflight Audit
 
 - Branch：`main`。
 - Remote：`origin https://github.com/panderBother/MysteryVerse.git`。
-- Remote `main` SHA：`79e587ad8adf3f67d41ea1d15d8c8ead54cf4a7b`。
-- Local HEAD：`79e587ad8adf3f67d41ea1d15d8c8ead54cf4a7b`。
-- Local `main` 与 `origin/main` 当前完全一致。
-- Task 12–14 改动仍在工作区，尚未生成新提交。
+- Push 前 Local HEAD 与 Remote：`79e587ad8adf3f67d41ea1d15d8c8ead54cf4a7b`。
+- Workflow：`.github/workflows/dq21-infrastructure-verification.yml`。
+- Workflow YAML 和 `actionlint v1.7.7`：通过。
+- 本地无 `.env`、Token、Private Key 或其他敏感文件。
 
-未提交内容按范围分类：
+## 2. Git Submission
 
-- DQ-21 `mv_ai` Migration 与 Python Persistence 实现。
-- Redis Lease、Fencing、Recovery、Cleanup、Checkpoint Encryption。
-- DQ-21 Unit/Integration/Multi-Worker/Backup-Restore 测试。
-- GitHub Actions DQ-21 Workflow。
-- DQ-21 Infrastructure/CI/Verification 文档。
-- 相关 AGENTS、TASKS、TECH、DATABASE、DECISION-BASELINE 更新。
-
-没有发现：
-
-- `.env`。
-- 私钥、证书或 GitHub Token。
-- 生产数据库地址。
-- 未跟踪的本地数据库目录。
-
-## 2. Workflow Readiness
-
-Workflow：
+Commit：
 
 ```text
-.github/workflows/dq21-infrastructure-verification.yml
-```
-
-触发方式：
-
-- Push `main`。
-- Pull Request `main`。
-- `workflow_dispatch`。
-
-权限：
-
-```yaml
-permissions:
-  contents: read
-```
-
-Service：
-
-- MySQL `8.0.36`。
-- Redis `7.2.7`。
-
-验证：
-
-- Workflow YAML 解析通过。
-- `actionlint v1.7.7` 通过。
-- PowerShell DQ-21 脚本语法通过。
-
-## 3. Local Checks
-
-已执行：
-
-```powershell
-./scripts/mv.ps1 check
-go run github.com/rhysd/actionlint/cmd/actionlint@v1.7.7 .github/workflows/dq21-infrastructure-verification.yml
-```
-
-结果：
-
-- Monorepo structure：通过。
-- Contracts：142 定义。
-- TypeScript contract tests：27 passed。
-- Web：29 passed。
-- Go Test/Vet/Build：通过。
-- Python：63 passed，3 integration/multi-worker skipped。
-- Ruff：通过。
-- mypy：74 个源文件通过。
-- Web/Python Build：通过。
-- actionlint：通过。
-- Sensitive pattern scan：无命中。
-
-本地跳过项：
-
-- MySQL/Redis Persistence Integration。
-- Recovery/Cleanup Integration。
-- Multi-Worker Failover。
-
-这些跳过项必须由 CI 真实执行，不能视为 PASS。
-
-## 4. Git Submission Status
-
-- Commit：尚未创建。
-- Push：未执行。
-- PR：未创建。
-- Remote Workflow Run：不存在。
-- Run ID：不存在。
-- Run URL：不存在。
-
-建议 Commit Message：
-
-```text
+2e14d0679b75dc0abfb27745539f7be4a48e72c9
 test(ci): enable DQ-21 infrastructure verification
 ```
 
-Task 15 明确要求推送前展示提交范围和影响并取得用户明确授权。因此当前停在授权门禁。
+Push：
 
-## 5. Actual CI Execution Status
+```text
+79e587a..2e14d06 main -> main
+```
 
-`NOT VERIFIED`
+远程 `origin/main` 与本地提交一致。
 
-原因：
+## 3. Actual CI Run
 
-- 当前改动尚未提交。
-- 尚未 push 到 `origin/main`。
-- Workflow 尚未在 GitHub Actions 上触发。
-
-## 6. Job Results
-
-尚无真实 CI Job：
-
-| Job | Result |
+| Item | Value |
 | --- | --- |
-| Unit | NOT RUN |
-| Integration | NOT RUN |
-| Backup/Restore | NOT RUN |
-| Report | NOT RUN |
+| Repository | `panderBother/MysteryVerse` |
+| Branch | `main` |
+| Commit SHA | `2e14d0679b75dc0abfb27745539f7be4a48e72c9` |
+| Workflow | `DQ-21 Infrastructure Verification` |
+| Run ID | `45803587621` |
+| Run URL | https://github.com/panderBother/MysteryVerse/actions/runs/45803587621 |
+| Event | `push` |
+| Result | `success` |
 
-## 7. DQ-21 Gate
+## 4. Job Results
 
-- Code Implementation：`IMPLEMENTED`
-- Unit Verification：`VERIFIED`
-- CI Pipeline：`IMPLEMENTED`
-- CI Execution：`NOT VERIFIED`
-- Integration Verification：`NOT VERIFIED`
-- Multi-Worker Verification：`NOT VERIFIED`
-- Fencing Token Real DB：`NOT VERIFIED`
-- Recovery Integration：`NOT VERIFIED`
-- Cleanup Integration：`NOT VERIFIED`
-- Backup/Restore：`NOT VERIFIED`
-- Production Verification：`NOT VERIFIED`
+| Job | Job ID | Result |
+| --- | --- | --- |
+| Unit and Static Verification | `139852856921` | success |
+| MySQL Redis Integration and Multi-Worker | `139852856357` | success |
+| Backup and Restore Verification | `139852856942` | success |
+| DQ-21 Verification Summary | `139853541775` | success |
 
-## 8. Risks Before First Run
+## 5. Unit Job Evidence
 
-- GitHub-hosted Service Container 启动时间可能超过 Health Check。
-- Migration Test 对隔离库空状态和 `mv_ai` Schema 的存在有前置要求。
-- 双 Worker 测试依赖真实 MySQL Lease Expiry 边界。
-- Backup Dump/Restore 依赖 Service Container ID 与容器内 MySQL 客户端。
-- Artifact 上传权限或路径可能需要在首次 Run 后调整。
+实际日志：
 
-任何失败都必须先分类为 CI 配置、基础设施、Migration、Integration、Race 或代码缺陷，再做最小修复。
+- Python Unit：`63 passed, 3 deselected`。
+- Contract tests：`5 passed`。
+- Ruff：`All checks passed`。
+- Format：`105 files already formatted`。
+- mypy：`Success: no issues found in 74 source files`。
+- Go Test/Vet：成功。
 
-## 9. Next Action
+Artifact：
 
-需要负责人明确授权：
+- Name：`dq21-unit-evidence`
+- ID：`15108272351`
+- URL：https://github.com/panderBother/MysteryVerse/actions/runs/45803587621/artifacts/15108272351
 
-1. 将当前 Task 12–15 改动提交到本地 `main`。
-2. Push 到 `origin/main`。
-3. 触发 GitHub Actions `DQ-21 Infrastructure Verification`。
-4. 拉取真实 Run ID、Job Results 和 Artifacts。
-5. 根据失败分类进行最小修复并重新触发。
+## 6. Integration / Multi-Worker Evidence
 
-在获得授权前，不执行 commit、push、PR 或远程设置修改。
+Job steps 实际执行：
+
+- Initialize MySQL `8.0.36` / Redis `7.2.7` containers：成功。
+- Prepare isolated `mv_ai` schema：成功。
+- Migration Up/Down/Up/Down test：成功。
+- Apply migrated schema：成功。
+- MySQL/Redis Integration and Multi-Worker tests：成功。
+
+Pytest 结果：
+
+```text
+3 passed, 1 deselected
+```
+
+覆盖：
+
+- Run/Step/Step Attempt/Checkpoint/Idempotency Persistence。
+- DB Lease Expiry、Fencing Token、双 Owner 冲突。
+- Checkpoint AES-GCM、Hash、Schema。
+- Recovery Attempt、Checkpoint Recovery、Cleanup。
+- 两个独立 Worker Process。
+- Worker B 接管后 Token 2 写入成功。
+- Worker A 旧 Token 1 写入被真实 MySQL 拒绝。
+
+Artifact：
+
+- Name：`dq21-integration-evidence`
+- ID：`15107059738`
+- URL：https://github.com/panderBother/MysteryVerse/actions/runs/45803587621/artifacts/15107059738
+
+## 7. Backup / Restore Evidence
+
+Job steps 实际执行：
+
+- 两个隔离 MySQL Service 启动并健康。
+- Source Database Migration：成功。
+- 合成 Run/Step/Checkpoint/Recovery/Audit/Idempotency 数据：成功。
+- 容器内 `mysqldump | gzip`：成功。
+- gzip 完整性和 SHA-256：成功。
+- Restore 到独立 MySQL：成功。
+- Checkpoint 解密和数据一致性验证：成功。
+
+验证输出：
+
+```json
+{
+  "status": "verified",
+  "run_id": "01M8BQ55XJEREFE3YS9S9G6QHQ",
+  "counts": {
+    "steps": 1,
+    "step_attempts": 1,
+    "checkpoints": 1,
+    "recovery_attempts": 1,
+    "audit_records": 1,
+    "idempotency_records": 1
+  }
+}
+```
+
+恢复后 Run Owner 为空，不信任备份中的旧 Lease；重新 Claim 会生成更高 Fencing Token。
+
+Artifact：
+
+- Name：`dq21-backup-restore-evidence`
+- ID：`15108851764`
+- URL：https://github.com/panderBother/MysteryVerse/actions/runs/45803587621/artifacts/15108851764
+
+## 8. DQ-21 Verification Closure
+
+| Category | Status | Evidence |
+| --- | --- | --- |
+| Unit Verification | VERIFIED | Unit Job + Artifact |
+| Hosted CI Execution | VERIFIED | Run `45803587621` success |
+| Integration Verification | VERIFIED | Integration Job 3 passed |
+| Multi-Worker Verification | VERIFIED | Independent Worker A/B test passed |
+| Fencing Token Real DB | VERIFIED | Old Token write rejected by MySQL |
+| Recovery Integration | VERIFIED | Recovery Attempt/Checkpoint test passed |
+| Cleanup Integration | VERIFIED | Cleanup Integration test passed |
+| Backup/Restore | VERIFIED | Two-MySQL dump/restore verification |
+| Production Verification | NOT VERIFIED | Hosted CI is not production |
+
+## 9. Failure Analysis
+
+首次 Run 无需回归修复，所有 Job 一次通过。
+
+非阻塞日志：
+
+- Go/uv cache 保存时出现竞争提示，但不影响 Job 结果。
+- 没有测试失败、跳过关键验证、吞错或 Artifact 上传失败。
+
+## 10. Security / Evidence Boundary
+
+- Workflow Token 仅 `contents: read`。
+- 没有生产 Secrets。
+- 没有上传 Backup SQL。
+- Artifact 只包含 JUnit、脱敏日志、Hash 和合成元数据。
+- Checkpoint 明文和密钥没有进入 Artifact。
+
+## 11. DQ-21 Gate Recommendation
+
+- DQ-21：`IMPLEMENTED / HOSTED CI VERIFIED`。
+- Production：`NOT VERIFIED`。
+- DQ-22：仍为 `PROPOSED`，CI 成功不会自动批准。
+- DQ-20：仍 `BLOCKED`。
+- ADR-001/004/005/008：仍 `Proposed`。
+- AI DM：仍 `BLOCKED`。
+- Exactly-once：未宣称。
+
+## 12. Next Recommended Action
+
+可以基于本次 CI 证据讨论 DQ-22 的范围和批准条件，但不得直接实施。进入 DQ-22 前仍需负责人明确批准供应商政策、数据边界、预算和降级合同。

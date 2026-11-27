@@ -1,7 +1,8 @@
 # DQ-21 Run / Step / Checkpoint Persistence Candidate
 
 > 状态：`APPROVED / IMPLEMENTED`
-> 验证状态：Unit Tests `VERIFIED`；MySQL+Redis Integration、KMS 与 Restore
+> 验证状态：Unit、MySQL+Redis Integration、Multi-Worker、Recovery/Cleanup 与
+> Backup/Restore `VERIFIED`（CI Run `45803587621`）；Production 与真实 KMS
 > `NOT VERIFIED`
 > 日期：2026-11-25
 > 依据：DQ-21 候选设计、`DATABASE_DESIGN.md` §6.5、Task 12 及 Supplement
@@ -11,11 +12,11 @@
 - DQ-18/DQ-19 已批准并完成 Task 11 测试级验证。
 - 负责人已批准 MySQL 权威元数据、Redis Owner Lease、DB Fencing、MySQL 加密
   Checkpoint Blob、Retention 与同 Run Recovery 方案。
-- 当前只有 `InMemoryAgentRunStore` 与 `CheckpointReference` 原型。
-- 没有 `mv_ai` 迁移、正式 Owner Lease、Fencing Token、恢复端点或 LangGraph
-  Checkpointer。
+- `mv_ai` Repository、Redis Owner Lease、DB Fencing、Checkpoint Encryption、
+  Recovery Coordinator 与 Cleanup Worker 已实现。
+- LangGraph Graph Thread 自动重放仍未实现。
 - Task 12 Supplement 已补齐 Retention、Cleanup、Recovery 和最终验收候选要求。
-  这些参数仍只能作为 Proposed 默认值，不能据此冻结生产 Schema。
+  这些参数已获负责人批准并配置化。
 
 正式迁移已新增到 `backend/migrations/00009_ai_runtime_persistence.sql`。
 内部 Runtime Schema 不进入公共 Contracts Registry。
@@ -156,18 +157,18 @@ Cleanup Eligibility 会检查终态时间、活跃引用和 Recovery 状态。Ac
 
 | 验收域 | 当前状态 | 证据 |
 | --- | --- | --- |
-| Run/Step/Checkpoint Persistence | PASS（Unit） | Repository、Runtime Store 与 `mv_ai` 迁移已实现；真实 MySQL 未运行 |
-| MySQL Migration | IMPLEMENTED / NOT VERIFIED | Goose migration 与 schema assertions 已加入；无 Docker/MySQL 环境执行 |
-| Schema Version / Checkpoint Integrity | VERIFIED（Candidate） | Envelope、version、hash 测试 |
-| Owner Lease / Expiry | VERIFIED（Candidate） | 并发抢占、过期和续租测试 |
-| Fencing Token | VERIFIED（Candidate） | 单调 token 与旧 Owner 拒绝 |
-| Recovery Attempt | VERIFIED（Candidate） | 模型、准入和 incompatible 拒绝测试 |
-| Run/Step Recovery | PASS（Candidate/Unit） | 同 Run Recovery Coordinator、Recovery Attempt 与 Lease Conflict 测试 |
-| Multi-instance Recovery | BLOCKED | 未运行双 Worker/Redis/MySQL 集成测试 |
-| Retention Policy | VERIFIED（Candidate） | Active/terminal/checkpoint/idempotency 判定测试 |
-| Cleanup Worker | PASS（Unit） | 周期 Worker、Batch、Job、Audit 与失败处理已实现；真实 DB 未运行 |
-| Encryption / KMS | PASS（Unit）/ NOT VERIFIED | AES-GCM、Key ID、压缩和完整性已测试；真实 KMS 未部署 |
-| Backup / Restore | NOT_VERIFIED | 真实恢复测试未执行 |
+| Run/Step/Checkpoint Persistence | VERIFIED | CI 真实 MySQL/Redis Integration 通过 |
+| MySQL Migration | VERIFIED | CI Migration Up/Down/Up/Down 真实通过 |
+| Schema Version / Checkpoint Integrity | VERIFIED | Unit + CI 真实 Checkpoint 解密、Schema 与 Hash 通过 |
+| Owner Lease / Expiry | VERIFIED | Real Redis Lease、Expiry、Renewal/Conflict 路径通过 |
+| Fencing Token | VERIFIED | 双 Worker 旧 Fence 写入由真实 MySQL 拒绝 |
+| Recovery Attempt | VERIFIED | CI 真实 Recovery Attempt 与 Checkpoint Recovery 通过 |
+| Run/Step Recovery | VERIFIED | 同 Run Recovery、Owner/Fence 变化与 Cleanup 通过 |
+| Multi-instance Recovery | VERIFIED | 双独立 Worker Process、Owner Failover 通过 |
+| Retention Policy | VERIFIED | Unit + CI Cleanup Integration 通过 |
+| Cleanup Worker | VERIFIED | CI 真实 Batch/Recovery Cleanup 与 Audit 保留通过 |
+| Encryption / KMS | PASS / KMS NOT VERIFIED | Test Encryption 与 CI Integrity 通过；真实 KMS 未部署 |
+| Backup / Restore | VERIFIED | 双 MySQL dump/restore、Checkpoint 解密与数据一致性通过 |
 | Observability | NOT_IMPLEMENTED | 尚无 Run/Lease/Fencing/Cleanup 生产指标 |
 
 ## 6. 验证证据
@@ -183,7 +184,8 @@ uv run --project ai_service mypy ai_service/src
 当前结果：
 
 - Persistence foundation + formal persistence 测试：13 项通过。
-- Python 全量测试：63 项通过，真实 MySQL/Redis Integration/双 Worker 3 项条件跳过。
+- Python Unit：63 项通过。
+- Hosted CI Integration：3 项通过。
 - Ruff：通过。
 - mypy：74 个源文件通过。
 

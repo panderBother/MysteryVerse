@@ -89,8 +89,9 @@ Report Job 在任一依赖非 `success` 时失败，不吞错。
 
 - Workflow 文件存在：`IMPLEMENTED`。
 - `actionlint v1.7.7` 静态语义检查：通过。
-- Workflow 未实际运行：CI Execution `NOT VERIFIED`。
-- Workflow 成功：对应 Hosted CI Verification 可标记 `VERIFIED`。
+- GitHub Actions Run `45803587621`：success。
+- Integration / Multi-Worker / Recovery / Cleanup / Backup-Restore：
+  Hosted CI `VERIFIED`。
 - Hosted CI 成功不等于 Production Verification。
 - DQ-22 仍为 Proposed，CI 成功不会自动批准 DQ-22。
 

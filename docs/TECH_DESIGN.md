@@ -1198,8 +1198,9 @@ Trace 记录 context/model/tool/validate 步骤、耗时、Usage、状态和错�
 - MCP/外部网络工具当前默认拒绝，高风险工具要求确认，工具结果按不可信数据限长。
 - DQ-21 已批准：`mv_ai` Run/Step/Checkpoint/Recovery 元数据、Redis Owner
   Lease、MySQL Lease Expiry + Fencing、AES-GCM Checkpoint Blob、Retention
-  Cleanup Worker 和 Recovery Attempt 已实现。真实 MySQL/Redis 多实例、KMS
-  与 Restore 仍为 `NOT VERIFIED`。
+  Cleanup Worker 和 Recovery Attempt 已实现。GitHub Actions Run
+  `45803587621` 已通过真实 MySQL/Redis、Multi-Worker、Recovery/Cleanup 和
+  Backup/Restore；Production、KMS 与 Graph Auto Replay 仍为 `NOT VERIFIED`。
 
 GATE-AI 逐项状态见 `docs/architecture/gate-ai-checklist.md`。DQ-18/DQ-19
 测试级实现已通过，但真实 CA、KMS、Redis 多实例和生产部署仍为 `NOT VERIFIED`；
