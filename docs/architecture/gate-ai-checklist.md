@@ -43,10 +43,11 @@
 | 超时与取消 | PASS | Runtime 单元测试 |
 | 最大执行步数 | PASS | LangGraph 和 Runtime 双重限制 |
 | Agent API 幂等 | PASS | 进程内幂等缓存与 HTTP 测试 |
-| 正式 Run 持久化 | PASS | CI Run `45803587621` 真实 MySQL Migration/Integration 通过 |
+| 正式 Run 持久化 | PASS | 最终 CI Run `45968540075` 真实 MySQL Migration/Integration 通过 |
 | Checkpoint 加密与恢复 | PASS | CI 真实 AES-GCM Checkpoint、Hash/Schema 与 Recovery Integration 通过 |
 | LangGraph Checkpoint 自动恢复 | NOT_IMPLEMENTED | Checkpoint Envelope/Persistence 已实现；Graph Thread 自动重放尚未接入 |
 | 多实例并发隔离 | PASS | 双独立 Worker Process、Owner 冲突、新 Fence 接管和旧 Fence DB 拒绝通过 |
+| 并发 DB Fence 写保护 | PASS | 真实 MySQL 并发条件更新：旧 Owner 拒绝、新 Owner 成功 |
 | Recovery Attempt / 准入 | PASS | CI 真实 MySQL/Redis Recovery Attempt、Checkpoint Recovery 通过 |
 | Retention Eligibility | PASS | Unit + CI 真实 Cleanup Integration 通过 |
 | Cleanup Worker | PASS | CI 真实 MySQL Batch/Recovery Cleanup、Audit 保留通过 |
@@ -84,9 +85,10 @@
 
 | 检查项 | 状态 | 证据 |
 | --- | --- | --- |
-| Python 单元测试 | PASS | 63 tests + 3 integration/multi-worker skips；Runtime、Registry、Security 与 Persistence 测试通过 |
+| Python 单元测试 | PASS | CI Unit 63 passed；Contracts 5 passed |
+| MySQL/Redis Integration | PASS | CI 4 passed：Persistence、Recovery/Cleanup、Multi-Worker、并发 Fence |
 | FastAPI 集成测试 | PASS | health、agent、认证、签名、幂等 |
-| Go/Python 契约测试 | PASS | 141 definitions、三端 examples |
+| Go/Python 契约测试 | PASS | 142 definitions、三端 examples |
 | 真实跨进程协议测试 | PASS | Go Client → FastAPI Mock Provider，Token 与 HMAC 模式均通过 |
 | 权限测试 | PASS | Tool permissions/actor/trust/confirmation |
 | 认证篡改/重放测试 | PASS | signed HTTP tests |
@@ -97,6 +99,7 @@
 
 ## 结论
 
-GATE-AI 当前不能通过。DQ-18/DQ-19 已提供可执行且测试验证的 Registry 与安全
-基础，但真实 CA/KMS/Redis 部署、业务输出 Schema、外部 MCP、持久恢复、生产
-Provider 政策和长期 Trace 仍需要批准、部署或实现。
+GATE-AI 当前不能通过。DQ-18/DQ-19 已提供测试验证的 Registry 与安全基础；
+DQ-21 Hosted CI 已通过真实 MySQL/Redis、Multi-Worker、Recovery/Cleanup 和
+Backup/Restore。业务输出 Schema、外部 MCP、Production KMS/发布、真实 Provider
+政策、Graph Auto Replay 和长期 Trace 仍需要批准、部署或实现。

@@ -2,7 +2,7 @@
 
 > 状态：`APPROVED / IMPLEMENTED`
 > 验证状态：Unit、MySQL+Redis Integration、Multi-Worker、Recovery/Cleanup 与
-> Backup/Restore `VERIFIED`（CI Run `45803587621`）；Production 与真实 KMS
+> Backup/Restore `VERIFIED`（最终 CI Run `45968540075`）；Production 与真实 KMS
 > `NOT VERIFIED`
 > 日期：2026-11-25
 > 依据：DQ-21 候选设计、`DATABASE_DESIGN.md` §6.5、Task 12 及 Supplement

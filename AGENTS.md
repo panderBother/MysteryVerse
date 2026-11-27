@@ -361,15 +361,17 @@ BLOCKED、DEFERRED 或未决契约不得通过假设继续实现。发现新冲�
   多实例和生产 mTLS 部署仍为 `NOT VERIFIED`。
 - DQ-21 已批准并实现 MySQL Run/Step/Checkpoint/Recovery 元数据、Redis Owner
   Lease、DB Fencing、Checkpoint AES-GCM Blob、Retention/Cleanup Eligibility、
-  Cleanup Worker 和 Recovery Attempt。单元测试通过；真实 MySQL/Redis 多实例、
-  KMS 和 Restore 仍为 `NOT VERIFIED`。
+  Cleanup Worker 和 Recovery Attempt。最终 GitHub Actions Run
+  `45968540075` 已验证真实 MySQL/Redis、Multi-Worker、并发 Fence、
+  Recovery/Cleanup 和 Backup/Restore。Production、真实 KMS 和 Graph Auto
+  Replay 仍为 `NOT VERIFIED`。
 - Task 13 已补齐本地基础设施检查、Migration Up/Down/Up、单实例 Integration、
-  双进程 Failover/Stale Fence 和 Backup/Restore 执行入口。当前机器没有 Docker、
-  MySQL 或 Redis，因此上述真实基础设施验证保持 `NOT VERIFIED`。
+  双进程 Failover/Stale Fence 和 Backup/Restore 执行入口。本机无 Docker 的历史
+  缺口已由 Task 14/15 的 GitHub-hosted CI 补齐。
 - Task 14 已建立 GitHub Actions DQ-21 Workflow，使用 MySQL 8.0.36、Redis 7.2.7
   Service Containers，覆盖 Unit、Migration、Persistence、Recovery/Cleanup、
   双进程 Failover 和双 MySQL Backup/Restore。
-- Task 15 已在 Commit `2e14d06` 触发 GitHub Actions Run `45803587621`。Unit、
+- Task 15 已在 Commit `de2f8e1` 触发最终 GitHub Actions Run `45968540075`。Unit、
   Integration、Multi-Worker、Recovery/Cleanup、Backup/Restore 和 Summary 全部
   成功；Hosted CI Verification 通过。Production Verification 仍为
   `NOT VERIFIED`。证据见 `docs/architecture/task-15-first-ci-execution.md`。

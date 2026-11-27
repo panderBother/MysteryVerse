@@ -103,7 +103,7 @@
 - 问题：`mv_ai` Run/Step/Tool/Usage 与 LangGraph checkpoint 的保留周期和恢复目标。
 - 影响：故障恢复、成本归因、审计和存储。
 - 推荐：Run 摘要长期保留，完整上下文短期加密保存，Checkpoint 按任务生命周期清理。
-- 当前：DQ-21 已批准；GitHub Actions Run `45803587621` 已通过真实 MySQL/Redis
+- 当前：DQ-21 已批准；最终 GitHub Actions Run `45968540075` 已通过真实 MySQL/Redis
   Migration、Persistence、Multi-Worker、Recovery/Cleanup 和 Backup/Restore。
 - 剩余：Production、真实 KMS、RTO/RPO、容量和 Graph Auto Replay 仍
   `NOT VERIFIED`。

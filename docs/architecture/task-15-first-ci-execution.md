@@ -20,17 +20,20 @@
 Commit：
 
 ```text
-2e14d0679b75dc0abfb27745539f7be4a48e72c9
-test(ci): enable DQ-21 infrastructure verification
+de2f8e1b273f94e38b54f89f5dd237a9eeb092c6
+test(ci): verify concurrent DQ-21 fencing writes
 ```
 
 Push：
 
 ```text
-79e587a..2e14d06 main -> main
+2e14d06..de2f8e1 main -> main
 ```
 
 远程 `origin/main` 与本地提交一致。
+
+首轮 CI Commit `2e14d06`（Run `45803587621`）已成功；随后补充真实 MySQL
+并发写入回归，并用 Commit `de2f8e1` 触发最终 CI。
 
 ## 3. Actual CI Run
 
@@ -38,10 +41,10 @@ Push：
 | --- | --- |
 | Repository | `panderBother/MysteryVerse` |
 | Branch | `main` |
-| Commit SHA | `2e14d0679b75dc0abfb27745539f7be4a48e72c9` |
+| Commit SHA | `de2f8e1b273f94e38b54f89f5dd237a9eeb092c6` |
 | Workflow | `DQ-21 Infrastructure Verification` |
-| Run ID | `45803587621` |
-| Run URL | https://github.com/panderBother/MysteryVerse/actions/runs/45803587621 |
+| Run ID | `45968540075` |
+| Run URL | https://github.com/panderBother/MysteryVerse/actions/runs/45968540075 |
 | Event | `push` |
 | Result | `success` |
 
@@ -49,16 +52,16 @@ Push：
 
 | Job | Job ID | Result |
 | --- | --- | --- |
-| Unit and Static Verification | `139852856921` | success |
-| MySQL Redis Integration and Multi-Worker | `139852856357` | success |
-| Backup and Restore Verification | `139852856942` | success |
-| DQ-21 Verification Summary | `139853541775` | success |
+| Unit and Static Verification | `140403008553` | success |
+| MySQL Redis Integration and Multi-Worker | `140403008082` | success |
+| Backup and Restore Verification | `140403008445` | success |
+| DQ-21 Verification Summary | `140403450539` | success |
 
 ## 5. Unit Job Evidence
 
 实际日志：
 
-- Python Unit：`63 passed, 3 deselected`。
+- Python Unit：`63 passed, 4 deselected`。
 - Contract tests：`5 passed`。
 - Ruff：`All checks passed`。
 - Format：`105 files already formatted`。
@@ -68,8 +71,8 @@ Push：
 Artifact：
 
 - Name：`dq21-unit-evidence`
-- ID：`15108272351`
-- URL：https://github.com/panderBother/MysteryVerse/actions/runs/45803587621/artifacts/15108272351
+- ID：`15183748405`
+- URL：https://github.com/panderBother/MysteryVerse/actions/runs/45968540075/artifacts/15183748405
 
 ## 6. Integration / Multi-Worker Evidence
 
@@ -84,7 +87,7 @@ Job steps 实际执行：
 Pytest 结果：
 
 ```text
-3 passed, 1 deselected
+4 passed, 1 deselected
 ```
 
 覆盖：
@@ -96,12 +99,13 @@ Pytest 结果：
 - 两个独立 Worker Process。
 - Worker B 接管后 Token 2 写入成功。
 - Worker A 旧 Token 1 写入被真实 MySQL 拒绝。
+- 旧/新 Fence 对同一 Run 的真实 MySQL 并发条件更新：新 Owner 成功，旧 Owner 拒绝。
 
 Artifact：
 
 - Name：`dq21-integration-evidence`
-- ID：`15107059738`
-- URL：https://github.com/panderBother/MysteryVerse/actions/runs/45803587621/artifacts/15107059738
+- ID：`15183219255`
+- URL：https://github.com/panderBother/MysteryVerse/actions/runs/45968540075/artifacts/15183219255
 
 ## 7. Backup / Restore Evidence
 
@@ -120,7 +124,7 @@ Job steps 实际执行：
 ```json
 {
   "status": "verified",
-  "run_id": "01M8BQ55XJEREFE3YS9S9G6QHQ",
+  "run_id": "01M8E33PSBZZNN6EJQHQAD72FF",
   "counts": {
     "steps": 1,
     "step_attempts": 1,
@@ -137,18 +141,18 @@ Job steps 实际执行：
 Artifact：
 
 - Name：`dq21-backup-restore-evidence`
-- ID：`15108851764`
-- URL：https://github.com/panderBother/MysteryVerse/actions/runs/45803587621/artifacts/15108851764
+- ID：`15183299142`
+- URL：https://github.com/panderBother/MysteryVerse/actions/runs/45968540075/artifacts/15183299142
 
 ## 8. DQ-21 Verification Closure
 
 | Category | Status | Evidence |
 | --- | --- | --- |
 | Unit Verification | VERIFIED | Unit Job + Artifact |
-| Hosted CI Execution | VERIFIED | Run `45803587621` success |
-| Integration Verification | VERIFIED | Integration Job 3 passed |
+| Hosted CI Execution | VERIFIED | Run `45968540075` success |
+| Integration Verification | VERIFIED | Integration Job 4 passed |
 | Multi-Worker Verification | VERIFIED | Independent Worker A/B test passed |
-| Fencing Token Real DB | VERIFIED | Old Token write rejected by MySQL |
+| Fencing Token Real DB | VERIFIED | Old Token + concurrent conditional write rejected by MySQL |
 | Recovery Integration | VERIFIED | Recovery Attempt/Checkpoint test passed |
 | Cleanup Integration | VERIFIED | Cleanup Integration test passed |
 | Backup/Restore | VERIFIED | Two-MySQL dump/restore verification |
@@ -156,7 +160,8 @@ Artifact：
 
 ## 9. Failure Analysis
 
-首次 Run 无需回归修复，所有 Job 一次通过。
+首轮 Run `45803587621` 无需修复并成功。随后发现并发 DB 写入验证不足，
+新增一个真实 MySQL 并发条件写入测试；最终 Run `45968540075` 全部 Job 成功。
 
 非阻塞日志：
 

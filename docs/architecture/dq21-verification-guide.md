@@ -124,17 +124,17 @@ Restore Verification：
 
 | Scenario | Expected | Current |
 | --- | --- | --- |
-| MySQL unavailable | No authoritative write | Unit fail-closed logic；Infra Not Verified |
-| Redis unavailable | Lease operation fails safely | Redis script/error path code；Infra Not Verified |
-| Lease expired | Old owner loses write authority | Unit/Candidate verified；Infra Not Verified |
-| Worker crash | Recovery attempt path | Coordinator tests；Multi-process Not Verified |
-| Owner failover | New fence | Test implementation exists；Not Verified |
-| Stale owner write | DB rejects | Unit/Candidate verified；Real MySQL Not Verified |
-| Concurrent write | One owner remains authoritative | DB conditional update code；Infra Not Verified |
-| Checkpoint corrupted | Reject recovery | Unit verified |
-| Recovery failure | Failure recorded | Unit verified |
-| Cleanup failure | Job failed + retry next batch | Unit verified |
-| Backup failure | No success evidence | Not Verified |
-| Restore failure | Isolated restore fails safely | Not Verified |
+| MySQL unavailable | No authoritative write | Fail-closed code；真实断库注入 Not Verified |
+| Redis unavailable | Lease operation fails safely | Lease error path；真实断网注入 Not Verified |
+| Lease expired | Old owner loses write authority | Hosted CI Verified |
+| Worker crash | Recovery attempt path | Lease Expiry Failover Verified；Kill -9 注入 Not Verified |
+| Owner failover | New fence | Hosted CI Verified |
+| Stale owner write | DB rejects | Hosted CI 真实 MySQL Verified |
+| Concurrent write | One owner remains authoritative | Hosted CI 并发条件更新 Verified |
+| Checkpoint corrupted | Reject recovery | Unit Verified |
+| Recovery failure | Failure recorded | Unit Verified |
+| Cleanup failure | Job failed + retry next batch | Unit Verified |
+| Backup failure | No success evidence | Backup path Verified；故障注入 Not Verified |
+| Restore failure | Isolated restore fails safely | Restore success Verified；失败恢复注入 Not Verified |
 | Redis restart | Leases re-established | Not Verified |
-| Migration failure | Goose failure handling | Integration test code；Not Verified |
+| Migration failure | Goose failure handling | Migration success/re-execution Verified；人工故障注入 Not Verified |

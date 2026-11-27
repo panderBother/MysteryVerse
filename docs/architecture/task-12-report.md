@@ -145,7 +145,7 @@ go test ./migrations
 
 ## 4. Multi-instance 验证
 
-状态：`VERIFIED`（GitHub Actions Run `45803587621`）
+状态：`VERIFIED`（最终 GitHub Actions Run `45968540075`）
 
 证据：
 
@@ -206,7 +206,8 @@ go test ./migrations
 - 是否具备多实例接管：双独立 Worker 接管已验证。
 - 是否具备 Cleanup：真实 MySQL Recovery/Cleanup Integration 已验证。
 - 是否具备 Restore Verification：独立 MySQL Backup/Restore 已验证；RTO/RPO 未测量。
-- 是否可以进入 DQ-22：不可以。DQ-22 仍为 Proposed，需单独批准。
+- 是否可以进入 DQ-22：具备讨论范围与批准条件的 CI 证据；仍不可直接实施，
+  因为 DQ-22 仍为 Proposed，需单独批准。
 - DQ-20 是否仍 BLOCKED：是。
 - AI DM 正式实现是否仍 BLOCKED：是。
 

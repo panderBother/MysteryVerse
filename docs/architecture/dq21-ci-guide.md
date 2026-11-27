@@ -89,7 +89,7 @@ Report Job 在任一依赖非 `success` 时失败，不吞错。
 
 - Workflow 文件存在：`IMPLEMENTED`。
 - `actionlint v1.7.7` 静态语义检查：通过。
-- GitHub Actions Run `45803587621`：success。
+- 最终 GitHub Actions Run `45968540075`：success。
 - Integration / Multi-Worker / Recovery / Cleanup / Backup-Restore：
   Hosted CI `VERIFIED`。
 - Hosted CI 成功不等于 Production Verification。

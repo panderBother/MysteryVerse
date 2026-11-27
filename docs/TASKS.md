@@ -132,29 +132,28 @@ GATE-AI 逐项状态见 `docs/architecture/gate-ai-checklist.md`。
 
 ### 1.4 Task 12 DQ-21 Runtime Persistence
 
-- **状态**：`IMPLEMENTED / UNIT-VERIFIED`；真实 MySQL+Redis Integration、
-  KMS、Restore `NOT VERIFIED`
+- **状态**：`IMPLEMENTED / HOSTED-CI VERIFIED`；Production、真实 KMS 与
+  Graph Auto Replay `NOT VERIFIED`
 - **实际变更**：`mv_ai` 迁移、MySQL Repository、Redis Lease、DB Fencing、
   AES-GCM Checkpoint、Recovery Attempt、Retention/Cleanup Worker 和 Runtime Store。
 - **测试命令**：`uv run --project ai_service pytest ai_service/tests`、
   `./scripts/mv.ps1 check`。
-- **测试结果**：Python 63 项通过、3 项 Integration/双 Worker 条件跳过；mypy 74 个源文件、
-  Ruff、Go migration package 通过。
+- **测试结果**：Python Unit 63 passed；CI Integration 4 passed；mypy 74、
+  Ruff、Go Migration/Integration 通过。
 - **验收证据**：`docs/architecture/task-12-report.md`、
   `docs/architecture/dq-21-persistence-candidate.md`。
-- **剩余风险**：没有 Docker/MySQL/Redis，真实迁移、双实例、故障注入、KMS 和
-  Restore 未验证。
+- **剩余风险**：Production 发布、真实 KMS、Redis 重启、Kill -9、RTO/RPO、
+  Graph Auto Replay 未验证。
 
 ### 1.5 Task 13 DQ-21 Infrastructure Verification
 
-- **状态**：`BLOCKED`（真实基础设施验证）；配置与测试代码已完成。
-- **阻塞项**：当前机器没有 Docker、MySQL Server 或 Redis Server。
+- **状态**：`DONE`（历史本地阻塞已由 Task 15 GitHub-hosted CI 补齐）。
+- **历史阻塞**：Task 13 时当前机器没有 Docker、MySQL Server 或 Redis Server。
 - **已提供**：`scripts/dq21-infra.ps1`、`scripts/dq21-verify.ps1`、
   双 Worker Probe、Migration Up/Down/Up 测试、Infrastructure/Restore 指南。
-- **已验证**：63 项 Python 测试、3 项真实基础设施测试条件跳过；mypy 74 个
-  源文件、Ruff、Go/Web/Contracts/Build 通过。
-- **未验证**：真实 Migration、MySQL/Redis Integration、双 Worker Failover、
-  Stale Fence DB 拒绝、Backup/Restore、KMS、Production。
+- **已验证**：Task 15 CI Run `45968540075` 验证 Migration、Persistence、
+  Multi-Worker、并发 Fence、Recovery/Cleanup、Backup/Restore。
+- **未验证**：Production、真实 KMS、Redis 重启、Kill -9、RTO/RPO。
 - **证据**：`docs/architecture/task-13-verification.md`、
   `docs/architecture/dq21-verification-guide.md`。
 
@@ -166,9 +165,9 @@ GATE-AI 逐项状态见 `docs/architecture/gate-ai-checklist.md`。
   Backup/Restore Probe 与双 MySQL Restore Job。
 - **CI Job**：Unit、Integration + Multi-Worker、Backup/Restore、Summary。
 - **安全**：`contents: read`、无生产 Secret、Backup SQL 不上传 Artifact。
-- **本地验证**：63 项 Python 测试通过、3 项 Integration 条件跳过；mypy 74、
+- **本地验证**：63 项 Python 测试通过、4 项 Integration 条件跳过；mypy 74、
   Workflow YAML、`actionlint v1.7.7` 和 PowerShell 脚本语法通过。
-- **验证结果**：Run `45803587621` 全部 Job 成功；真实 MySQL/Redis、多 Worker、
+- **验证结果**：最终 Run `45968540075` 全部 Job 成功；真实 MySQL/Redis、多 Worker、
   Recovery/Cleanup、Restore 通过。Production 仍 `NOT VERIFIED`。
 - **证据**：`docs/architecture/task-14-ci-report.md`、
   `docs/architecture/dq21-ci-guide.md`。
@@ -178,11 +177,11 @@ GATE-AI 逐项状态见 `docs/architecture/gate-ai-checklist.md`。
 - **状态**：`DONE`。
 - **当前分支/Remote**：`main` →
   `https://github.com/panderBother/MysteryVerse.git`。
-- **Commit**：`2e14d0679b75dc0abfb27745539f7be4a48e72c9`。
-- **Run ID**：`45803587621`。
-- **Run URL**：`https://github.com/panderBother/MysteryVerse/actions/runs/45803587621`。
+- **Commit**：`de2f8e1b273f94e38b54f89f5dd237a9eeb092c6`。
+- **Run ID**：`45968540075`。
+- **Run URL**：`https://github.com/panderBother/MysteryVerse/actions/runs/45968540075`。
 - **Job Results**：Unit、Integration + Multi-Worker、Backup/Restore、Summary 全部成功。
-- **测试结果**：Unit 63 passed；Contracts 5 passed；Integration 3 passed；
+- **测试结果**：Unit 63 passed；Contracts 5 passed；Integration 4 passed；
   Backup/Restore `status=verified`。
 - **证据**：`docs/architecture/task-15-first-ci-execution.md`。
 

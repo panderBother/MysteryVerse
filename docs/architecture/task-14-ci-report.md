@@ -5,7 +5,8 @@
 > Workflow：`IMPLEMENTED`
 > CI Execution：`VERIFIED`
 > Production Verification：`NOT VERIFIED`
-> Task 15 更新：首次真实 CI Run `45803587621` 全部 Job 成功；证据见
+> Task 15 更新：首轮 Run `45803587621` 和最终并发补齐 Run `45968540075`
+> 全部 Job 成功；证据见
 > `task-15-first-ci-execution.md`。
 
 ## 1. Preflight Audit
@@ -70,15 +71,15 @@ CI 使用两个独立 `python -m ...persistence_probe` 进程：
 - Worker B：获取 Token N+1、写入 Step、完成 Run。
 - Worker A：使用旧 Token N 写入。
 
-预期由真实 MySQL 拒绝 A 写入。测试代码已实现，CI Execution 尚未发生。
+真实 MySQL 已拒绝 A 的旧 Fence 写入；最终 CI Run `45968540075` 通过。
 
 ## 7. Fencing Token Tests
 
 当前状态：
 
 - Unit：VERIFIED。
-- Real DB：`NOT VERIFIED`，等待 CI。
-- Stale Owner Rejection：测试已实现，等待 CI。
+- Real DB：`VERIFIED`。
+- Stale Owner Rejection：CI Verified。
 
 ## 8. Recovery Tests
 
@@ -90,7 +91,7 @@ CI 使用两个独立 `python -m ...persistence_probe` 进程：
 - Checkpoint 解密和恢复。
 - Recovery Failure 与 Cleanup 数据一致性。
 
-CI Execution：`NOT VERIFIED`。
+CI Execution：`VERIFIED`。
 
 ## 9. Cleanup / Retention
 
@@ -102,7 +103,7 @@ Integration 测试覆盖：
 - Audit 独立保留。
 - Idempotency/Checkpoint 与 Run 清理。
 
-CI Execution：`NOT VERIFIED`。
+CI Execution：`VERIFIED`。
 
 ## 10. Backup / Restore
 
@@ -115,7 +116,7 @@ CI Execution：`NOT VERIFIED`。
 - 恢复后 Owner 为空，重新 Claim 获取更高 Fence。
 - Backup SQL 不上传 Artifact。
 
-CI Execution：`NOT VERIFIED`。
+CI Execution：`VERIFIED`。
 
 ## 11. CI Security
 
@@ -140,8 +141,8 @@ CI Execution：`NOT VERIFIED`。
 - Workflow 文件：`IMPLEMENTED`。
 - YAML 解析：通过。
 - `actionlint v1.7.7`：通过。
-- GitHub Actions Run：`45803587621`。
-- Commit：`2e14d0679b75dc0abfb27745539f7be4a48e72c9`。
+- GitHub Actions Run：`45968540075`。
+- Commit：`de2f8e1b273f94e38b54f89f5dd237a9eeb092c6`。
 - Result：`success`。
 - Jobs：Unit、Integration、Backup/Restore、Summary 全部 `success`。
 
@@ -150,7 +151,7 @@ CI Execution：`NOT VERIFIED`。
 - 本地 `./scripts/mv.ps1 check`：通过。
 - CI Unit：63 passed。
 - CI Contracts：5 passed。
-- CI Integration：3 passed。
+- CI Integration：4 passed。
 - mypy：74 个源文件通过。
 - Workflow YAML：解析通过。
 - PowerShell 验证脚本：语法通过。

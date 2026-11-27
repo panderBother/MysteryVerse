@@ -3,7 +3,7 @@
 > 日期：2026-11-26
 > DQ-21：APPROVED / IMPLEMENTED
 > Unit Verification：VERIFIED
-> Task 15 update：GitHub Actions Run `45803587621` 已完成 Integration、
+> Task 15 update：最终 GitHub Actions Run `45968540075` 已完成 Integration、
 > Multi-Worker、Recovery/Cleanup 和 Backup/Restore 的真实验证。
 > Production Verification：仍 `NOT VERIFIED`
 
@@ -79,10 +79,10 @@ Migration 测试补充 Up -> Down -> Up 重新执行验证。
 
 ## 5. Integration Test Results
 
-Task 15 GitHub Actions Run `45803587621` 已真实执行：
+Task 15 最终 GitHub Actions Run `45968540075` 已真实执行：
 
-- Integration Job：`3 passed, 1 deselected`。
-- Job `139852856357`：success。
+- Integration Job：`4 passed, 1 deselected`。
+- Job `140403008082`：success。
 
 Task 13 本地环境的历史结果：
 
@@ -161,7 +161,9 @@ RTO/RPO 未测量，不填写推测值。
 
 完整矩阵见 `dq21-verification-guide.md`。
 
-真实基础设施项全部保持 `NOT VERIFIED`；单元可验证项已完成。
+Task 13 本地真实基础设施项当时为 `NOT VERIFIED`；Task 15 GitHub-hosted CI
+已补齐主要真实路径。仅生产、KMS、Redis 重启、Kill -9 和失败恢复注入仍
+`NOT VERIFIED`。
 
 ## 13. Test Commands
 

@@ -1496,7 +1496,7 @@ Runtime 不直接访问 Go 数据库、不返回权威状态补丁、不决定�
 | DQ-18 | AI DM、NPC、规则解释、剧本生成的具体业务 Schema 与字段 ACL 尚未批准 | Registry/兼容性/Active Demo 绑定已批准并验证；业务 Schema 仍逐项待批 | 业务 Agent 不能在没有 Go 校验契约时接入 |
 | DQ-19 | 真实 CA、KMS、Redis 多实例和生产 mTLS 部署 | HMAC/Key ID/nonce/ACL/审计/TLS 基础已批准并通过测试级验证；生产基础设施未部署 | 生产门禁仍未通过，测试通过不等于生产验证 |
 | DQ-20 | MCP Server 信任模型、工具发现、权限映射和审计尚未批准 | 仅保留 `ToolSpec.mcp_server` 与 `ToolSource` 扩展边界 | 不接真实 MCP Server，不支持任意远程工具发现 |
-| DQ-21 | LangGraph Graph Thread 自动恢复与 Production 部署仍未验证 | CI Run `45803587621` 已验证 MySQL/Redis、Multi-Worker、Recovery/Cleanup 和 Backup/Restore | Graph 自动重放、生产 KMS、RTO/RPO 和容量仍未验证 |
+| DQ-21 | LangGraph Graph Thread 自动恢复与 Production 部署仍未验证 | 最终 CI Run `45968540075` 已验证 MySQL/Redis、Multi-Worker、并发 Fence、Recovery/Cleanup 和 Backup/Restore | Graph 自动重放、生产 KMS、RTO/RPO 和容量仍未验证 |
 | DQ-22 | 真实供应商模型与数据使用政策未配置 | D3/D4 默认阻断；Provider 已实现 MockTransport 测试；未声称远程调用通过 | 上线前需要供应商合同、密钥、配额、数据驻留与内容策略 |
 
 ### 13.3 建议
